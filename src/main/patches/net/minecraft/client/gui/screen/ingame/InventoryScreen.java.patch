@@ -1,0 +1,12 @@
+--- InventoryScreen.java
++++ InventoryScreen.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.util.Collection;
+ import net.minecraft.client.resource.language.I18n;
+ import net.minecraft.entity.effect.StatusEffect;
+ import net.minecraft.entity.effect.StatusEffectInstance;
+ import net.minecraft.screen.ScreenHandler;

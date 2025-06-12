@@ -1,0 +1,12 @@
+--- SliderWidget.java
++++ SliderWidget.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.widget;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.resource.language.I18n;
+ 
+ public class SliderWidget extends ButtonWidget {
+ 	private float progress = 1.0F;

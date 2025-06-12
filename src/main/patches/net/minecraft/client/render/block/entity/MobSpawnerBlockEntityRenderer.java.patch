@@ -1,0 +1,12 @@
+--- MobSpawnerBlockEntityRenderer.java
++++ MobSpawnerBlockEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.block.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.block.entity.MobSpawnerBlockEntity;
+ import net.minecraft.block.entity.SpawnerBlockEntityBehavior;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.entity.Entity;
+ 

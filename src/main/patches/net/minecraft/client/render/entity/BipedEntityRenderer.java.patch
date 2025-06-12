@@ -1,0 +1,12 @@
+--- BipedEntityRenderer.java
++++ BipedEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.entity.feature.HeadFeatureRenderer;
+ import net.minecraft.client.render.entity.feature.HeldItemRenderer;
+ import net.minecraft.client.render.entity.model.BiPedModel;
+ import net.minecraft.entity.mob.MobEntity;
+ import net.minecraft.util.Identifier;

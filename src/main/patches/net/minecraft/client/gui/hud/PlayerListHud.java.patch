@@ -1,0 +1,15 @@
+--- PlayerListHud.java
++++ PlayerListHud.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.client.gui.hud;
+ 
+ import com.google.common.collect.ComparisonChain;
+ import com.google.common.collect.Ordering;
+ import com.mojang.authlib.GameProfile;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.util.Comparator;
+ import java.util.List;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.DrawableHelper;
+ import net.minecraft.client.network.ClientPlayNetworkHandler;

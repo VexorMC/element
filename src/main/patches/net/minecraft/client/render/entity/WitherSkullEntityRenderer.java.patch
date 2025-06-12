@@ -1,0 +1,12 @@
+--- WitherSkullEntityRenderer.java
++++ WitherSkullEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.entity.model.SkullEntityModel;
+ import net.minecraft.entity.projectile.WitherSkullEntity;
+ import net.minecraft.util.Identifier;
+ 
+ public class WitherSkullEntityRenderer extends EntityRenderer<WitherSkullEntity> {

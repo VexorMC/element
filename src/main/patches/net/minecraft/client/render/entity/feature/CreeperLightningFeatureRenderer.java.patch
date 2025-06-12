@@ -1,0 +1,12 @@
+--- CreeperLightningFeatureRenderer.java
++++ CreeperLightningFeatureRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity.feature;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.entity.CreeperEntityRenderer;
+ import net.minecraft.client.render.entity.model.CreeperEntityModel;
+ import net.minecraft.entity.mob.CreeperEntity;
+ import net.minecraft.util.Identifier;
+ 

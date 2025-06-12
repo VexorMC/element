@@ -1,0 +1,25 @@
+--- Camera.java
++++ Camera.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.nio.FloatBuffer;
+ import java.nio.IntBuffer;
+ import net.minecraft.block.AbstractFluidBlock;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockState;
+@@ -29,11 +29,11 @@
+ 	private static float rotationXY;
+ 
+ 	public static void update(PlayerEntity playerEntity, boolean bl) {
+ 		GlStateManager.getFloat(2982, MODEL_MATRIX);
+ 		GlStateManager.getFloat(2983, PROJECTION_MATRIX);
+-		GL11.glGetInteger(2978, VIEWPORT);
++		GL11.glGetIntegerv(2978, VIEWPORT);
+ 		float f = (float)((VIEWPORT.get(0) + VIEWPORT.get(2)) / 2);
+ 		float g = (float)((VIEWPORT.get(1) + VIEWPORT.get(3)) / 2);
+ 		GLU.gluUnProject(f, g, 0.0F, MODEL_MATRIX, PROJECTION_MATRIX, VIEWPORT, OBJECT_POS);
+ 		position = new Vec3d((double)OBJECT_POS.get(0), (double)OBJECT_POS.get(1), (double)OBJECT_POS.get(2));
+ 		int i = bl ? 1 : 0;

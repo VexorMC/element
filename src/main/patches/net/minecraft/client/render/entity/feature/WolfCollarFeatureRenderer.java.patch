@@ -1,0 +1,12 @@
+--- WolfCollarFeatureRenderer.java
++++ WolfCollarFeatureRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity.feature;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.entity.WolfEntityRenderer;
+ import net.minecraft.entity.passive.SheepEntity;
+ import net.minecraft.entity.passive.WolfEntity;
+ import net.minecraft.util.DyeColor;
+ import net.minecraft.util.Identifier;

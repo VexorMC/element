@@ -1,0 +1,12 @@
+--- EnderCrystalEntityModel.java
++++ EnderCrystalEntityModel.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity.model;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.model.ModelPart;
+ import net.minecraft.entity.Entity;
+ 
+ public class EnderCrystalEntityModel extends EntityModel {
+ 	private ModelPart core;

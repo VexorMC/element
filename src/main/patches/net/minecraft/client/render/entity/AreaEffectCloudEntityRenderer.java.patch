@@ -1,0 +1,12 @@
+--- AreaEffectCloudEntityRenderer.java
++++ AreaEffectCloudEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.Identifier;
+ 
+ public class AreaEffectCloudEntityRenderer extends EntityRenderer<Entity> {
+ 	public AreaEffectCloudEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {

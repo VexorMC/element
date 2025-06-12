@@ -1,0 +1,13 @@
+--- HeadFeatureRenderer.java
++++ HeadFeatureRenderer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.render.entity.feature;
+ 
+ import com.mojang.authlib.GameProfile;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.block.entity.SkullBlockEntity;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
+ import net.minecraft.client.render.model.ModelPart;
+ import net.minecraft.client.render.model.json.ModelTransformation;

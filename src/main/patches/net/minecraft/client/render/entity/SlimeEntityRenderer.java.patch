@@ -1,0 +1,12 @@
+--- SlimeEntityRenderer.java
++++ SlimeEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.entity.feature.SlimeFeatureRenderer;
+ import net.minecraft.client.render.entity.model.EntityModel;
+ import net.minecraft.entity.mob.SlimeEntity;
+ import net.minecraft.util.Identifier;
+ 

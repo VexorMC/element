@@ -1,0 +1,14 @@
+--- Framebuffer.java
++++ Framebuffer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.gl;
+ 
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GLX;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.nio.ByteBuffer;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.render.Tessellator;
+ import net.minecraft.client.render.VertexFormats;
+ import net.minecraft.client.texture.TextureUtil;

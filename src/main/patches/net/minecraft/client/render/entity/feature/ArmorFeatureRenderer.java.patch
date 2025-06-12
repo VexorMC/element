@@ -1,0 +1,13 @@
+--- ArmorFeatureRenderer.java
++++ ArmorFeatureRenderer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.render.entity.feature;
+ 
+ import com.google.common.collect.Maps;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.util.Map;
+ import net.minecraft.client.render.entity.LivingEntityRenderer;
+ import net.minecraft.client.render.entity.model.EntityModel;
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.item.ArmorItem;

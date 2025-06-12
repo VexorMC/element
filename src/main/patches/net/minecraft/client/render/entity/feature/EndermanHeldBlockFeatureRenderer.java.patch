@@ -1,0 +1,14 @@
+--- EndermanHeldBlockFeatureRenderer.java
++++ EndermanHeldBlockFeatureRenderer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.render.entity.feature;
+ 
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GLX;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.block.BlockState;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.block.BlockRenderManager;
+ import net.minecraft.client.render.entity.EndermanEntityRenderer;

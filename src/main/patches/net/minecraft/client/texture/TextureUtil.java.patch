@@ -1,0 +1,12 @@
+--- TextureUtil.java
++++ TextureUtil.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.texture;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.awt.image.BufferedImage;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.nio.IntBuffer;
+ import javax.imageio.ImageIO;

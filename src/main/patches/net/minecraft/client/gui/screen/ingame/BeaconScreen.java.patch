@@ -1,0 +1,12 @@
+--- BeaconScreen.java
++++ BeaconScreen.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import io.netty.buffer.Unpooled;
+ import net.minecraft.block.entity.BeaconBlockEntity;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.render.DiffuseLighting;

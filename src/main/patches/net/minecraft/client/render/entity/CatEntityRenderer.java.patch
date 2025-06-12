@@ -1,0 +1,12 @@
+--- CatEntityRenderer.java
++++ CatEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.entity.model.EntityModel;
+ import net.minecraft.entity.passive.OcelotEntity;
+ import net.minecraft.util.Identifier;
+ 
+ public class CatEntityRenderer extends MobEntityRenderer<OcelotEntity> {

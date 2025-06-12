@@ -1,0 +1,15 @@
+--- HandledScreen.java
++++ HandledScreen.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
+ import com.google.common.collect.Sets;
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GLX;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.util.Set;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.screen.Screen;
+ import net.minecraft.client.render.DiffuseLighting;
+ import net.minecraft.client.texture.Sprite;

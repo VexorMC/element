@@ -1,0 +1,12 @@
+--- RealmsSliderButton.java
++++ RealmsSliderButton.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.realms;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.util.math.MathHelper;
+ 
+ public class RealmsSliderButton extends RealmsButton {
+ 	public float value = 1.0F;

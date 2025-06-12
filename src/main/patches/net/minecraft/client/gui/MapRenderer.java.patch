@@ -1,0 +1,13 @@
+--- MapRenderer.java
++++ MapRenderer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.gui;
+ 
+ import com.google.common.collect.Maps;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import java.util.Map;
+ import net.minecraft.block.material.MaterialColor;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.render.Tessellator;
+ import net.minecraft.client.render.VertexFormats;

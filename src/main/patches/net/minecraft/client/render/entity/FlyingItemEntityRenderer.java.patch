@@ -1,0 +1,12 @@
+--- FlyingItemEntityRenderer.java
++++ FlyingItemEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import net.minecraft.client.render.item.ItemRenderer;
+ import net.minecraft.client.render.model.json.ModelTransformation;
+ import net.minecraft.client.texture.SpriteAtlasTexture;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.item.Item;
