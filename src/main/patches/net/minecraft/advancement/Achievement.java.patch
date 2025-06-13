@@ -12,3 +12,18 @@
  		}
  
  		if (j < AchievementsAndCriterions.minRow) {
+@@ -87,13 +88,12 @@
+ 
+ 	public String getDescription() {
+ 		return this.statFormatter != null ? this.statFormatter.format(CommonI18n.translate(this.translationKey)) : CommonI18n.translate(this.translationKey);
+ 	}
+ 
+-	public Achievement setStatFormatter(StatFormatter statFormatter) {
++	public void setStatFormatter(StatFormatter statFormatter) {
+ 		this.statFormatter = statFormatter;
+-		return this;
+ 	}
+ 
+ 	public boolean isChallenge() {
+ 		return this.challenge;
+ 	}
