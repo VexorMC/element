@@ -7,7 +7,7 @@ import org.objectweb.asm.tree.*
 
 /**
  * Hacky patches to get OpenAL working properly without having to binary patch SoundSystem.
- * 
+ *
  * A lot of inspiration was taken from [Spice](https://github.com/Polyfrost/Spice); thanks to them for their work on this!
  */
 class OpenALTransformer : ClassTransformer() {
@@ -25,7 +25,6 @@ class OpenALTransformer : ClassTransformer() {
         }
 
         methodsToInject.forEach { injected ->
-            println("injecting $injected on $name")
             val methodNode = MethodNode(injected.access, injected.name, injected.desc, null, null)
             injected.instructions.forEach { methodNode.instructions.add(it) }
             classNode.methods.add(methodNode)

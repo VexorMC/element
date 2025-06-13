@@ -1,5 +1,6 @@
 package org.lwjgl.opengl
 
+import org.lwjgl.BufferUtils
 import org.lwjgl.LWJGLException
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW
@@ -12,14 +13,19 @@ import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
 import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
+import java.nio.Buffer
 import java.nio.ByteBuffer
+import kotlin.math.sqrt
 
 object Display {
     private var window: Long = MemoryUtil.NULL
+
     private var currentMode: DisplayMode? = null
     private var wasResizedFlag: Boolean = false
     private var windowSizeCallback: GLFWWindowSizeCallback? = null
     private var errorCallback: GLFWErrorCallback? = null
+    private var cachedIcons: Array<ByteBuffer>? = null
+
     private var title: String = "Application"
 
     @JvmStatic
@@ -40,7 +46,7 @@ object Display {
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE)
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE)
 
-        val vidmode: GLFWVidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor())
+        val vidMode: GLFWVidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor())
             ?: throw IllegalStateException("Failed to get primary monitor video mode.")
 
         val initialWidth = currentMode?.getWidth() ?: -1
@@ -53,8 +59,8 @@ object Display {
 
         GLFW.glfwSetWindowPos(
             window,
-            (vidmode.width() - initialWidth) / 2,
-            (vidmode.height() - initialHeight) / 2
+            (vidMode.width() - initialWidth) / 2,
+            (vidMode.height() - initialHeight) / 2
         )
 
         windowSizeCallback = object : GLFWWindowSizeCallback() {
@@ -77,12 +83,14 @@ object Display {
 
         GLFW.glfwShowWindow(window)
 
+        cachedIcons?.let { setIcon(it) }
+
         GL.createCapabilities()
 
         Keyboard.create()
         Mouse.create()
 
-        currentMode = DisplayMode(initialWidth, initialHeight, 32, vidmode.refreshRate())
+        currentMode = DisplayMode(initialWidth, initialHeight, 32, vidMode.refreshRate())
     }
 
     @JvmStatic
@@ -96,10 +104,6 @@ object Display {
         GLFW.glfwDestroyWindow(window)
 
         GLFW.glfwTerminate()
-        errorCallback?.free()
-        errorCallback = null
-        windowSizeCallback?.free()
-        windowSizeCallback = null
         window = MemoryUtil.NULL
         currentMode = null
         wasResizedFlag = false
@@ -219,15 +223,20 @@ object Display {
 
     @JvmStatic
     fun setIcon(icons: Array<ByteBuffer>) {
-        if (!isCreated()) return
+        if (!isCreated()) {
+            this.cachedIcons = icons.map { cloneByteBuffer(it) }.toTypedArray()
+            return
+        }
 
         MemoryStack.stackPush().use { stack ->
             val images = GLFWImage.malloc(icons.size, stack)
             icons.forEachIndexed { index, iconData ->
+                val dimension = sqrt((iconData.limit() / 4).toDouble()).toInt()
                 val image = GLFWImage.malloc(stack)
-                image.pixels(iconData)
+                image.set(dimension, dimension, iconData)
                 images.put(index, image)
             }
+            images.flip()
             GLFW.glfwSetWindowIcon(window, images)
         }
     }
@@ -260,6 +269,15 @@ object Display {
             mode.redBits() + mode.greenBits() + mode.blueBits(),
             mode.refreshRate()
         )
+    }
+
+    private fun cloneByteBuffer(original: ByteBuffer): ByteBuffer {
+        val clone = BufferUtils.createByteBuffer(original.capacity())
+        val oldPosition = original.position()
+        clone.put(original)
+        (original as Buffer).position(oldPosition)
+        (clone as Buffer).flip()
+        return clone
     }
 
     /**

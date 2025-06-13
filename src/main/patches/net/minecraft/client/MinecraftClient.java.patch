@@ -168,7 +168,7 @@
  				this.cleanUpAfterCrash();
  				LOGGER.fatal("Reported exception thrown!", var13);
  				this.printCrashReport(var13.getReport());
-@@ -356,11 +348,11 @@
+@@ -356,20 +348,20 @@
  		} finally {
  			this.stop();
  		}
@@ -181,6 +181,16 @@
  		this.initializeTimerHackThread();
  		if (this.options.overrideHeight > 0 && this.options.overrideWidth > 0) {
  			this.width = this.options.overrideWidth;
+ 			this.height = this.options.overrideHeight;
+ 		}
+ 
+-		LOGGER.info("LWJGL Version: " + Sys.getVersion());
++        LOGGER.info("LWJGL Version: {}", Sys.getVersion());
+ 		this.setDefaultIcon();
+ 		this.setDisplayBounds();
+ 		this.setPixelFormat();
+ 		GLX.createContext();
+ 		this.fbo = new Framebuffer(this.width, this.height, true);
 @@ -400,20 +392,17 @@
  		this.shadowTextRenderer = new TextRenderer(this.options, new Identifier("textures/font/ascii_sga.png"), this.textureManager, false);
  		this.resourceManager.registerListener(this.textRenderer);
