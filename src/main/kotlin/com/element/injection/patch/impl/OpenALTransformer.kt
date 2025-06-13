@@ -1,6 +1,5 @@
-package com.element.injection.transform.impl
+package com.element.injection.patch.impl
 
-import com.element.configuration.model.GameEnvironment
 import com.element.injection.transform.ClassTransformer
 import org.objectweb.asm.*
 import org.objectweb.asm.tree.*

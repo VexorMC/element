@@ -1,12 +1,8 @@
 package com.element.launch
 
 import com.element.configuration.Configuration
-import com.element.configuration.game.GameProvider
-import com.element.configuration.model.GameEnvironment
 import com.element.injection.TransformingClassLoader
-import com.element.injection.patch.ClassPatcher
-import com.element.injection.patch.impl.ClassPatchTransformer
-import com.element.injection.transform.impl.OpenALTransformer
+import com.element.injection.patch.impl.*
 import org.apache.logging.log4j.LogManager
 
 object Main {
