@@ -6,42 +6,33 @@ import com.element.configuration.model.GameEnvironment
 import com.element.injection.TransformingClassLoader
 import com.element.injection.patch.ClassPatcher
 import com.element.injection.patch.impl.ClassPatchTransformer
+import com.element.injection.transform.impl.OpenALTransformer
 import org.apache.logging.log4j.LogManager
 
 object Main {
     private val LOGGER = LogManager.getLogger("Element/Bootstrap")
+    val classLoader = TransformingClassLoader()
 
     @JvmStatic
     fun main(args: Array<String>) {
         LOGGER.info("Element is bootstrapping...")
 
-        var classLoader: ClassLoader
+        val allTransformers = listOf(
+            ClassPatchTransformer(), OpenALTransformer()
+        )
 
-        when (Configuration.environment) {
-            GameEnvironment.Development -> {
-                LOGGER.info("Running in a development environment")
-
-                classLoader = this.javaClass.classLoader // just use parent classloader
-            }
-            GameEnvironment.Production -> {
-                LOGGER.info("Running in production environment")
-                ClassPatcher.discoverPatches()
-
-                val transformingClassLoader = TransformingClassLoader().apply {
-                    transformers += ClassPatchTransformer()
-                }
-
-                Thread.currentThread().setContextClassLoader(transformingClassLoader)
-
-                classLoader = transformingClassLoader
-            }
+        classLoader.apply {
+            transformers += allTransformers.filter { it.environments.any { it == Configuration.environment } }
         }
+
+        LOGGER.info("Running in a '${Configuration.environment.name}' (${Configuration.environment.identifier}) environment")
 
         val gameProvider = Configuration.gameProvider
 
         LOGGER.info("Game provider: ${gameProvider.identifier}")
         LOGGER.info("Launching Minecraft with main class ${gameProvider.mainClass}")
 
+        Thread.currentThread().setContextClassLoader(classLoader)
         classLoader.loadClass(gameProvider.mainClass).getMethod("main", Array<String>::class.java)
             .invoke(null, args) // no need to modify args
     }

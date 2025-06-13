@@ -55,6 +55,8 @@ dependencies {
     runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjglNatives)
 
     implementation("com.nothome:javaxdelta:2.0.1")
+    implementation("org.ow2.asm:asm:9.8")
+    implementation("org.ow2.asm:asm-tree:9.8")
 }
 
 patcher {

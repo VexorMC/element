@@ -1,6 +1,7 @@
 package com.element.configuration.game
 
 import com.element.configuration.game.impl.CustomGameProvider
+import com.element.launch.Main
 import java.util.ServiceLoader
 
 interface GameProvider {
@@ -8,7 +9,7 @@ interface GameProvider {
     val mainClass: String
 
     companion object {
-        val services = ServiceLoader.load(GameProvider::class.java)
+        val services: ServiceLoader<GameProvider> = ServiceLoader.load(GameProvider::class.java)
 
         /**
          * Returns the game provider for the current environment.
