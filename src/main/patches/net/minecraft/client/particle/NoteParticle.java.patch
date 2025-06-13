@@ -1,0 +1,44 @@
+--- NoteParticle.java
++++ NoteParticle.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.particle;
+ 
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.entity.Entity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class NoteParticle extends Particle {
+ 	float prevScale;
+ 
+@@ -16,13 +16,13 @@
+ 		super(world, d, e, f, 0.0, 0.0, 0.0);
+ 		this.velocityX *= 0.01F;
+ 		this.velocityY *= 0.01F;
+ 		this.velocityZ *= 0.01F;
+ 		this.velocityY += 0.2;
+-		this.red = MathHelper.sin(((float)g + 0.0F) * (float) Math.PI * 2.0F) * 0.65F + 0.35F;
+-		this.green = MathHelper.sin(((float)g + 0.33333334F) * (float) Math.PI * 2.0F) * 0.65F + 0.35F;
+-		this.blue = MathHelper.sin(((float)g + 0.6666667F) * (float) Math.PI * 2.0F) * 0.65F + 0.35F;
++		this.red = Mth.sin(((float)g + 0.0F) * (float) Math.PI * 2.0F) * 0.65F + 0.35F;
++		this.green = Mth.sin(((float)g + 0.33333334F) * (float) Math.PI * 2.0F) * 0.65F + 0.35F;
++		this.blue = Mth.sin(((float)g + 0.6666667F) * (float) Math.PI * 2.0F) * 0.65F + 0.35F;
+ 		this.scale *= 0.75F;
+ 		this.scale *= j;
+ 		this.prevScale = this.scale;
+ 		this.maxAge = 6;
+ 		this.noClip = false;
+@@ -30,11 +30,11 @@
+ 	}
+ 
+ 	@Override
+ 	public void draw(BufferBuilder bufferBuilder, Entity entity, float f, float g, float h, float i, float j, float k) {
+ 		float l = ((float)this.age + f) / (float)this.maxAge * 32.0F;
+-		l = MathHelper.clamp(l, 0.0F, 1.0F);
++		l = Mth.clamp(l, 0.0F, 1.0F);
+ 		this.scale = this.prevScale * l;
+ 		super.draw(bufferBuilder, entity, f, g, h, i, j, k);
+ 	}
+ 
+ 	@Override

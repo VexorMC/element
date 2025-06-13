@@ -1,5 +1,31 @@
 --- SurfaceChunkGenerator.java
 +++ SurfaceChunkGenerator.java
+@@ -13,11 +13,11 @@
+ import net.minecraft.structure.TempleStructure;
+ import net.minecraft.structure.VillageStructure;
+ import net.minecraft.util.ProgressListener;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.ChunkPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.noise.PerlinNoiseGenerator;
+ import net.minecraft.world.World;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.gen.CustomizedWorldProperties;
+ import net.minecraft.world.gen.NoiseGenerator;
+@@ -73,11 +73,11 @@
+ 		this.field_7516 = new double[825];
+ 		this.field_7517 = new float[25];
+ 
+ 		for (int i = -2; i <= 2; i++) {
+ 			for (int j = -2; j <= 2; j++) {
+-				float f = 10.0F / MathHelper.sqrt((float)(i * i + j * j) + 0.2F);
++				float f = 10.0F / Mth.sqrt((float)(i * i + j * j) + 0.2F);
+ 				this.field_7517[i + 2 + (j + 2) * 5] = f;
+ 			}
+ 		}
+ 
+ 		if (string != null) {
 @@ -231,12 +231,11 @@
  				(double)(g / this.properties.mainNoiseScaleY),
  				(double)(f / this.properties.mainNoiseScaleZ)
@@ -14,3 +40,16 @@
  
  		for (int n = 0; n < 5; n++) {
  			for (int o = 0; o < 5; o++) {
+@@ -307,11 +306,11 @@
+ 					}
+ 
+ 					double ab = this.field_7512[l] / (double)this.properties.lowerLimitScale;
+ 					double ac = this.field_7513[l] / (double)this.properties.upperLimitScale;
+ 					double ad = (this.field_7511[l] / 10.0 + 1.0) / 2.0;
+-					double ae = MathHelper.clampedLerp(ab, ac, ad) - aa;
++					double ae = Mth.clampedLerp(ab, ac, ad) - aa;
+ 					if (z > 29) {
+ 						double af = (double)((float)(z - 29) / 3.0F);
+ 						ae = ae * (1.0 - af) + -10.0 * af;
+ 					}
+ 

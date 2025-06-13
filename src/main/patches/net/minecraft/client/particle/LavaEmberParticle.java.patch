@@ -1,0 +1,27 @@
+--- LavaEmberParticle.java
++++ LavaEmberParticle.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.particle;
+ 
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.entity.Entity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class LavaEmberParticle extends Particle {
+ 	private float prevScale;
+ 
+@@ -23,11 +23,11 @@
+ 	}
+ 
+ 	@Override
+ 	public int getLightmapCoordinates(float f) {
+ 		float g = ((float)this.age + f) / (float)this.maxAge;
+-		g = MathHelper.clamp(g, 0.0F, 1.0F);
++		g = Mth.clamp(g, 0.0F, 1.0F);
+ 		int i = super.getLightmapCoordinates(f);
+ 		int j = 240;
+ 		int k = i >> 16 & 0xFF;
+ 		return j | k << 16;
+ 	}

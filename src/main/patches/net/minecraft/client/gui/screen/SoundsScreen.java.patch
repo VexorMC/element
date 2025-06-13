@@ -1,6 +1,6 @@
 --- SoundsScreen.java
 +++ SoundsScreen.java
-@@ -1,8 +1,8 @@
+@@ -1,17 +1,17 @@
  package net.minecraft.client.gui.screen;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -10,3 +10,39 @@
  import net.minecraft.client.option.GameOptions;
  import net.minecraft.client.resource.language.I18n;
  import net.minecraft.client.sound.PositionedSoundInstance;
+ import net.minecraft.client.sound.SoundCategory;
+ import net.minecraft.client.sound.SoundManager;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class SoundsScreen extends Screen {
+ 	private final Screen parent;
+ 	private final GameOptions options;
+ 	protected String name = "Options";
+@@ -92,11 +92,11 @@
+ 		@Override
+ 		protected void mouseDragged(MinecraftClient minecraftClient, int i, int j) {
+ 			if (this.visible) {
+ 				if (this.mouseButtonPressed) {
+ 					this.volume = (float)(i - (this.x + 4)) / (float)(this.width - 8);
+-					this.volume = MathHelper.clamp(this.volume, 0.0F, 1.0F);
++					this.volume = Mth.clamp(this.volume, 0.0F, 1.0F);
+ 					minecraftClient.options.setSoundVolume(this.category, this.volume);
+ 					minecraftClient.options.save();
+ 					this.message = this.categoryName + ": " + SoundsScreen.this.getVolume(this.category);
+ 				}
+ 
+@@ -108,11 +108,11 @@
+ 
+ 		@Override
+ 		public boolean isMouseOver(MinecraftClient minecraftClient, int i, int j) {
+ 			if (super.isMouseOver(minecraftClient, i, j)) {
+ 				this.volume = (float)(i - (this.x + 4)) / (float)(this.width - 8);
+-				this.volume = MathHelper.clamp(this.volume, 0.0F, 1.0F);
++				this.volume = Mth.clamp(this.volume, 0.0F, 1.0F);
+ 				minecraftClient.options.setSoundVolume(this.category, this.volume);
+ 				minecraftClient.options.save();
+ 				this.message = this.categoryName + ": " + SoundsScreen.this.getVolume(this.category);
+ 				this.mouseButtonPressed = true;
+ 				return true;

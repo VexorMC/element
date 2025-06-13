@@ -1,0 +1,28 @@
+--- MoveThroughVillageGoal.java
++++ MoveThroughVillageGoal.java
+@@ -5,11 +5,11 @@
+ import net.minecraft.entity.PathAwareEntity;
+ import net.minecraft.entity.ai.pathing.MobNavigation;
+ import net.minecraft.entity.ai.pathing.Path;
+ import net.minecraft.util.RandomVectorGenerator;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.village.Village;
+ import net.minecraft.village.VillageDoor;
+ 
+ public class MoveThroughVillageGoal extends Goal {
+@@ -94,11 +94,11 @@
+ 	private VillageDoor method_2761(Village village) {
+ 		VillageDoor villageDoor = null;
+ 		int i = Integer.MAX_VALUE;
+ 
+ 		for (VillageDoor villageDoor2 : village.getDoors()) {
+-			int j = villageDoor2.method_2806(MathHelper.floor(this.mob.x), MathHelper.floor(this.mob.y), MathHelper.floor(this.mob.z));
++			int j = villageDoor2.method_2806(Mth.floor(this.mob.x), Mth.floor(this.mob.y), Mth.floor(this.mob.z));
+ 			if (j < i && !this.method_2760(villageDoor2)) {
+ 				villageDoor = villageDoor2;
+ 				i = j;
+ 			}
+ 		}

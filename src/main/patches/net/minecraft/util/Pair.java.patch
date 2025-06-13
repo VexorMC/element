@@ -1,0 +1,21 @@
+--- Pair.java
++++ Pair.java
+@@ -14,6 +14,18 @@
+ 	}
+ 
+ 	public B getRight() {
+ 		return this.right;
+ 	}
++
++	public A getFirst() {
++		return this.left;
++	}
++
++	public B getSecond() {
++		return this.right;
++	}
++
++	public static <A, B> Pair<A, B> of(A object, B object2) {
++		return new Pair<>(object, object2);
++	}
+ }

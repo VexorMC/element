@@ -11,3 +11,42 @@
  import java.util.Map;
  import net.minecraft.client.gui.CreativeInventoryListener;
  import net.minecraft.client.gui.screen.AchievementsScreen;
+@@ -25,11 +25,11 @@
+ import net.minecraft.item.Items;
+ import net.minecraft.item.itemgroup.ItemGroup;
+ import net.minecraft.screen.ScreenHandler;
+ import net.minecraft.util.Formatting;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.lwjgl.input.Keyboard;
+ import org.lwjgl.input.Mouse;
+ 
+ public class CreativeInventoryScreen extends InventoryScreen {
+ 	private static final Identifier ITEM_GROUPS = new Identifier("textures/gui/container/creative_inventory/tabs.png");
+@@ -405,11 +405,11 @@
+ 			if (i < 0) {
+ 				i = -1;
+ 			}
+ 
+ 			this.scrollPosition = (float)((double)this.scrollPosition - (double)i / (double)j);
+-			this.scrollPosition = MathHelper.clamp(this.scrollPosition, 0.0F, 1.0F);
++			this.scrollPosition = Mth.clamp(this.scrollPosition, 0.0F, 1.0F);
+ 			((CreativeInventoryScreen.CreativeScreenHandler)this.screenHandler).scrollItems(this.scrollPosition);
+ 		}
+ 	}
+ 
+ 	@Override
+@@ -430,11 +430,11 @@
+ 		}
+ 
+ 		this.clicking = bl;
+ 		if (this.hasScrollbar) {
+ 			this.scrollPosition = ((float)(j - n) - 7.5F) / ((float)(p - n) - 15.0F);
+-			this.scrollPosition = MathHelper.clamp(this.scrollPosition, 0.0F, 1.0F);
++			this.scrollPosition = Mth.clamp(this.scrollPosition, 0.0F, 1.0F);
+ 			((CreativeInventoryScreen.CreativeScreenHandler)this.screenHandler).scrollItems(this.scrollPosition);
+ 		}
+ 
+ 		super.render(i, j, f);
+ 

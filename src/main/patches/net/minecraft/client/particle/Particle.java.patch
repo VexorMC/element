@@ -1,0 +1,28 @@
+--- Particle.java
++++ Particle.java
+@@ -3,11 +3,11 @@
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.texture.Sprite;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.nbt.NbtCompound;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class Particle extends Entity {
+ 	protected int field_5935;
+ 	protected int field_5936;
+@@ -45,11 +45,11 @@
+ 		this(world, d, e, f);
+ 		this.velocityX = g + (Math.random() * 2.0 - 1.0) * 0.4F;
+ 		this.velocityY = h + (Math.random() * 2.0 - 1.0) * 0.4F;
+ 		this.velocityZ = i + (Math.random() * 2.0 - 1.0) * 0.4F;
+ 		float j = (float)(Math.random() + Math.random() + 1.0) * 0.15F;
+-		float k = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
++		float k = Mth.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
+ 		this.velocityX = this.velocityX / (double)k * (double)j * 0.4F;
+ 		this.velocityY = this.velocityY / (double)k * (double)j * 0.4F + 0.1F;
+ 		this.velocityZ = this.velocityZ / (double)k * (double)j * 0.4F;
+ 	}
+ 

@@ -1,0 +1,15 @@
+--- PlayerListEntry.java
++++ PlayerListEntry.java
+@@ -70,11 +70,11 @@
+ 	public Identifier getSkinTexture() {
+ 		if (this.getSkinTexture == null) {
+ 			this.loadTextures();
+ 		}
+ 
+-		return (Identifier)Objects.firstNonNull(this.getSkinTexture, DefaultSkinHelper.getTexture(this.profile.getId()));
++		return this.getSkinTexture != null ? this.getSkinTexture : DefaultSkinHelper.getTexture(this.profile.getId());
+ 	}
+ 
+ 	public Identifier getElytraTexture() {
+ 		if (this.getElytraTexture == null) {
+ 			this.loadTextures();

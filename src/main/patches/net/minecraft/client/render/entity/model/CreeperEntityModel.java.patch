@@ -1,0 +1,30 @@
+--- CreeperEntityModel.java
++++ CreeperEntityModel.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.render.entity.model;
+ 
+ import net.minecraft.client.render.model.ModelPart;
+ import net.minecraft.entity.Entity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class CreeperEntityModel extends EntityModel {
+ 	public ModelPart head;
+ 	public ModelPart helmet;
+ 	public ModelPart torso;
+@@ -55,11 +55,11 @@
+ 
+ 	@Override
+ 	public void setAngles(float f, float g, float h, float i, float j, float k, Entity entity) {
+ 		this.head.posY = i / (180.0F / (float)Math.PI);
+ 		this.head.posX = j / (180.0F / (float)Math.PI);
+-		this.rightBackLeg.posX = MathHelper.cos(f * 0.6662F) * 1.4F * g;
+-		this.leftBackLeg.posX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * g;
+-		this.rightFrontLeg.posX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * g;
+-		this.leftFrontLeg.posX = MathHelper.cos(f * 0.6662F) * 1.4F * g;
++		this.rightBackLeg.posX = Mth.cos(f * 0.6662F) * 1.4F * g;
++		this.leftBackLeg.posX = Mth.cos(f * 0.6662F + (float) Math.PI) * 1.4F * g;
++		this.rightFrontLeg.posX = Mth.cos(f * 0.6662F + (float) Math.PI) * 1.4F * g;
++		this.leftFrontLeg.posX = Mth.cos(f * 0.6662F) * 1.4F * g;
+ 	}
+ }

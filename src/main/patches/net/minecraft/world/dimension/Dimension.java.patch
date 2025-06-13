@@ -1,0 +1,47 @@
+--- Dimension.java
++++ Dimension.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.world.dimension;
+ 
+ import net.minecraft.block.Blocks;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.LayeredBiomeSource;
+ import net.minecraft.world.World;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.biome.SingletonBiomeSource;
+@@ -96,15 +96,15 @@
+ 		return true;
+ 	}
+ 
+ 	public float[] getBackgroundColor(float f, float g) {
+ 		float h = 0.4F;
+-		float i = MathHelper.cos(f * (float) Math.PI * 2.0F) - 0.0F;
++		float i = Mth.cos(f * (float) Math.PI * 2.0F) - 0.0F;
+ 		float j = -0.0F;
+ 		if (i >= j - h && i <= j + h) {
+ 			float k = (i - j) / h * 0.5F + 0.5F;
+-			float l = 1.0F - (1.0F - MathHelper.sin(k * (float) Math.PI)) * 0.99F;
++			float l = 1.0F - (1.0F - Mth.sin(k * (float) Math.PI)) * 0.99F;
+ 			l *= l;
+ 			this.backgroundColor[0] = k * 0.3F + 0.7F;
+ 			this.backgroundColor[1] = k * k * 0.7F + 0.2F;
+ 			this.backgroundColor[2] = k * k * 0.0F + 0.2F;
+ 			this.backgroundColor[3] = l;
+@@ -113,12 +113,12 @@
+ 			return null;
+ 		}
+ 	}
+ 
+ 	public Vec3d getFogColor(float f, float g) {
+-		float h = MathHelper.cos(f * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
++		float h = Mth.cos(f * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
++		h = Mth.clamp(h, 0.0F, 1.0F);
+ 		float i = 0.7529412F;
+ 		float j = 0.84705883F;
+ 		float k = 1.0F;
+ 		i *= h * 0.94F + 0.06F;
+ 		j *= h * 0.94F + 0.06F;

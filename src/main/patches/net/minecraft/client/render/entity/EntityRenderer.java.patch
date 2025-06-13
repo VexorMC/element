@@ -10,3 +10,39 @@
  import net.minecraft.client.font.TextRenderer;
  import net.minecraft.client.render.BufferBuilder;
  import net.minecraft.client.render.CameraView;
+@@ -14,11 +14,11 @@
+ import net.minecraft.entity.mob.MobEntity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.Identifier;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ import org.lwjgl.opengl.GL11;
+ 
+ public abstract class EntityRenderer<T extends Entity> {
+ 	private static final Identifier SHADOW_TEXTURE = new Identifier("textures/misc/shadow.png");
+@@ -140,16 +140,16 @@
+ 		}
+ 
+ 		double j = entity.prevTickX + (entity.x - entity.prevTickX) * (double)h;
+ 		double k = entity.prevTickY + (entity.y - entity.prevTickY) * (double)h;
+ 		double l = entity.prevTickZ + (entity.z - entity.prevTickZ) * (double)h;
+-		int m = MathHelper.floor(j - (double)i);
+-		int n = MathHelper.floor(j + (double)i);
+-		int o = MathHelper.floor(k - (double)i);
+-		int p = MathHelper.floor(k);
+-		int q = MathHelper.floor(l - (double)i);
+-		int r = MathHelper.floor(l + (double)i);
++		int m = Mth.floor(j - (double)i);
++		int n = Mth.floor(j + (double)i);
++		int o = Mth.floor(k - (double)i);
++		int p = Mth.floor(k);
++		int q = Mth.floor(l - (double)i);
++		int r = Mth.floor(l + (double)i);
+ 		double s = d - j;
+ 		double t = e - k;
+ 		double u = f - l;
+ 		Tessellator tessellator = Tessellator.getInstance();
+ 		BufferBuilder bufferBuilder = tessellator.getBuffer();

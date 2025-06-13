@@ -1,0 +1,41 @@
+--- OtherClientPlayerEntity.java
++++ OtherClientPlayerEntity.java
+@@ -5,11 +5,11 @@
+ import net.minecraft.client.network.AbstractClientPlayerEntity;
+ import net.minecraft.entity.damage.DamageSource;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.text.Text;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class OtherClientPlayerEntity extends AbstractClientPlayerEntity {
+ 	private boolean field_1769;
+ 	private int field_1770;
+@@ -47,11 +47,11 @@
+ 		this.field_4009 = 0.0F;
+ 		super.tick();
+ 		this.field_6748 = this.field_6749;
+ 		double d = this.x - this.prevX;
+ 		double e = this.z - this.prevZ;
+-		float f = MathHelper.sqrt(d * d + e * e) * 4.0F;
++		float f = Mth.sqrt(d * d + e * e) * 4.0F;
+ 		if (f > 1.0F) {
+ 			f = 1.0F;
+ 		}
+ 
+ 		this.field_6749 = this.field_6749 + (f - this.field_6749) * 0.4F;
+@@ -89,11 +89,11 @@
+ 			this.setRotation(this.yaw, this.pitch);
+ 		}
+ 
+ 		this.prevStrideDistance = this.strideDistance;
+ 		this.tickHandSwing();
+-		float h = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
++		float h = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+ 		float i = (float)Math.atan(-this.velocityY * 0.2F) * 15.0F;
+ 		if (h > 0.1F) {
+ 			h = 0.1F;
+ 		}
+ 

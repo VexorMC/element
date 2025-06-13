@@ -1,0 +1,28 @@
+--- FurnaceBlockEntity.java
++++ FurnaceBlockEntity.java
+@@ -21,11 +21,11 @@
+ import net.minecraft.recipe.SmeltingRecipeRegistry;
+ import net.minecraft.screen.FurnaceScreenHandler;
+ import net.minecraft.screen.ScreenHandler;
+ import net.minecraft.util.Tickable;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class FurnaceBlockEntity extends LockableContainerBlockEntity implements Tickable, SidedInventory {
+ 	private static final int[] inputs = new int[]{0};
+ 	private static final int[] outputs = new int[]{2, 1};
+ 	private static final int[] fuelInputs = new int[]{1};
+@@ -199,11 +199,11 @@
+ 					}
+ 				} else {
+ 					this.cookTime = 0;
+ 				}
+ 			} else if (!this.isFueled() && this.cookTime > 0) {
+-				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
++				this.cookTime = Mth.clamp(this.cookTime - 2, 0, this.totalCookTime);
+ 			}
+ 
+ 			if (bl != this.isFueled()) {
+ 				bl2 = true;
+ 				FurnaceBlock.setBlockState(this.isFueled(), this.world, this.pos);

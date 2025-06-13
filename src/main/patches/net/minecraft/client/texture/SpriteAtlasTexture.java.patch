@@ -1,0 +1,186 @@
+--- SpriteAtlasTexture.java
++++ SpriteAtlasTexture.java
+@@ -6,10 +6,15 @@
+ import java.io.IOException;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Map.Entry;
+ import java.util.concurrent.Callable;
++
++import com.mojang.blaze3d.platform.NativeImage;
++import com.mojang.blaze3d.systems.GpuDevice;
++import com.mojang.blaze3d.systems.RenderSystem;
++import com.mojang.blaze3d.textures.TextureFormat;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.TextureStitchException;
+ import net.minecraft.client.render.TextureStitcher;
+ import net.minecraft.client.resource.AnimationMetadata;
+ import net.minecraft.client.resource.metadata.TextureResourceMetadata;
+@@ -17,13 +22,14 @@
+ import net.minecraft.resource.ResourceManager;
+ import net.minecraft.util.Identifier;
+ import net.minecraft.util.crash.CrashException;
+ import net.minecraft.util.crash.CrashReport;
+ import net.minecraft.util.crash.CrashReportSection;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.lwjgl.BufferUtils;
+ 
+ public class SpriteAtlasTexture extends AbstractTexture implements TickableTexture {
+ 	private static final Logger LOGGER = LogManager.getLogger();
+ 	public static final Identifier MISSING = new Identifier("missingno");
+ 	public static final Identifier BLOCK_ATLAS_TEX = new Identifier("textures/atlas/blocks.png");
+@@ -31,11 +37,11 @@
+ 	private final Map<String, Sprite> spritesToLoad = Maps.newHashMap();
+ 	private final Map<String, Sprite> sprites = Maps.newHashMap();
+ 	private final String name;
+ 	private final TextureCreator textureCreator;
+ 	private int maxTextureSize;
+-	private final Sprite texture = new Sprite("missingno");
++	private final Sprite sprite = new Sprite("missingno");
+ 
+ 	public SpriteAtlasTexture(String string) {
+ 		this(string, null);
+ 	}
+ 
+@@ -44,15 +50,15 @@
+ 		this.textureCreator = textureCreator;
+ 	}
+ 
+ 	private void method_5829() {
+ 		int[] is = TextureUtil.field_6583;
+-		this.texture.setWidth(16);
+-		this.texture.setHeight(16);
++		this.sprite.setWidth(16);
++		this.sprite.setHeight(16);
+ 		int[][] js = new int[this.maxTextureSize + 1][];
+ 		js[0] = is;
+-		this.texture.setFrames(Lists.newArrayList(new int[][][]{js}));
++		this.sprite.setFrames(Lists.newArrayList(new int[][][]{js}));
+ 	}
+ 
+ 	@Override
+ 	public void load(ResourceManager resourceManager) throws IOException {
+ 		if (this.textureCreator != null) {
+@@ -89,11 +95,11 @@
+ 				if (textureResourceMetadata != null) {
+ 					List<Integer> list = textureResourceMetadata.method_7049();
+ 					if (!list.isEmpty()) {
+ 						int l = bufferedImages[0].getWidth();
+ 						int m = bufferedImages[0].getHeight();
+-						if (MathHelper.smallestEncompassingPowerOfTwo(l) != l || MathHelper.smallestEncompassingPowerOfTwo(m) != m) {
++						if (Mth.smallestEncompassingPowerOfTwo(l) != l || Mth.smallestEncompassingPowerOfTwo(m) != m) {
+ 							throw new RuntimeException("Unable to load extra miplevels, source-texture is not power of two");
+ 						}
+ 					}
+ 
+ 					for (int m : list) {
+@@ -122,20 +128,20 @@
+ 			j = Math.min(j, Math.min(sprite.getWidth(), sprite.getHeight()));
+ 			int n = Math.min(Integer.lowestOneBit(sprite.getWidth()), Integer.lowestOneBit(sprite.getHeight()));
+ 			if (n < k) {
+ 				LOGGER.warn(
+ 					"Texture {} with size {}x{} limits mip level from {} to {}",
+-					new Object[]{identifier2, sprite.getWidth(), sprite.getHeight(), MathHelper.log2(k), MathHelper.log2(n)}
++					new Object[]{identifier2, sprite.getWidth(), sprite.getHeight(), Mth.log2(k), Mth.log2(n)}
+ 				);
+ 				k = n;
+ 			}
+ 
+ 			textureStitcher.add(sprite);
+ 		}
+ 
+ 		int o = Math.min(j, k);
+-		int p = MathHelper.log2(o);
++		int p = Mth.log2(o);
+ 		if (p < this.maxTextureSize) {
+ 			LOGGER.warn("{}: dropping miplevel from {} to {}, because of minimum power of two: {}", new Object[]{this.name, this.maxTextureSize, p, o});
+ 			this.maxTextureSize = p;
+ 		}
+ 
+@@ -163,30 +169,41 @@
+ 				crashReportSection.add("Mipmap levels", this.maxTextureSize);
+ 				throw new CrashException(crashReport);
+ 			}
+ 		}
+ 
+-		this.texture.method_7013(this.maxTextureSize);
+-		textureStitcher.add(this.texture);
++		this.sprite.method_7013(this.maxTextureSize);
++		textureStitcher.add(this.sprite);
+ 
+ 		try {
+ 			textureStitcher.stitch();
+ 		} catch (TextureStitchException var20) {
+ 			throw var20;
+ 		}
+ 
+ 		LOGGER.info("Created: {}x{} {}-atlas", new Object[]{textureStitcher.getWidth(), textureStitcher.getHeight(), this.name});
+-		TextureUtil.prepareImage(this.getGlId(), this.maxTextureSize, textureStitcher.getWidth(), textureStitcher.getHeight());
++		GpuDevice gpuDevice = RenderSystem.getDevice();
++
++		this.texture = gpuDevice.createTexture(this.sprite::toString, 5, TextureFormat.RGBA8, textureStitcher.getWidth(), textureStitcher.getHeight(), 0, 0);
++		this.textureView = gpuDevice.createTextureView(this.texture);
++
++//		TextureUtil.prepareImage(this.getGlId(), this.maxTextureSize, textureStitcher.getWidth(), textureStitcher.getHeight());
++
+ 		Map<String, Sprite> map = Maps.newHashMap(this.spritesToLoad);
+ 
+ 		for (Sprite sprite3 : textureStitcher.getStitchedSprites()) {
+ 			String string = sprite3.getName();
+ 			map.remove(string);
+ 			this.sprites.put(string, sprite3);
+ 
+ 			try {
+-				TextureUtil.method_7027(sprite3.method_5831(0), sprite3.getWidth(), sprite3.getHeight(), sprite3.getX(), sprite3.getY(), false, false);
++				int[][] is = sprite3.method_5831(0);
++				for (int m = 0; m < is.length; m++) {
++					int[] js = is[m];
++					gpuDevice.createCommandEncoder()
++							.writeToTexture(this.texture, BufferUtils.createIntBuffer(js.length).put(js).flip(), NativeImage.Format.RGBA, m, 0, sprite3.getWidth() >> m, sprite3.getHeight() >> m, sprite3.getX() >> m, sprite3.getY() >> m);
++				}
+ 			} catch (Throwable var19) {
+ 				CrashReport crashReport2 = CrashReport.create(var19, "Stitching texture atlas");
+ 				CrashReportSection crashReportSection2 = crashReport2.addElement("Texture being stitched together");
+ 				crashReportSection2.add("Atlas path", this.name);
+ 				crashReportSection2.add("Sprite", sprite3);
+@@ -197,11 +214,11 @@
+ 				this.animatedSprites.add(sprite3);
+ 			}
+ 		}
+ 
+ 		for (Sprite sprite3 : map.values()) {
+-			sprite3.copyData(this.texture);
++			sprite3.copyData(this.sprite);
+ 		}
+ 	}
+ 
+ 	private Identifier method_7003(Identifier identifier, int i) {
+ 		return i == 0
+@@ -210,11 +227,11 @@
+ 	}
+ 
+ 	public Sprite getSprite(String string) {
+ 		Sprite sprite = (Sprite)this.sprites.get(string);
+ 		if (sprite == null) {
+-			sprite = this.texture;
++			sprite = this.sprite;
+ 		}
+ 
+ 		return sprite;
+ 	}
+ 
+@@ -247,9 +264,9 @@
+ 
+ 	public void setMaxTextureSize(int i) {
+ 		this.maxTextureSize = i;
+ 	}
+ 
+-	public Sprite getTexture() {
+-		return this.texture;
++	public Sprite getSprite() {
++		return this.sprite;
+ 	}
+ }

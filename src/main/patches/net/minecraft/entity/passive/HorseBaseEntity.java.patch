@@ -1,5 +1,59 @@
 --- HorseBaseEntity.java
 +++ HorseBaseEntity.java
+@@ -33,11 +33,11 @@
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.nbt.NbtList;
+ import net.minecraft.server.ServerConfigHandler;
+ import net.minecraft.util.CommonI18n;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.LocalDifficulty;
+ import net.minecraft.world.World;
+ 
+ public class HorseBaseEntity extends AnimalEntity implements SimpleInventoryListener {
+ 	private static final Predicate<Entity> EATING_GRASS_ENTITY_PREDICATE = new Predicate<Entity>() {
+@@ -300,11 +300,11 @@
+ 	public void setTemper(int i) {
+ 		this.temper = i;
+ 	}
+ 
+ 	public int addTemper(int i) {
+-		int j = MathHelper.clamp(this.getTemper() + i, 0, this.getMaxTemper());
++		int j = Mth.clamp(this.getTemper() + i, 0, this.getMaxTemper());
+ 		this.setTemper(j);
+ 		return j;
+ 	}
+ 
+ 	@Override
+@@ -322,12 +322,12 @@
+ 	public boolean isPushable() {
+ 		return this.rider == null;
+ 	}
+ 
+ 	public boolean method_6265() {
+-		int i = MathHelper.floor(this.x);
+-		int j = MathHelper.floor(this.z);
++		int i = Mth.floor(this.x);
++		int j = Mth.floor(this.z);
+ 		this.world.getBiome(new BlockPos(i, 0, j));
+ 		return true;
+ 	}
+ 
+ 	public void method_6266() {
+@@ -348,11 +348,11 @@
+ 	public void handleFallDamage(float f, float g) {
+ 		if (f > 1.0F) {
+ 			this.playSound("mob.horse.land", 0.4F, 1.0F);
+ 		}
+ 
+-		int i = MathHelper.ceil((f * 0.5F - 3.0F) * g);
++		int i = Mth.ceil((f * 0.5F - 3.0F) * g);
+ 		if (i > 0) {
+ 			this.damage(DamageSource.FALL, (float)i);
+ 			if (this.rider != null) {
+ 				this.rider.damage(DamageSource.FALL, (float)i);
+ 			}
 @@ -636,15 +636,16 @@
  		}
  
@@ -18,3 +72,59 @@
  	@Override
  	public boolean method_2537(PlayerEntity playerEntity) {
  		ItemStack itemStack = playerEntity.inventory.getMainHandStack();
+@@ -842,11 +843,11 @@
+ 			}
+ 
+ 			if (!this.isEating()
+ 				&& this.rider == null
+ 				&& this.random.nextInt(300) == 0
+-				&& this.world.getBlockState(new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.y) - 1, MathHelper.floor(this.z))).getBlock() == Blocks.GRASS) {
++				&& this.world.getBlockState(new BlockPos(Mth.floor(this.x), Mth.floor(this.y) - 1, Mth.floor(this.z))).getBlock() == Blocks.GRASS) {
+ 				this.setEatingGrass(true);
+ 			}
+ 
+ 			if (this.isEating() && ++this.eatingGrassTicks > 50) {
+ 				this.eatingGrassTicks = 0;
+@@ -1031,12 +1032,12 @@
+ 				}
+ 
+ 				this.setInAir(true);
+ 				this.velocityDirty = true;
+ 				if (g > 0.0F) {
+-					float h = MathHelper.sin(this.yaw * (float) Math.PI / 180.0F);
+-					float i = MathHelper.cos(this.yaw * (float) Math.PI / 180.0F);
++					float h = Mth.sin(this.yaw * (float) Math.PI / 180.0F);
++					float i = Mth.cos(this.yaw * (float) Math.PI / 180.0F);
+ 					this.velocityX = this.velocityX + (double)(-0.4F * h * this.jumpStrength);
+ 					this.velocityZ = this.velocityZ + (double)(0.4F * i * this.jumpStrength);
+ 					this.playSound("mob.horse.jump", 0.4F, 1.0F);
+ 				}
+ 
+@@ -1056,11 +1057,11 @@
+ 			}
+ 
+ 			this.field_6748 = this.field_6749;
+ 			double d = this.x - this.prevX;
+ 			double e = this.z - this.prevZ;
+-			float j = MathHelper.sqrt(d * d + e * e) * 4.0F;
++			float j = Mth.sqrt(d * d + e * e) * 4.0F;
+ 			if (j > 1.0F) {
+ 				j = 1.0F;
+ 			}
+ 
+ 			this.field_6749 = this.field_6749 + (j - this.field_6749) * 0.4F;
+@@ -1350,12 +1351,12 @@
+ 
+ 	@Override
+ 	public void updatePassengerPosition() {
+ 		super.updatePassengerPosition();
+ 		if (this.lastAngryAnimationProgress > 0.0F) {
+-			float f = MathHelper.sin(this.bodyYaw * (float) Math.PI / 180.0F);
+-			float g = MathHelper.cos(this.bodyYaw * (float) Math.PI / 180.0F);
++			float f = Mth.sin(this.bodyYaw * (float) Math.PI / 180.0F);
++			float g = Mth.cos(this.bodyYaw * (float) Math.PI / 180.0F);
+ 			float h = 0.7F * this.lastAngryAnimationProgress;
+ 			float i = 0.15F * this.lastAngryAnimationProgress;
+ 			this.rider
+ 				.updatePosition(this.x + (double)(h * f), this.y + this.getMountedHeightOffset() + this.rider.getHeightOffset() + (double)i, this.z - (double)(h * g));
+ 			if (this.rider instanceof LivingEntity) {

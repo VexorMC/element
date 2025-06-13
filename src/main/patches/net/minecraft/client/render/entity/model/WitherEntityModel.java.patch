@@ -1,0 +1,31 @@
+--- WitherEntityModel.java
++++ WitherEntityModel.java
+@@ -2,11 +2,11 @@
+ 
+ import net.minecraft.client.render.model.ModelPart;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.boss.WitherEntity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class WitherEntityModel extends EntityModel {
+ 	private ModelPart[] field_5136;
+ 	private ModelPart[] field_5137;
+ 
+@@ -50,13 +50,13 @@
+ 		}
+ 	}
+ 
+ 	@Override
+ 	public void setAngles(float f, float g, float h, float i, float j, float k, Entity entity) {
+-		float l = MathHelper.cos(h * 0.1F);
++		float l = Mth.cos(h * 0.1F);
+ 		this.field_5136[1].posX = (0.065F + 0.05F * l) * (float) Math.PI;
+-		this.field_5136[2].setPivot(-2.0F, 6.9F + MathHelper.cos(this.field_5136[1].posX) * 10.0F, -0.5F + MathHelper.sin(this.field_5136[1].posX) * 10.0F);
++		this.field_5136[2].setPivot(-2.0F, 6.9F + Mth.cos(this.field_5136[1].posX) * 10.0F, -0.5F + Mth.sin(this.field_5136[1].posX) * 10.0F);
+ 		this.field_5136[2].posX = (0.265F + 0.1F * l) * (float) Math.PI;
+ 		this.field_5137[0].posY = i / (180.0F / (float)Math.PI);
+ 		this.field_5137[0].posX = j / (180.0F / (float)Math.PI);
+ 	}
+ 

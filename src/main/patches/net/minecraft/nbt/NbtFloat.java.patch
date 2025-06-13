@@ -1,0 +1,40 @@
+--- NbtFloat.java
++++ NbtFloat.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.nbt;
+ 
+ import java.io.DataInput;
+ import java.io.DataOutput;
+ import java.io.IOException;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class NbtFloat extends NbtElement.AbstractNbtNumber {
+ 	private float value;
+ 
+ 	NbtFloat() {
+@@ -61,21 +61,21 @@
+ 		return (long)this.value;
+ 	}
+ 
+ 	@Override
+ 	public int intValue() {
+-		return MathHelper.floor(this.value);
++		return Mth.floor(this.value);
+ 	}
+ 
+ 	@Override
+ 	public short shortValue() {
+-		return (short)(MathHelper.floor(this.value) & 65535);
++		return (short)(Mth.floor(this.value) & 65535);
+ 	}
+ 
+ 	@Override
+ 	public byte byteValue() {
+-		return (byte)(MathHelper.floor(this.value) & 0xFF);
++		return (byte)(Mth.floor(this.value) & 0xFF);
+ 	}
+ 
+ 	@Override
+ 	public double doubleValue() {
+ 		return (double)this.value;

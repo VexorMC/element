@@ -1,0 +1,28 @@
+--- RainSplashParticle.java
++++ RainSplashParticle.java
+@@ -3,11 +3,11 @@
+ import net.minecraft.block.AbstractFluidBlock;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockState;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class RainSplashParticle extends Particle {
+ 	protected RainSplashParticle(World world, double d, double e, double f) {
+ 		super(world, d, e, f, 0.0, 0.0, 0.0);
+@@ -57,11 +57,11 @@
+ 				d = (double)(1.0F - AbstractFluidBlock.getHeightPercent((Integer)blockState.get(AbstractFluidBlock.LEVEL)));
+ 			} else {
+ 				d = block.getMaxY();
+ 			}
+ 
+-			double e = (double)MathHelper.floor(this.y) + d;
++			double e = (double) Mth.floor(this.y) + d;
+ 			if (this.y < e) {
+ 				this.remove();
+ 			}
+ 		}
+ 	}

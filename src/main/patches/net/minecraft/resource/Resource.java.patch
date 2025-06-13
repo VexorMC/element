@@ -1,0 +1,25 @@
+--- Resource.java
++++ Resource.java
+@@ -1,8 +1,11 @@
+ package net.minecraft.resource;
+ 
+ import java.io.InputStream;
++import java.io.InputStreamReader;
++import java.io.Reader;
++
+ import net.minecraft.client.resource.ResourceMetadataProvider;
+ import net.minecraft.util.Identifier;
+ 
+ public interface Resource {
+ 	Identifier getId();
+@@ -12,6 +15,10 @@
+ 	boolean hasMetadata();
+ 
+ 	<T extends ResourceMetadataProvider> T getMetadata(String var1);
+ 
+ 	String getResourcePackName();
++
++    default Reader openAsReader() {
++		return new InputStreamReader(getInputStream());
++	}
+ }

@@ -1,5 +1,18 @@
 --- BlazeEntity.java
 +++ BlazeEntity.java
+@@ -14,11 +14,11 @@
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.entity.projectile.SmallFireballEntity;
+ import net.minecraft.item.Item;
+ import net.minecraft.item.Items;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class BlazeEntity extends HostileEntity {
+ 	private float eyeOffset = 0.5F;
+ 	private int eyeOffsetCooldown;
 @@ -31,11 +31,11 @@
  		this.goals.add(5, new GoToWalkTargetGoal(this, 1.0));
  		this.goals.add(7, new WanderAroundGoal(this, 1.0));
@@ -40,3 +53,16 @@
  
  		public ShootFireballGoal(BlazeEntity blazeEntity) {
  			this.blaze = blazeEntity;
+@@ -223,11 +224,11 @@
+ 						this.fireballsFired = 0;
+ 						this.blaze.setFireActive(false);
+ 					}
+ 
+ 					if (this.fireballsFired > 1) {
+-						float h = MathHelper.sqrt(MathHelper.sqrt(d)) * 0.5F;
++						float h = Mth.sqrt(Mth.sqrt(d)) * 0.5F;
+ 						this.blaze.world.syncWorldEvent(null, 1009, new BlockPos((int)this.blaze.x, (int)this.blaze.y, (int)this.blaze.z), 0);
+ 
+ 						for (int i = 0; i < 1; i++) {
+ 							SmallFireballEntity smallFireballEntity = new SmallFireballEntity(
+ 								this.blaze.world, this.blaze, e + this.blaze.getRandom().nextGaussian() * (double)h, f, g + this.blaze.getRandom().nextGaussian() * (double)h

@@ -13,7 +13,15 @@
  import java.io.InputStreamReader;
  import java.net.URI;
  import java.util.Calendar;
-@@ -33,12 +33,12 @@
+@@ -26,19 +26,19 @@
+ import net.minecraft.client.resource.language.I18n;
+ import net.minecraft.client.texture.NativeImageBackedTexture;
+ import net.minecraft.realms.RealmsBridge;
+ import net.minecraft.util.Formatting;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.DemoServerWorld;
  import net.minecraft.world.level.LevelProperties;
  import net.minecraft.world.level.storage.LevelStorageAccess;
  import org.apache.commons.io.Charsets;
@@ -40,3 +48,29 @@
  			this.oldGlLink = "https://help.mojang.com/customer/portal/articles/325948?ref=game";
  		}
  	}
+@@ -295,11 +295,11 @@
+ 			GlStateManager.pushMatrix();
+ 			float g = ((float)(l % k) / (float)k - 0.5F) / 64.0F;
+ 			float h = ((float)(l / k) / (float)k - 0.5F) / 64.0F;
+ 			float m = 0.0F;
+ 			GlStateManager.translate(g, h, m);
+-			GlStateManager.rotate(MathHelper.sin(((float)this.ticks + f) / 400.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
++			GlStateManager.rotate(Mth.sin(((float)this.ticks + f) / 400.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
+ 			GlStateManager.rotate(-((float)this.ticks + f) * 0.1F, 0.0F, 1.0F, 0.0F);
+ 
+ 			for (int n = 0; n < 6; n++) {
+ 				GlStateManager.pushMatrix();
+ 				if (n == 1) {
+@@ -433,11 +433,11 @@
+ 		}
+ 
+ 		GlStateManager.pushMatrix();
+ 		GlStateManager.translate((float)(this.width / 2 + 90), 70.0F, 0.0F);
+ 		GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
+-		float g = 1.8F - MathHelper.abs(MathHelper.sin((float)(MinecraftClient.getTime() % 1000L) / 1000.0F * (float) Math.PI * 2.0F) * 0.1F);
++		float g = 1.8F - Mth.abs(Mth.sin((float)(MinecraftClient.getTime() % 1000L) / 1000.0F * (float) Math.PI * 2.0F) * 0.1F);
+ 		g = g * 100.0F / (float)(this.textRenderer.getStringWidth(this.splashText) + 32);
+ 		GlStateManager.scale(g, g, g);
+ 		this.drawCenteredString(this.textRenderer, this.splashText, 0, -8, -256);
+ 		GlStateManager.popMatrix();
+ 		String string = "Minecraft 1.8.9";

@@ -1,5 +1,18 @@
 --- ZombieEntity.java
 +++ ZombieEntity.java
+@@ -36,11 +36,11 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.Difficulty;
+ import net.minecraft.world.LocalDifficulty;
+ import net.minecraft.world.World;
+ 
+ public class ZombieEntity extends HostileEntity {
 @@ -70,13 +70,13 @@
  	protected void initCustomGoals() {
  		this.goals.add(4, new MeleeAttackGoal(this, VillagerEntity.class, 1.0, true));
@@ -17,11 +30,27 @@
  	@Override
  	protected void initializeAttributes() {
  		super.initializeAttributes();
-@@ -206,12 +206,12 @@
+@@ -196,22 +196,22 @@
+ 			}
+ 
+ 			if (livingEntity != null
+ 				&& this.world.getGlobalDifficulty() == Difficulty.HARD
+ 				&& (double)this.random.nextFloat() < this.initializeAttribute(REINFORCEMENTS_ATTRIBUTE).getValue()) {
+-				int i = MathHelper.floor(this.x);
+-				int j = MathHelper.floor(this.y);
+-				int k = MathHelper.floor(this.z);
++				int i = Mth.floor(this.x);
++				int j = Mth.floor(this.y);
++				int k = Mth.floor(this.z);
+ 				ZombieEntity zombieEntity = new ZombieEntity(this.world);
+ 
  				for (int l = 0; l < 50; l++) {
- 					int m = i + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
- 					int n = j + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
- 					int o = k + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
+-					int m = i + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
+-					int n = j + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
+-					int o = k + MathHelper.nextInt(this.random, 7, 40) * MathHelper.nextInt(this.random, -1, 1);
++					int m = i + Mth.nextInt(this.random, 7, 40) * Mth.nextInt(this.random, -1, 1);
++					int n = j + Mth.nextInt(this.random, 7, 40) * Mth.nextInt(this.random, -1, 1);
++					int o = k + Mth.nextInt(this.random, 7, 40) * Mth.nextInt(this.random, -1, 1);
  					if (World.isOpaque(this.world, new BlockPos(m, n - 1, o)) && this.world.getLightLevelWithNeighbours(new BlockPos(m, n, o)) < 10) {
 -						zombieEntity.updatePosition((double)m, (double)n, (double)o);
 -						if (!this.world.isPlayerInRange((double)m, (double)n, (double)o, 7.0)

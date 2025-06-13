@@ -1,0 +1,27 @@
+--- CompassSprite.java
++++ CompassSprite.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.texture;
+ 
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class CompassSprite extends Sprite {
+ 	public double field_2150;
+ 	public double field_2151;
+@@ -50,11 +50,11 @@
+ 
+ 				while (j >= Math.PI) {
+ 					j -= Math.PI * 2;
+ 				}
+ 
+-				j = MathHelper.clamp(j, -1.0, 1.0);
++				j = Mth.clamp(j, -1.0, 1.0);
+ 				this.field_2151 += j * 0.1;
+ 				this.field_2151 *= 0.8;
+ 				this.field_2150 = this.field_2150 + this.field_2151;
+ 			}
+ 

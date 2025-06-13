@@ -1,6 +1,6 @@
 --- DelegatingRealmsSimpleScrolledSelectionListWidget.java
 +++ DelegatingRealmsSimpleScrolledSelectionListWidget.java
-@@ -1,8 +1,8 @@
+@@ -1,14 +1,14 @@
  package net.minecraft.client.gui.widget;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -10,3 +10,23 @@
  import net.minecraft.client.render.Tessellator;
  import net.minecraft.client.render.VertexFormats;
  import net.minecraft.realms.RealmsSimpleScrolledSelectionList;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class DelegatingRealmsSimpleScrolledSelectionListWidget extends ListWidget {
+ 	private final RealmsSimpleScrolledSelectionList list;
+ 
+ 	public DelegatingRealmsSimpleScrolledSelectionListWidget(
+@@ -100,11 +100,11 @@
+ 			GlStateManager.shadeModel(7425);
+ 			GlStateManager.disableTexture();
+ 			int p = this.getMaxScroll();
+ 			if (p > 0) {
+ 				int q = (this.yEnd - this.yStart) * (this.yEnd - this.yStart) / this.getMaxPosition();
+-				q = MathHelper.clamp(q, 32, this.yEnd - this.yStart - 8);
++				q = Mth.clamp(q, 32, this.yEnd - this.yStart - 8);
+ 				int r = (int)this.scrollAmount * (this.yEnd - this.yStart - q) / p + this.yStart;
+ 				if (r < this.yStart) {
+ 					r = this.yStart;
+ 				}
+ 

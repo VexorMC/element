@@ -1,0 +1,70 @@
+--- BuiltChunkStorage.java
++++ BuiltChunkStorage.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.client.render;
+ 
+ import net.minecraft.client.render.world.ChunkRenderFactory;
+ import net.minecraft.client.world.BuiltChunk;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class BuiltChunkStorage {
+ 	protected final WorldRenderer worldRenderer;
+ 	protected final World world;
+@@ -49,12 +49,12 @@
+ 		this.sizeY = 16;
+ 		this.sizeZ = j;
+ 	}
+ 
+ 	public void updateCameraPosition(double d, double e) {
+-		int i = MathHelper.floor(d) - 8;
+-		int j = MathHelper.floor(e) - 8;
++		int i = Mth.floor(d) - 8;
++		int j = Mth.floor(e) - 8;
+ 		int k = this.sizeX * 16;
+ 
+ 		for (int l = 0; l < this.sizeX; l++) {
+ 			int m = this.method_9934(i, k, l);
+ 
+@@ -82,16 +82,16 @@
+ 
+ 		return l - m / j * j;
+ 	}
+ 
+ 	public void scheduleRebuild(int i, int j, int k, int l, int m, int n) {
+-		int o = MathHelper.floorDiv(i, 16);
+-		int p = MathHelper.floorDiv(j, 16);
+-		int q = MathHelper.floorDiv(k, 16);
+-		int r = MathHelper.floorDiv(l, 16);
+-		int s = MathHelper.floorDiv(m, 16);
+-		int t = MathHelper.floorDiv(n, 16);
++		int o = Mth.floorDiv(i, 16);
++		int p = Mth.floorDiv(j, 16);
++		int q = Mth.floorDiv(k, 16);
++		int r = Mth.floorDiv(l, 16);
++		int s = Mth.floorDiv(m, 16);
++		int t = Mth.floorDiv(n, 16);
+ 
+ 		for (int u = o; u <= r; u++) {
+ 			int v = u % this.sizeX;
+ 			if (v < 0) {
+ 				v += this.sizeX;
+@@ -116,13 +116,13 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	protected BuiltChunk getRenderedChunk(BlockPos blockPos) {
+-		int i = MathHelper.floorDiv(blockPos.getX(), 16);
+-		int j = MathHelper.floorDiv(blockPos.getY(), 16);
+-		int k = MathHelper.floorDiv(blockPos.getZ(), 16);
++		int i = Mth.floorDiv(blockPos.getX(), 16);
++		int j = Mth.floorDiv(blockPos.getY(), 16);
++		int k = Mth.floorDiv(blockPos.getZ(), 16);
+ 		if (j >= 0 && j < this.sizeY) {
+ 			i %= this.sizeX;
+ 			if (i < 0) {
+ 				i += this.sizeX;
+ 			}

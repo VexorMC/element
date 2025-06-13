@@ -1,6 +1,6 @@
 --- BoatEntityRenderer.java
 +++ BoatEntityRenderer.java
-@@ -1,8 +1,8 @@
+@@ -1,13 +1,13 @@
  package net.minecraft.client.render.entity;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -9,4 +9,23 @@
  import net.minecraft.client.render.entity.model.EntityModel;
  import net.minecraft.entity.vehicle.BoatEntity;
  import net.minecraft.util.Identifier;
- import net.minecraft.util.math.MathHelper;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class BoatEntityRenderer extends EntityRenderer<BoatEntity> {
+ 	private static final Identifier TEXTURE = new Identifier("textures/entity/boat.png");
+ 	protected EntityModel model = new BoatEntityModel();
+ 
+@@ -25,11 +25,11 @@
+ 		if (j < 0.0F) {
+ 			j = 0.0F;
+ 		}
+ 
+ 		if (i > 0.0F) {
+-			GlStateManager.rotate(MathHelper.sin(i) * i * j / 10.0F * (float)boatEntity.getDamageWobbleSide(), 1.0F, 0.0F, 0.0F);
++			GlStateManager.rotate(Mth.sin(i) * i * j / 10.0F * (float)boatEntity.getDamageWobbleSide(), 1.0F, 0.0F, 0.0F);
+ 		}
+ 
+ 		float k = 0.75F;
+ 		GlStateManager.scale(k, k, k);
+ 		GlStateManager.scale(1.0F / k, 1.0F / k, 1.0F / k);

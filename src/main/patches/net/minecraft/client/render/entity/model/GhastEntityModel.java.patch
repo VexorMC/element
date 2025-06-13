@@ -1,6 +1,6 @@
 --- GhastEntityModel.java
 +++ GhastEntityModel.java
-@@ -1,8 +1,8 @@
+@@ -1,12 +1,12 @@
  package net.minecraft.client.render.entity.model;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -8,5 +8,23 @@
  import java.util.Random;
  import net.minecraft.client.render.model.ModelPart;
  import net.minecraft.entity.Entity;
- import net.minecraft.util.math.MathHelper;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
  
+ public class GhastEntityModel extends EntityModel {
+ 	ModelPart body;
+ 	ModelPart[] tentacles = new ModelPart[9];
+ 
+@@ -30,11 +30,11 @@
+ 	}
+ 
+ 	@Override
+ 	public void setAngles(float f, float g, float h, float i, float j, float k, Entity entity) {
+ 		for (int l = 0; l < this.tentacles.length; l++) {
+-			this.tentacles[l].posX = 0.2F * MathHelper.sin(h * 0.3F + (float)l) + 0.4F;
++			this.tentacles[l].posX = 0.2F * Mth.sin(h * 0.3F + (float)l) + 0.4F;
+ 		}
+ 	}
+ 
+ 	@Override
+ 	public void render(Entity entity, float f, float g, float h, float i, float j, float k) {

@@ -1,0 +1,28 @@
+--- BedItem.java
++++ BedItem.java
+@@ -6,11 +6,11 @@
+ import net.minecraft.block.Blocks;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.item.itemgroup.ItemGroup;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class BedItem extends Item {
+ 	public BedItem() {
+ 		this.setItemGroup(ItemGroup.DECORATIONS);
+@@ -28,11 +28,11 @@
+ 			boolean bl = block.isReplaceable(world, blockPos);
+ 			if (!bl) {
+ 				blockPos = blockPos.up();
+ 			}
+ 
+-			int i = MathHelper.floor((double)(playerEntity.yaw * 4.0F / 360.0F) + 0.5) & 3;
++			int i = Mth.floor((double)(playerEntity.yaw * 4.0F / 360.0F) + 0.5) & 3;
+ 			Direction direction2 = Direction.fromHorizontal(i);
+ 			BlockPos blockPos2 = blockPos.offset(direction2);
+ 			if (playerEntity.canModify(blockPos, direction, itemStack) && playerEntity.canModify(blockPos2, direction, itemStack)) {
+ 				boolean bl2 = world.getBlockState(blockPos2).getBlock().isReplaceable(world, blockPos2);
+ 				boolean bl3 = bl || world.isAir(blockPos);

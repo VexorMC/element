@@ -1,0 +1,69 @@
+--- EntityNavigation.java
++++ EntityNavigation.java
+@@ -5,11 +5,11 @@
+ import net.minecraft.entity.attribute.EntityAttributeInstance;
+ import net.minecraft.entity.attribute.EntityAttributes;
+ import net.minecraft.entity.mob.MobEntity;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ import net.minecraft.world.chunk.ChunkCache;
+ 
+ public abstract class EntityNavigation {
+@@ -40,11 +40,11 @@
+ 	public float getFollowRange() {
+ 		return (float)this.followRange.getValue();
+ 	}
+ 
+ 	public final Path findPathTo(double d, double e, double f) {
+-		return this.findPathTo(new BlockPos(MathHelper.floor(d), (int)e, MathHelper.floor(f)));
++		return this.findPathTo(new BlockPos(Mth.floor(d), (int)e, Mth.floor(f)));
+ 	}
+ 
+ 	public Path findPathTo(BlockPos blockPos) {
+ 		if (!this.isAtValidPosition()) {
+ 			return null;
+@@ -59,11 +59,11 @@
+ 			return path;
+ 		}
+ 	}
+ 
+ 	public boolean startMovingTo(double d, double e, double f, double g) {
+-		Path path = this.findPathTo((double)MathHelper.floor(d), (double)((int)e), (double)MathHelper.floor(f));
++		Path path = this.findPathTo((double) Mth.floor(d), (double)((int)e), (double) Mth.floor(f));
+ 		return this.startMovingAlong(path, g);
+ 	}
+ 
+ 	public void method_11038(float f) {
+ 		this.field_11967 = f;
+@@ -123,12 +123,12 @@
+ 			} else if (this.currentPath != null && this.currentPath.getCurrentNode() < this.currentPath.getNodeCount()) {
+ 				Vec3d vec3d = this.getPos();
+ 				Vec3d vec3d2 = this.currentPath.getNodePosition(this.mob, this.currentPath.getCurrentNode());
+ 				if (vec3d.y > vec3d2.y
+ 					&& !this.mob.onGround
+-					&& MathHelper.floor(vec3d.x) == MathHelper.floor(vec3d2.x)
+-					&& MathHelper.floor(vec3d.z) == MathHelper.floor(vec3d2.z)) {
++					&& Mth.floor(vec3d.x) == Mth.floor(vec3d2.x)
++					&& Mth.floor(vec3d.z) == Mth.floor(vec3d2.z)) {
+ 					this.currentPath.setCurrentNode(this.currentPath.getCurrentNode() + 1);
+ 				}
+ 			}
+ 
+ 			if (!this.isIdle()) {
+@@ -167,11 +167,11 @@
+ 			if (vec3d.squaredDistanceTo(vec3d2) < (double)f) {
+ 				this.currentPath.setCurrentNode(k + 1);
+ 			}
+ 		}
+ 
+-		int kx = MathHelper.ceil(this.mob.width);
++		int kx = Mth.ceil(this.mob.width);
+ 		int l = (int)this.mob.height + 1;
+ 		int m = kx;
+ 
+ 		for (int n = i - 1; n >= this.currentPath.getCurrentNode(); n--) {
+ 			if (this.canPathDirectlyThrough(vec3d, this.currentPath.getNodePosition(this.mob, n), kx, l, m)) {

@@ -12,6 +12,19 @@
  import java.util.Random;
  import java.util.concurrent.Callable;
  import net.minecraft.block.Block;
+@@ -21,11 +21,11 @@
+ import net.minecraft.util.crash.CrashException;
+ import net.minecraft.util.crash.CrashReport;
+ import net.minecraft.util.crash.CrashReportSection;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class ParticleManager {
+ 	private static final Identifier PARTICLE_TEXTURE = new Identifier("textures/particle/particles.png");
+ 	protected World world;
 @@ -200,11 +200,11 @@
  		Particle.field_1724 = entity.prevTickZ + (entity.z - entity.prevTickZ) * (double)f;
  		GlStateManager.enableBlend();
@@ -48,3 +61,24 @@
  							});
  							throw new CrashException(crashReport);
  						}
+@@ -265,15 +266,15 @@
+ 		GlStateManager.alphaFunc(516, 0.1F);
+ 	}
+ 
+ 	public void method_1299(Entity entity, float f) {
+ 		float g = (float) (Math.PI / 180.0);
+-		float h = MathHelper.cos(entity.yaw * (float) (Math.PI / 180.0));
+-		float i = MathHelper.sin(entity.yaw * (float) (Math.PI / 180.0));
+-		float j = -i * MathHelper.sin(entity.pitch * (float) (Math.PI / 180.0));
+-		float k = h * MathHelper.sin(entity.pitch * (float) (Math.PI / 180.0));
+-		float l = MathHelper.cos(entity.pitch * (float) (Math.PI / 180.0));
++		float h = Mth.cos(entity.yaw * (float) (Math.PI / 180.0));
++		float i = Mth.sin(entity.yaw * (float) (Math.PI / 180.0));
++		float j = -i * Mth.sin(entity.pitch * (float) (Math.PI / 180.0));
++		float k = h * Mth.sin(entity.pitch * (float) (Math.PI / 180.0));
++		float l = Mth.cos(entity.pitch * (float) (Math.PI / 180.0));
+ 
+ 		for (int m = 0; m < 2; m++) {
+ 			List<Particle> list = this.particles[3][m];
+ 			if (!list.isEmpty()) {
+ 				Tessellator tessellator = Tessellator.getInstance();

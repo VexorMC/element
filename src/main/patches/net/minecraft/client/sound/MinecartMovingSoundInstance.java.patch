@@ -1,0 +1,32 @@
+--- MinecartMovingSoundInstance.java
++++ MinecartMovingSoundInstance.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.sound;
+ 
+ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class MinecartMovingSoundInstance extends MovingSoundInstance {
+ 	private final AbstractMinecartEntity minecart;
+ 	private float field_8146 = 0.0F;
+ 
+@@ -21,14 +21,14 @@
+ 			this.done = true;
+ 		} else {
+ 			this.x = (float)this.minecart.x;
+ 			this.y = (float)this.minecart.y;
+ 			this.z = (float)this.minecart.z;
+-			float f = MathHelper.sqrt(this.minecart.velocityX * this.minecart.velocityX + this.minecart.velocityZ * this.minecart.velocityZ);
++			float f = Mth.sqrt(this.minecart.velocityX * this.minecart.velocityX + this.minecart.velocityZ * this.minecart.velocityZ);
+ 			if ((double)f >= 0.01) {
+-				this.field_8146 = MathHelper.clamp(this.field_8146 + 0.0025F, 0.0F, 1.0F);
+-				this.volume = 0.0F + MathHelper.clamp(f, 0.0F, 0.5F) * 0.7F;
++				this.field_8146 = Mth.clamp(this.field_8146 + 0.0025F, 0.0F, 1.0F);
++				this.volume = 0.0F + Mth.clamp(f, 0.0F, 0.5F) * 0.7F;
+ 			} else {
+ 				this.field_8146 = 0.0F;
+ 				this.volume = 0.0F;
+ 			}
+ 		}

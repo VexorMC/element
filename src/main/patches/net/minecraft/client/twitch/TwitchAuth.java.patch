@@ -15,3 +15,34 @@
  import java.net.URLEncoder;
  import java.util.Map;
  import java.util.Set;
+@@ -27,11 +27,11 @@
+ import net.minecraft.text.Text;
+ import net.minecraft.text.TranslatableText;
+ import net.minecraft.util.Formatting;
+ import net.minecraft.util.JsonHelper;
+ import net.minecraft.util.Util;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ import org.apache.logging.log4j.Marker;
+ import org.apache.logging.log4j.MarkerManager;
+ import org.lwjgl.opengl.GL11;
+@@ -443,15 +443,15 @@
+ 			this.streamFinished = true;
+ 		}
+ 	}
+ 
+ 	public static int setStreamFps(float f) {
+-		return MathHelper.floor(10.0F + f * 50.0F);
++		return Mth.floor(10.0F + f * 50.0F);
+ 	}
+ 
+ 	public static int setStreamBitrate(float f) {
+-		return MathHelper.floor(230.0F + f * 3270.0F);
++		return Mth.floor(230.0F + f * 3270.0F);
+ 	}
+ 
+ 	public static float setStreamBytesPerPixel(float f) {
+ 		return 0.1F + f * 0.1F;
+ 	}

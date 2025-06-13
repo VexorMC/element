@@ -1,0 +1,28 @@
+--- WorldBorderCommand.java
++++ WorldBorderCommand.java
+@@ -7,11 +7,11 @@
+ import net.minecraft.command.CommandStats;
+ import net.minecraft.command.IncorrectUsageException;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.text.TranslatableText;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.border.WorldBorder;
+ 
+ public class WorldBorderCommand extends AbstractCommand {
+ 	@Override
+ 	public String getCommandName() {
+@@ -153,11 +153,11 @@
+ 				if (!strings[0].equals("get")) {
+ 					throw new IncorrectUsageException("commands.worldborder.usage");
+ 				}
+ 
+ 				double d = worldBorder.getOldSize();
+-				commandSource.setStat(CommandStats.Type.QUERY_RESULT, MathHelper.floor(d + 0.5));
++				commandSource.setStat(CommandStats.Type.QUERY_RESULT, Mth.floor(d + 0.5));
+ 				commandSource.sendMessage(new TranslatableText("commands.worldborder.get.success", String.format("%.0f", d)));
+ 			}
+ 		}
+ 	}
+ 

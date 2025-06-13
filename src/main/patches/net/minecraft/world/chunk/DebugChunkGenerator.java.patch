@@ -1,0 +1,40 @@
+--- DebugChunkGenerator.java
++++ DebugChunkGenerator.java
+@@ -6,11 +6,11 @@
+ import net.minecraft.block.BlockState;
+ import net.minecraft.block.Blocks;
+ import net.minecraft.entity.EntityCategory;
+ import net.minecraft.util.ProgressListener;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ import net.minecraft.world.biome.Biome;
+ 
+ public class DebugChunkGenerator implements ChunkProvider {
+ 	private static final List<BlockState> field_10119 = Lists.newArrayList();
+@@ -55,11 +55,11 @@
+ 		BlockState blockState = null;
+ 		if (i > 0 && j > 0 && i % 2 != 0 && j % 2 != 0) {
+ 			i /= 2;
+ 			j /= 2;
+ 			if (i <= field_10120 && j <= field_10121) {
+-				int k = MathHelper.abs(i * field_10120 + j);
++				int k = Mth.abs(i * field_10120 + j);
+ 				if (k < field_10119.size()) {
+ 					blockState = (BlockState)field_10119.get(k);
+ 				}
+ 			}
+ 		}
+@@ -133,9 +133,9 @@
+ 	static {
+ 		for (Block block : Block.REGISTRY) {
+ 			field_10119.addAll(block.getStateManager().getBlockStates());
+ 		}
+ 
+-		field_10120 = MathHelper.ceil(MathHelper.sqrt((float)field_10119.size()));
+-		field_10121 = MathHelper.ceil((float)field_10119.size() / (float)field_10120);
++		field_10120 = Mth.ceil(Mth.sqrt((float)field_10119.size()));
++		field_10121 = Mth.ceil((float)field_10119.size() / (float)field_10120);
+ 	}
+ }

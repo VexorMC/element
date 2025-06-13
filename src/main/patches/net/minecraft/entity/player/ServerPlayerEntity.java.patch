@@ -1,0 +1,58 @@
+--- ServerPlayerEntity.java
++++ ServerPlayerEntity.java
+@@ -86,11 +86,11 @@
+ import net.minecraft.util.crash.CrashException;
+ import net.minecraft.util.crash.CrashReport;
+ import net.minecraft.util.crash.CrashReportSection;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.ChunkPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.village.TraderOfferList;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.chunk.Chunk;
+ import net.minecraft.world.level.LevelInfo;
+ import org.apache.logging.log4j.LogManager;
+@@ -129,11 +129,11 @@
+ 		serverPlayerInteractionManager.player = this;
+ 		this.interactionManager = serverPlayerInteractionManager;
+ 		BlockPos blockPos = serverWorld.getSpawnPos();
+ 		if (!serverWorld.dimension.hasNoSkylight() && serverWorld.getLevelProperties().getGameMode() != LevelInfo.GameMode.ADVENTURE) {
+ 			int i = Math.max(5, minecraftServer.getSpawnProtectionRadius() - 6);
+-			int j = MathHelper.floor(serverWorld.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
++			int j = Mth.floor(serverWorld.getWorldBorder().getDistanceInsideBorder((double)blockPos.getX(), (double)blockPos.getZ()));
+ 			if (j < i) {
+ 				i = j;
+ 			}
+ 
+ 			if (j <= 1) {
+@@ -325,11 +325,11 @@
+ 			throw new CrashException(crashReport);
+ 		}
+ 	}
+ 
+ 	protected void updateExploredBiomes() {
+-		Biome biome = this.world.getBiome(new BlockPos(MathHelper.floor(this.x), 0, MathHelper.floor(this.z)));
++		Biome biome = this.world.getBiome(new BlockPos(Mth.floor(this.x), 0, Mth.floor(this.z)));
+ 		String string = biome.name;
+ 		JsonSet jsonSet = this.getStatHandler().getStat(AchievementsAndCriterions.EXPLORE_ALL_BIOMES);
+ 		if (jsonSet == null) {
+ 			jsonSet = this.getStatHandler().setStat(AchievementsAndCriterions.EXPLORE_ALL_BIOMES, new JsonSet());
+ 		}
+@@ -522,13 +522,13 @@
+ 	@Override
+ 	protected void fall(double d, boolean bl, Block block, BlockPos blockPos) {
+ 	}
+ 
+ 	public void handleFall(double d, boolean bl) {
+-		int i = MathHelper.floor(this.x);
+-		int j = MathHelper.floor(this.y - 0.2F);
+-		int k = MathHelper.floor(this.z);
++		int i = Mth.floor(this.x);
++		int j = Mth.floor(this.y - 0.2F);
++		int k = Mth.floor(this.z);
+ 		BlockPos blockPos = new BlockPos(i, j, k);
+ 		Block block = this.world.getBlockState(blockPos).getBlock();
+ 		if (block.getMaterial() == Material.AIR) {
+ 			Block block2 = this.world.getBlockState(blockPos.down()).getBlock();
+ 			if (block2 instanceof FenceBlock || block2 instanceof WallBlock || block2 instanceof FenceGateBlock) {

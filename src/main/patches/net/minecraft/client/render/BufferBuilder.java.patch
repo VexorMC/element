@@ -1,0 +1,32 @@
+--- BufferBuilder.java
++++ BufferBuilder.java
+@@ -8,11 +8,11 @@
+ import java.nio.ShortBuffer;
+ import java.util.Arrays;
+ import java.util.BitSet;
+ import java.util.Comparator;
+ import net.minecraft.client.util.GlAllocationUtils;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.apache.logging.log4j.LogManager;
+ 
+ public class BufferBuilder {
+ 	private ByteBuffer buffer;
+ 	private IntBuffer intBuffer;
+@@ -289,13 +289,13 @@
+ 		this.putColor(k, l, m, n, o);
+ 	}
+ 
+ 	public void putColor(float f, float g, float h, int i) {
+ 		int j = this.method_1308(i);
+-		int k = MathHelper.clamp((int)(f * 255.0F), 0, 255);
+-		int l = MathHelper.clamp((int)(g * 255.0F), 0, 255);
+-		int m = MathHelper.clamp((int)(h * 255.0F), 0, 255);
++		int k = Mth.clamp((int)(f * 255.0F), 0, 255);
++		int l = Mth.clamp((int)(g * 255.0F), 0, 255);
++		int m = Mth.clamp((int)(h * 255.0F), 0, 255);
+ 		this.putColor(j, k, l, m, 255);
+ 	}
+ 
+ 	private void putColor(int i, int j, int k, int l, int m) {
+ 		if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {

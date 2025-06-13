@@ -1,0 +1,62 @@
+--- TextureStitcher.java
++++ TextureStitcher.java
+@@ -4,11 +4,11 @@
+ import com.google.common.collect.Sets;
+ import java.util.Arrays;
+ import java.util.List;
+ import java.util.Set;
+ import net.minecraft.client.texture.Sprite;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class TextureStitcher {
+ 	private final int mipLevel;
+ 	private final Set<TextureStitcher.Holder> holders = Sets.newHashSetWithExpectedSize(256);
+ 	private final List<TextureStitcher.Slot> slots = Lists.newArrayListWithCapacity(256);
+@@ -59,12 +59,12 @@
+ 				throw new TextureStitchException(holder, string);
+ 			}
+ 		}
+ 
+ 		if (this.powerOf2) {
+-			this.width = MathHelper.smallestEncompassingPowerOfTwo(this.width);
+-			this.height = MathHelper.smallestEncompassingPowerOfTwo(this.height);
++			this.width = Mth.smallestEncompassingPowerOfTwo(this.width);
++			this.height = Mth.smallestEncompassingPowerOfTwo(this.height);
+ 		}
+ 	}
+ 
+ 	public List<Sprite> getStitchedSprites() {
+ 		List<TextureStitcher.Slot> list = Lists.newArrayList();
+@@ -109,14 +109,14 @@
+ 	private boolean growAndFit(TextureStitcher.Holder holder) {
+ 		int i = Math.min(holder.getWidth(), holder.getHeight());
+ 		boolean bl = this.width == 0 && this.height == 0;
+ 		boolean bl6;
+ 		if (this.powerOf2) {
+-			int j = MathHelper.smallestEncompassingPowerOfTwo(this.width);
+-			int k = MathHelper.smallestEncompassingPowerOfTwo(this.height);
+-			int l = MathHelper.smallestEncompassingPowerOfTwo(this.width + i);
+-			int m = MathHelper.smallestEncompassingPowerOfTwo(this.height + i);
++			int j = Mth.smallestEncompassingPowerOfTwo(this.width);
++			int k = Mth.smallestEncompassingPowerOfTwo(this.height);
++			int l = Mth.smallestEncompassingPowerOfTwo(this.width + i);
++			int m = Mth.smallestEncompassingPowerOfTwo(this.height + i);
+ 			boolean bl2 = l <= this.maxWidth;
+ 			boolean bl3 = m <= this.maxHeight;
+ 			if (!bl2 && !bl3) {
+ 				return false;
+ 			}
+@@ -137,11 +137,11 @@
+ 
+ 			bl6 = bl7 && (bl || this.width <= this.height);
+ 		}
+ 
+ 		int jx = Math.max(holder.getWidth(), holder.getHeight());
+-		if (MathHelper.smallestEncompassingPowerOfTwo((bl6 ? this.height : this.width) + jx) > (bl6 ? this.maxHeight : this.maxWidth)) {
++		if (Mth.smallestEncompassingPowerOfTwo((bl6 ? this.height : this.width) + jx) > (bl6 ? this.maxHeight : this.maxWidth)) {
+ 			return false;
+ 		} else {
+ 			TextureStitcher.Slot slot;
+ 			if (bl6) {
+ 				if (holder.getWidth() > holder.getHeight()) {

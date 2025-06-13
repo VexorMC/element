@@ -1,0 +1,46 @@
+--- ClientPlayNetworkHandler.java
++++ ClientPlayNetworkHandler.java
+@@ -198,11 +198,11 @@
+ import net.minecraft.util.ChatUtil;
+ import net.minecraft.util.Formatting;
+ import net.minecraft.util.PacketByteBuf;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.village.TraderOfferList;
+ import net.minecraft.world.chunk.Chunk;
+ import net.minecraft.world.dimension.OverworldDimension;
+ import net.minecraft.world.explosion.Explosion;
+ import net.minecraft.world.level.LevelInfo;
+@@ -276,15 +276,15 @@
+ 			entity = new AbstractArrowEntity(this.world, d, e, f);
+ 		} else if (entitySpawnS2CPacket.getEntityData() == 61) {
+ 			entity = new SnowballEntity(this.world, d, e, f);
+ 		} else if (entitySpawnS2CPacket.getEntityData() == 71) {
+ 			entity = new ItemFrameEntity(
+-				this.world, new BlockPos(MathHelper.floor(d), MathHelper.floor(e), MathHelper.floor(f)), Direction.fromHorizontal(entitySpawnS2CPacket.getDataId())
++				this.world, new BlockPos(Mth.floor(d), Mth.floor(e), Mth.floor(f)), Direction.fromHorizontal(entitySpawnS2CPacket.getDataId())
+ 			);
+ 			entitySpawnS2CPacket.setDataId(0);
+ 		} else if (entitySpawnS2CPacket.getEntityData() == 77) {
+-			entity = new LeashKnotEntity(this.world, new BlockPos(MathHelper.floor(d), MathHelper.floor(e), MathHelper.floor(f)));
++			entity = new LeashKnotEntity(this.world, new BlockPos(Mth.floor(d), Mth.floor(e), Mth.floor(f)));
+ 			entitySpawnS2CPacket.setDataId(0);
+ 		} else if (entitySpawnS2CPacket.getEntityData() == 65) {
+ 			entity = new EnderPearlEntity(this.world, d, e, f);
+ 		} else if (entitySpawnS2CPacket.getEntityData() == 72) {
+ 			entity = new EyeOfEnderEntity(this.world, d, e, f);
+@@ -1097,11 +1097,11 @@
+ 	public void onGameStateChange(GameStateChangeS2CPacket gameStateChangeS2CPacket) {
+ 		NetworkThreadUtils.forceMainThread(gameStateChangeS2CPacket, this, this.client);
+ 		PlayerEntity playerEntity = this.client.player;
+ 		int i = gameStateChangeS2CPacket.getChangeType();
+ 		float f = gameStateChangeS2CPacket.getValue();
+-		int j = MathHelper.floor(f + 0.5F);
++		int j = Mth.floor(f + 0.5F);
+ 		if (i >= 0 && i < GameStateChangeS2CPacket.REASON_MESSAGES.length && GameStateChangeS2CPacket.REASON_MESSAGES[i] != null) {
+ 			playerEntity.addMessage(new TranslatableText(GameStateChangeS2CPacket.REASON_MESSAGES[i]));
+ 		}
+ 
+ 		if (i == 1) {

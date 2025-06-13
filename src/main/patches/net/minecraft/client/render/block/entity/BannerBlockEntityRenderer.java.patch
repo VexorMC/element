@@ -12,3 +12,29 @@
  import java.util.Map;
  import net.minecraft.block.Blocks;
  import net.minecraft.block.entity.BannerBlockEntity;
+@@ -12,11 +12,11 @@
+ import net.minecraft.client.render.entity.model.BannerBlockEntityModel;
+ import net.minecraft.client.texture.ColorMaskTexture;
+ import net.minecraft.util.DyeColor;
+ import net.minecraft.util.Identifier;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class BannerBlockEntityRenderer extends BlockEntityRenderer<BannerBlockEntity> {
+ 	private static final Map<String, BannerBlockEntityRenderer.TextureIdHolder> textures = Maps.newHashMap();
+ 	private static final Identifier BASE_TEXTURE = new Identifier("textures/entity/banner_base.png");
+ 	private BannerBlockEntityModel model = new BannerBlockEntityModel();
+@@ -53,11 +53,11 @@
+ 			this.model.pillar.visible = false;
+ 		}
+ 
+ 		BlockPos blockPos = bannerBlockEntity.getPos();
+ 		float nx = (float)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + (float)l + g;
+-		this.model.banner.posX = (-0.0125F + 0.01F * MathHelper.cos(nx * (float) Math.PI * 0.02F)) * (float) Math.PI;
++		this.model.banner.posX = (-0.0125F + 0.01F * Mth.cos(nx * (float) Math.PI * 0.02F)) * (float) Math.PI;
+ 		GlStateManager.enableRescaleNormal();
+ 		Identifier identifier = this.getTexture(bannerBlockEntity);
+ 		if (identifier != null) {
+ 			this.bindTexture(identifier);
+ 			GlStateManager.pushMatrix();

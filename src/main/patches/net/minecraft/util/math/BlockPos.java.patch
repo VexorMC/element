@@ -1,0 +1,19 @@
+--- BlockPos.java
++++ BlockPos.java
+@@ -1,14 +1,15 @@
+ package net.minecraft.util.math;
+ 
+ import com.google.common.collect.AbstractIterator;
+ import java.util.Iterator;
+ import net.minecraft.entity.Entity;
++import net.minecraft.util.Mth;
+ 
+ public class BlockPos extends Vec3i {
+ 	public static final BlockPos ORIGIN = new BlockPos(0, 0, 0);
+-	private static final int SIZE_BITS_X = 1 + MathHelper.log2(MathHelper.smallestEncompassingPowerOfTwo(30000000));
++	private static final int SIZE_BITS_X = 1 + Mth.log2(Mth.smallestEncompassingPowerOfTwo(30000000));
+ 	private static final int SIZE_BITS_Z = SIZE_BITS_X;
+ 	private static final int SIZE_BITS_Y = 64 - SIZE_BITS_X - SIZE_BITS_Z;
+ 	private static final int BIT_SHIFT_Z = 0 + SIZE_BITS_Z;
+ 	private static final int BIT_SHIFT_X = BIT_SHIFT_Z + SIZE_BITS_Y;
+ 	private static final long BITS_X = (1L << SIZE_BITS_X) - 1L;

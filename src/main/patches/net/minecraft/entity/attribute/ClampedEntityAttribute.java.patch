@@ -1,0 +1,22 @@
+--- ClampedEntityAttribute.java
++++ ClampedEntityAttribute.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.entity.attribute;
+ 
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class ClampedEntityAttribute extends AbstractEntityAttribute {
+ 	private final double minValue;
+ 	private final double maxValue;
+ 	private String name;
+@@ -29,8 +29,8 @@
+ 		return this.name;
+ 	}
+ 
+ 	@Override
+ 	public double clamp(double d) {
+-		return MathHelper.clamp(d, this.minValue, this.maxValue);
++		return Mth.clamp(d, this.minValue, this.maxValue);
+ 	}
+ }

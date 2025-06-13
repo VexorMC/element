@@ -1,0 +1,103 @@
+--- VillagePieces.java
++++ VillagePieces.java
+@@ -18,11 +18,11 @@
+ import net.minecraft.util.DyeColor;
+ import net.minecraft.util.WeightedRandomChestContent;
+ import net.minecraft.util.math.BlockBox;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.LayeredBiomeSource;
+ import net.minecraft.world.World;
+ import net.minecraft.world.biome.Biome;
+ 
+ public class VillagePieces {
+@@ -42,19 +42,19 @@
+ 		StructurePieceManager.registerPiece(VillagePieces.Well.class, "ViW");
+ 	}
+ 
+ 	public static List<VillagePieces.PieceData> getPieceData(Random random, int i) {
+ 		List<VillagePieces.PieceData> list = Lists.newArrayList();
+-		list.add(new VillagePieces.PieceData(VillagePieces.SingleHouse.class, 4, MathHelper.nextInt(random, 2 + i, 4 + i * 2)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.Church.class, 20, MathHelper.nextInt(random, 0 + i, 1 + i)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.BookHouse.class, 20, MathHelper.nextInt(random, 0 + i, 2 + i)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.SingleMultifunctionalHouse.class, 3, MathHelper.nextInt(random, 2 + i, 5 + i * 3)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.PeasantHouse.class, 15, MathHelper.nextInt(random, 0 + i, 2 + i)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.LargeFarmField.class, 3, MathHelper.nextInt(random, 1 + i, 4 + i)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.FarmField.class, 3, MathHelper.nextInt(random, 2 + i, 4 + i * 2)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.BlacksmithHouse.class, 15, MathHelper.nextInt(random, 0, 1 + i)));
+-		list.add(new VillagePieces.PieceData(VillagePieces.TinyHouse.class, 8, MathHelper.nextInt(random, 0 + i, 3 + i * 2)));
++		list.add(new VillagePieces.PieceData(VillagePieces.SingleHouse.class, 4, Mth.nextInt(random, 2 + i, 4 + i * 2)));
++		list.add(new VillagePieces.PieceData(VillagePieces.Church.class, 20, Mth.nextInt(random, 0 + i, 1 + i)));
++		list.add(new VillagePieces.PieceData(VillagePieces.BookHouse.class, 20, Mth.nextInt(random, 0 + i, 2 + i)));
++		list.add(new VillagePieces.PieceData(VillagePieces.SingleMultifunctionalHouse.class, 3, Mth.nextInt(random, 2 + i, 5 + i * 3)));
++		list.add(new VillagePieces.PieceData(VillagePieces.PeasantHouse.class, 15, Mth.nextInt(random, 0 + i, 2 + i)));
++		list.add(new VillagePieces.PieceData(VillagePieces.LargeFarmField.class, 3, Mth.nextInt(random, 1 + i, 4 + i)));
++		list.add(new VillagePieces.PieceData(VillagePieces.FarmField.class, 3, Mth.nextInt(random, 2 + i, 4 + i * 2)));
++		list.add(new VillagePieces.PieceData(VillagePieces.BlacksmithHouse.class, 15, Mth.nextInt(random, 0, 1 + i)));
++		list.add(new VillagePieces.PieceData(VillagePieces.TinyHouse.class, 8, Mth.nextInt(random, 0 + i, 3 + i * 2)));
+ 		Iterator<VillagePieces.PieceData> iterator = list.iterator();
+ 
+ 		while (iterator.hasNext()) {
+ 			if (((VillagePieces.PieceData)iterator.next()).limit == 0) {
+ 				iterator.remove();
+@@ -816,14 +816,14 @@
+ 			this.fillWithOutline(world, blockBox, 1, 0, 0, 5, 0, 0, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+ 			this.fillWithOutline(world, blockBox, 1, 0, 8, 5, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+ 			this.fillWithOutline(world, blockBox, 3, 0, 1, 3, 0, 7, Blocks.WATER.getDefaultState(), Blocks.WATER.getDefaultState(), false);
+ 
+ 			for (int i = 1; i <= 7; i++) {
+-				this.setBlockState(world, this.cropA.stateFromData(MathHelper.nextInt(random, 2, 7)), 1, 1, i, blockBox);
+-				this.setBlockState(world, this.cropA.stateFromData(MathHelper.nextInt(random, 2, 7)), 2, 1, i, blockBox);
+-				this.setBlockState(world, this.cropB.stateFromData(MathHelper.nextInt(random, 2, 7)), 4, 1, i, blockBox);
+-				this.setBlockState(world, this.cropB.stateFromData(MathHelper.nextInt(random, 2, 7)), 5, 1, i, blockBox);
++				this.setBlockState(world, this.cropA.stateFromData(Mth.nextInt(random, 2, 7)), 1, 1, i, blockBox);
++				this.setBlockState(world, this.cropA.stateFromData(Mth.nextInt(random, 2, 7)), 2, 1, i, blockBox);
++				this.setBlockState(world, this.cropB.stateFromData(Mth.nextInt(random, 2, 7)), 4, 1, i, blockBox);
++				this.setBlockState(world, this.cropB.stateFromData(Mth.nextInt(random, 2, 7)), 5, 1, i, blockBox);
+ 			}
+ 
+ 			for (int i = 0; i < 9; i++) {
+ 				for (int j = 0; j < 7; j++) {
+ 					this.clearBlocksUpwards(world, j, 4, i, blockBox);
+@@ -955,18 +955,18 @@
+ 			this.fillWithOutline(world, blockBox, 1, 0, 8, 11, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+ 			this.fillWithOutline(world, blockBox, 3, 0, 1, 3, 0, 7, Blocks.WATER.getDefaultState(), Blocks.WATER.getDefaultState(), false);
+ 			this.fillWithOutline(world, blockBox, 9, 0, 1, 9, 0, 7, Blocks.WATER.getDefaultState(), Blocks.WATER.getDefaultState(), false);
+ 
+ 			for (int i = 1; i <= 7; i++) {
+-				this.setBlockState(world, this.cropA.stateFromData(MathHelper.nextInt(random, 2, 7)), 1, 1, i, blockBox);
+-				this.setBlockState(world, this.cropA.stateFromData(MathHelper.nextInt(random, 2, 7)), 2, 1, i, blockBox);
+-				this.setBlockState(world, this.cropB.stateFromData(MathHelper.nextInt(random, 2, 7)), 4, 1, i, blockBox);
+-				this.setBlockState(world, this.cropB.stateFromData(MathHelper.nextInt(random, 2, 7)), 5, 1, i, blockBox);
+-				this.setBlockState(world, this.cropC.stateFromData(MathHelper.nextInt(random, 2, 7)), 7, 1, i, blockBox);
+-				this.setBlockState(world, this.cropC.stateFromData(MathHelper.nextInt(random, 2, 7)), 8, 1, i, blockBox);
+-				this.setBlockState(world, this.cropD.stateFromData(MathHelper.nextInt(random, 2, 7)), 10, 1, i, blockBox);
+-				this.setBlockState(world, this.cropD.stateFromData(MathHelper.nextInt(random, 2, 7)), 11, 1, i, blockBox);
++				this.setBlockState(world, this.cropA.stateFromData(Mth.nextInt(random, 2, 7)), 1, 1, i, blockBox);
++				this.setBlockState(world, this.cropA.stateFromData(Mth.nextInt(random, 2, 7)), 2, 1, i, blockBox);
++				this.setBlockState(world, this.cropB.stateFromData(Mth.nextInt(random, 2, 7)), 4, 1, i, blockBox);
++				this.setBlockState(world, this.cropB.stateFromData(Mth.nextInt(random, 2, 7)), 5, 1, i, blockBox);
++				this.setBlockState(world, this.cropC.stateFromData(Mth.nextInt(random, 2, 7)), 7, 1, i, blockBox);
++				this.setBlockState(world, this.cropC.stateFromData(Mth.nextInt(random, 2, 7)), 8, 1, i, blockBox);
++				this.setBlockState(world, this.cropD.stateFromData(Mth.nextInt(random, 2, 7)), 10, 1, i, blockBox);
++				this.setBlockState(world, this.cropD.stateFromData(Mth.nextInt(random, 2, 7)), 11, 1, i, blockBox);
+ 			}
+ 
+ 			for (int i = 0; i < 9; i++) {
+ 				for (int j = 0; j < 13; j++) {
+ 					this.clearBlocksUpwards(world, j, 4, i, blockBox);
+@@ -1508,11 +1508,11 @@
+ 				}
+ 			}
+ 		}
+ 
+ 		public static BlockBox method_106(VillagePieces.StartPiece startPiece, List<StructurePiece> list, Random random, int i, int j, int k, Direction direction) {
+-			for (int l = 7 * MathHelper.nextInt(random, 3, 5); l >= 7; l -= 7) {
++			for (int l = 7 * Mth.nextInt(random, 3, 5); l >= 7; l -= 7) {
+ 				BlockBox blockBox = BlockBox.rotated(i, j, k, 0, 0, 0, 3, 3, l, direction);
+ 				if (StructurePiece.getOverlappingPiece(list, blockBox) == null) {
+ 					return blockBox;
+ 				}
+ 			}

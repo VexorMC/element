@@ -1,0 +1,34 @@
+--- Text.java
++++ Text.java
+@@ -12,10 +12,12 @@
+ import com.google.gson.JsonSerializationContext;
+ import com.google.gson.JsonSerializer;
+ import java.lang.reflect.Type;
+ import java.util.List;
+ import java.util.Map.Entry;
++import java.util.Optional;
++
+ import net.minecraft.util.JsonHelper;
+ import net.minecraft.util.LowercaseEnumTypeAdapterFactory;
+ 
+ public interface Text extends Iterable<Text> {
+ 	Text setStyle(Style var1);
+@@ -34,10 +36,18 @@
+ 
+ 	List<Text> getSiblings();
+ 
+ 	Text copy();
+ 
++	default <T> Optional<T> visit(Text.StyledContentConsumer<T> styledContentConsumer, Style style) {
++		return styledContentConsumer.accept(style, this.toString());
++	}
++
++	public interface StyledContentConsumer<T> {
++		Optional<T> accept(Style style, String string);
++	}
++
+ 	public static class Serializer implements JsonDeserializer<Text>, JsonSerializer<Text> {
+ 		private static final Gson GSON;
+ 
+ 		public Text deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+ 			if (jsonElement.isJsonPrimitive()) {

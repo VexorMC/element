@@ -1,5 +1,18 @@
 --- BoatEntity.java
 +++ BoatEntity.java
+@@ -13,11 +13,11 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class BoatEntity extends Entity {
+ 	private boolean field_3877 = true;
+ 	private double field_3879 = 0.07;
 @@ -42,13 +42,13 @@
  		return false;
  	}
@@ -17,3 +30,52 @@
  	@Override
  	public Box getHardCollisionBox(Entity entity) {
  		return entity.getBoundingBox();
+@@ -219,11 +219,11 @@
+ 		if (this.world.isClient && this.field_3877) {
+ 			if (this.field_3880 > 0) {
+ 				double h = this.x + (this.field_3881 - this.x) / (double)this.field_3880;
+ 				double k = this.y + (this.field_3882 - this.y) / (double)this.field_3880;
+ 				double q = this.z + (this.field_3883 - this.z) / (double)this.field_3880;
+-				double r = MathHelper.wrapDegrees(this.boatYaw - (double)this.yaw);
++				double r = Mth.wrapDegrees(this.boatYaw - (double)this.yaw);
+ 				this.yaw = (float)((double)this.yaw + r / (double)this.field_3880);
+ 				this.pitch = (float)((double)this.pitch + (this.boatX - (double)this.pitch) / (double)this.field_3880);
+ 				this.field_3880--;
+ 				this.updatePosition(h, k, q);
+ 				this.setRotation(this.yaw, this.pitch);
+@@ -280,15 +280,15 @@
+ 					this.field_3879 = 0.07;
+ 				}
+ 			}
+ 
+ 			for (int t = 0; t < 4; t++) {
+-				int u = MathHelper.floor(this.x + ((double)(t % 2) - 0.5) * 0.8);
+-				int lx = MathHelper.floor(this.z + ((double)(t / 2) - 0.5) * 0.8);
++				int u = Mth.floor(this.x + ((double)(t % 2) - 0.5) * 0.8);
++				int lx = Mth.floor(this.z + ((double)(t / 2) - 0.5) * 0.8);
+ 
+ 				for (int v = 0; v < 2; v++) {
+-					int w = MathHelper.floor(this.y) + v;
++					int w = Mth.floor(this.y) + v;
+ 					BlockPos blockPos = new BlockPos(u, w, lx);
+ 					Block block = this.world.getBlockState(blockPos).getBlock();
+ 					if (block == Blocks.SNOW_LAYER) {
+ 						this.world.setAir(blockPos);
+ 						this.horizontalCollision = false;
+@@ -326,14 +326,14 @@
+ 			this.pitch = 0.0F;
+ 			double k = (double)this.yaw;
+ 			double q = this.prevX - this.x;
+ 			double r = this.prevZ - this.z;
+ 			if (q * q + r * r > 0.001) {
+-				k = (double)((float)(MathHelper.atan2(r, q) * 180.0 / Math.PI));
++				k = (double)((float)(Mth.atan2(r, q) * 180.0 / Math.PI));
+ 			}
+ 
+-			double x = MathHelper.wrapDegrees(k - (double)this.yaw);
++			double x = Mth.wrapDegrees(k - (double)this.yaw);
+ 			if (x > 20.0) {
+ 				x = 20.0;
+ 			}
+ 
+ 			if (x < -20.0) {

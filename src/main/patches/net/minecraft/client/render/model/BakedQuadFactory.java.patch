@@ -1,0 +1,64 @@
+--- BakedQuadFactory.java
++++ BakedQuadFactory.java
+@@ -2,11 +2,11 @@
+ 
+ import net.minecraft.client.render.model.json.ModelElementFace;
+ import net.minecraft.client.render.model.json.ModelElementTexture;
+ import net.minecraft.client.texture.Sprite;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3i;
+ import org.lwjgl.util.vector.Matrix4f;
+ import org.lwjgl.util.vector.Vector3f;
+ import org.lwjgl.util.vector.Vector4f;
+ 
+@@ -57,11 +57,11 @@
+ 		return is;
+ 	}
+ 
+ 	private int method_10051(Direction direction) {
+ 		float f = this.getBrightness(direction);
+-		int i = MathHelper.clamp((int)(f * 255.0F), 0, 255);
++		int i = Mth.clamp((int)(f * 255.0F), 0, 255);
+ 		return 0xFF000000 | i << 16 | i << 8 | i;
+ 	}
+ 
+ 	private float getBrightness(Direction direction) {
+ 		switch (direction) {
+@@ -272,11 +272,11 @@
+ 			for (int n = 0; n < 4; n++) {
+ 				int o = 7 * n;
+ 				float p = Float.intBitsToFloat(js[o]);
+ 				float q = Float.intBitsToFloat(js[o + 1]);
+ 				float r = Float.intBitsToFloat(js[o + 2]);
+-				if (MathHelper.approximatelyEquals(hx, p) && MathHelper.approximatelyEquals(l, q) && MathHelper.approximatelyEquals(m, r)) {
++				if (Mth.approximatelyEquals(hx, p) && Mth.approximatelyEquals(l, q) && Mth.approximatelyEquals(m, r)) {
+ 					is[k + 4] = js[o + 4];
+ 					is[k + 4 + 1] = js[o + 4 + 1];
+ 				}
+ 			}
+ 		}
+@@ -286,19 +286,19 @@
+ 		int j = 7 * i;
+ 		float f = Float.intBitsToFloat(is[j]);
+ 		float g = Float.intBitsToFloat(is[j + 1]);
+ 		float h = Float.intBitsToFloat(is[j + 2]);
+ 		if (f < -0.1F || f >= 1.1F) {
+-			f -= (float)MathHelper.floor(f);
++			f -= (float) Mth.floor(f);
+ 		}
+ 
+ 		if (g < -0.1F || g >= 1.1F) {
+-			g -= (float)MathHelper.floor(g);
++			g -= (float) Mth.floor(g);
+ 		}
+ 
+ 		if (h < -0.1F || h >= 1.1F) {
+-			h -= (float)MathHelper.floor(h);
++			h -= (float) Mth.floor(h);
+ 		}
+ 
+ 		float k = 0.0F;
+ 		float l = 0.0F;
+ 		switch (direction) {

@@ -1,0 +1,77 @@
+--- PlayerSkinTexture.java
++++ PlayerSkinTexture.java
+@@ -1,21 +1,28 @@
+ package net.minecraft.client.texture;
+ 
+-import java.awt.image.BufferedImage;
++import java.awt.image.*;
+ import java.io.File;
+ import java.io.IOException;
+ import java.net.HttpURLConnection;
+ import java.net.URL;
++import java.nio.ByteBuffer;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import javax.imageio.ImageIO;
++
++import com.mojang.blaze3d.platform.NativeImage;
++import com.mojang.blaze3d.systems.GpuDevice;
++import com.mojang.blaze3d.systems.RenderSystem;
++import com.mojang.blaze3d.textures.TextureFormat;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.BufferedImageSkinProvider;
+ import net.minecraft.resource.ResourceManager;
+ import net.minecraft.util.Identifier;
+ import org.apache.commons.io.FileUtils;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.lwjgl.BufferUtils;
+ 
+ public class PlayerSkinTexture extends ResourceTexture {
+ 	private static final Logger field_8079 = LogManager.getLogger();
+ 	private static final AtomicInteger field_8080 = new AtomicInteger(0);
+ 	private final File field_8081;
+@@ -37,12 +44,42 @@
+ 			if (this.field_6550 != null) {
+ 				if (this.field_6555 != null) {
+ 					this.clearGlId();
+ 				}
+ 
+-				TextureUtil.method_5858(super.getGlId(), this.field_6550);
+-				this.field_6553 = true;
++				GpuDevice gpuDevice = RenderSystem.getDevice();
++				this.texture = gpuDevice.createTexture(this::toString, 5, TextureFormat.RGBA8, this.field_6550.getWidth(), this.field_6550.getHeight(), 1, 1);
++				this.textureView = gpuDevice.createTextureView(this.texture);
++				ByteBuffer byteBuffer;
++				DataBuffer dataBuffer = field_6550.getRaster().getDataBuffer();
++
++				if (dataBuffer instanceof DataBufferByte) {
++					byte[] pixelData = ((DataBufferByte) dataBuffer).getData();
++					byteBuffer = BufferUtils.createByteBuffer(pixelData.length).put(pixelData).flip();
++				} else if (dataBuffer instanceof DataBufferUShort) {
++					short[] pixelData = ((DataBufferUShort) dataBuffer).getData();
++					byteBuffer = ByteBuffer.allocate(pixelData.length * 2);
++					byteBuffer.asShortBuffer().put(BufferUtils.createShortBuffer(pixelData.length).put(pixelData).flip());
++				} else if (dataBuffer instanceof DataBufferShort) {
++					short[] pixelData = ((DataBufferShort) dataBuffer).getData();
++					byteBuffer = ByteBuffer.allocate(pixelData.length * 2);
++					byteBuffer.asShortBuffer().put(BufferUtils.createShortBuffer(pixelData.length).put(pixelData).flip());
++				} else if (dataBuffer instanceof DataBufferInt) {
++					int[] pixelData = ((DataBufferInt) dataBuffer).getData();
++					byteBuffer = ByteBuffer.allocate(pixelData.length * 4);
++					byteBuffer.asIntBuffer().put(BufferUtils.createIntBuffer(pixelData.length).put(pixelData).flip());
++				} else {
++					throw new IllegalArgumentException("Not implemented for data buffer type: " + dataBuffer.getClass());
++				}
++
++                try {
++                    gpuDevice.createCommandEncoder().writeToTexture(this.texture, NativeImage.read(byteBuffer));
++                } catch (IOException e) {
++                    throw new RuntimeException(e);
++                }
++
++                this.field_6553 = true;
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override

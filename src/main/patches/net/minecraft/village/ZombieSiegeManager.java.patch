@@ -1,0 +1,31 @@
+--- ZombieSiegeManager.java
++++ ZombieSiegeManager.java
+@@ -3,11 +3,11 @@
+ import net.minecraft.entity.MobSpawnerHelper;
+ import net.minecraft.entity.mob.MobEntity;
+ import net.minecraft.entity.mob.ZombieEntity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ 
+ public class ZombieSiegeManager {
+ 	private World world;
+@@ -74,13 +74,13 @@
+ 					float f = (float)this.village.getRadius();
+ 					boolean bl = false;
+ 
+ 					for (int i = 0; i < 10; i++) {
+ 						float g = this.world.random.nextFloat() * (float) Math.PI * 2.0F;
+-						this.field_3688 = blockPos.getX() + (int)((double)(MathHelper.cos(g) * f) * 0.9);
++						this.field_3688 = blockPos.getX() + (int)((double)(Mth.cos(g) * f) * 0.9);
+ 						this.field_3689 = blockPos.getY();
+-						this.field_3690 = blockPos.getZ() + (int)((double)(MathHelper.sin(g) * f) * 0.9);
++						this.field_3690 = blockPos.getZ() + (int)((double)(Mth.sin(g) * f) * 0.9);
+ 						bl = false;
+ 
+ 						for (Village village : this.world.getVillageState().method_2843()) {
+ 							if (village != this.village && village.method_11052(new BlockPos(this.field_3688, this.field_3689, this.field_3690))) {
+ 								bl = true;

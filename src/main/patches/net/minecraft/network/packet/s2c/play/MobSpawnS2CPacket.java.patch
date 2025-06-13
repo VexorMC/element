@@ -1,0 +1,32 @@
+--- MobSpawnS2CPacket.java
++++ MobSpawnS2CPacket.java
+@@ -6,11 +6,11 @@
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.data.DataTracker;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.listener.ClientPlayPacketListener;
+ import net.minecraft.util.PacketByteBuf;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class MobSpawnS2CPacket implements Packet<ClientPlayPacketListener> {
+ 	private int id;
+ 	private int entityTypeId;
+ 	private int x;
+@@ -29,13 +29,13 @@
+ 	}
+ 
+ 	public MobSpawnS2CPacket(LivingEntity livingEntity) {
+ 		this.id = livingEntity.getEntityId();
+ 		this.entityTypeId = (byte)EntityType.getIdByEntity(livingEntity);
+-		this.x = MathHelper.floor(livingEntity.x * 32.0);
+-		this.y = MathHelper.floor(livingEntity.y * 32.0);
+-		this.z = MathHelper.floor(livingEntity.z * 32.0);
++		this.x = Mth.floor(livingEntity.x * 32.0);
++		this.y = Mth.floor(livingEntity.y * 32.0);
++		this.z = Mth.floor(livingEntity.z * 32.0);
+ 		this.yaw = (byte)((int)(livingEntity.yaw * 256.0F / 360.0F));
+ 		this.pitch = (byte)((int)(livingEntity.pitch * 256.0F / 360.0F));
+ 		this.headYaw = (byte)((int)(livingEntity.headYaw * 256.0F / 360.0F));
+ 		double d = 3.9;
+ 		double e = livingEntity.velocityX;

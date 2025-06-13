@@ -1,0 +1,28 @@
+--- ItemEntity.java
++++ ItemEntity.java
+@@ -9,11 +9,11 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.CommonI18n;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+ public class ItemEntity extends Entity {
+@@ -86,11 +86,11 @@
+ 				}
+ 			}
+ 
+ 			float f = 0.98F;
+ 			if (this.onGround) {
+-				f = this.world.getBlockState(new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().minY) - 1, MathHelper.floor(this.z))).getBlock().slipperiness
++				f = this.world.getBlockState(new BlockPos(Mth.floor(this.x), Mth.floor(this.getBoundingBox().minY) - 1, Mth.floor(this.z))).getBlock().slipperiness
+ 					* 0.98F;
+ 			}
+ 
+ 			this.velocityX *= (double)f;
+ 			this.velocityY *= 0.98F;

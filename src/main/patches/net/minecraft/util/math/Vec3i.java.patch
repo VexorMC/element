@@ -1,0 +1,25 @@
+--- Vec3i.java
++++ Vec3i.java
+@@ -1,8 +1,9 @@
+ package net.minecraft.util.math;
+ 
+ import com.google.common.base.Objects;
++import net.minecraft.util.Mth;
+ 
+ public class Vec3i implements Comparable<Vec3i> {
+ 	public static final Vec3i ZERO = new Vec3i(0, 0, 0);
+ 	private final int x;
+ 	private final int y;
+@@ -13,11 +14,11 @@
+ 		this.y = j;
+ 		this.z = k;
+ 	}
+ 
+ 	public Vec3i(double d, double e, double f) {
+-		this(MathHelper.floor(d), MathHelper.floor(e), MathHelper.floor(f));
++		this(Mth.floor(d), Mth.floor(e), Mth.floor(f));
+ 	}
+ 
+ 	public boolean equals(Object object) {
+ 		if (this == object) {
+ 			return true;

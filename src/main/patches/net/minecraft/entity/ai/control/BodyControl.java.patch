@@ -1,0 +1,26 @@
+--- BodyControl.java
++++ BodyControl.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.entity.ai.control;
+ 
+ import net.minecraft.entity.LivingEntity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class BodyControl {
+ 	private LivingEntity entity;
+ 	private int activeTicks;
+ 	private float lastHeadYaw;
+@@ -36,11 +36,11 @@
+ 			this.entity.bodyYaw = this.clampAndWrapAngle(this.entity.headYaw, this.entity.bodyYaw, f);
+ 		}
+ 	}
+ 
+ 	private float clampAndWrapAngle(float f, float g, float h) {
+-		float i = MathHelper.wrapDegrees(f - g);
++		float i = Mth.wrapDegrees(f - g);
+ 		if (i < -h) {
+ 			i = -h;
+ 		}
+ 
+ 		if (i >= h) {

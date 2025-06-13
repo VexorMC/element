@@ -1,0 +1,47 @@
+--- EnchantingTableBlockEntity.java
++++ EnchantingTableBlockEntity.java
+@@ -9,11 +9,11 @@
+ import net.minecraft.screen.ScreenHandler;
+ import net.minecraft.text.LiteralText;
+ import net.minecraft.text.Text;
+ import net.minecraft.text.TranslatableText;
+ import net.minecraft.util.Tickable;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class EnchantingTableBlockEntity extends BlockEntity implements Tickable, NamedScreenHandlerFactory {
+ 	public int ticks;
+ 	public float nextPageAngle;
+ 	public float pageAngle;
+@@ -50,11 +50,11 @@
+ 		PlayerEntity playerEntity = this.world
+ 			.getClosestPlayer((double)((float)this.pos.getX() + 0.5F), (double)((float)this.pos.getY() + 0.5F), (double)((float)this.pos.getZ() + 0.5F), 3.0);
+ 		if (playerEntity != null) {
+ 			double d = playerEntity.x - (double)((float)this.pos.getX() + 0.5F);
+ 			double e = playerEntity.z - (double)((float)this.pos.getZ() + 0.5F);
+-			this.closedBookAngle = (float)MathHelper.atan2(e, d);
++			this.closedBookAngle = (float) Mth.atan2(e, d);
+ 			this.nextPageTurningSpeed += 0.1F;
+ 			if (this.nextPageTurningSpeed < 0.5F || RANDOM.nextInt(40) == 0) {
+ 				float f = this.nextPageTurningVelocity;
+ 
+ 				do {
+@@ -91,16 +91,16 @@
+ 		while (g < (float) -Math.PI) {
+ 			g += (float) (Math.PI * 2);
+ 		}
+ 
+ 		this.openBookAngle += g * 0.4F;
+-		this.nextPageTurningSpeed = MathHelper.clamp(this.nextPageTurningSpeed, 0.0F, 1.0F);
++		this.nextPageTurningSpeed = Mth.clamp(this.nextPageTurningSpeed, 0.0F, 1.0F);
+ 		this.ticks++;
+ 		this.pageAngle = this.nextPageAngle;
+ 		float h = (this.nextPageTurningVelocity - this.nextPageAngle) * 0.4F;
+ 		float i = 0.2F;
+-		h = MathHelper.clamp(h, -i, i);
++		h = Mth.clamp(h, -i, i);
+ 		this.pageTurningVelocity = this.pageTurningVelocity + (h - this.pageTurningVelocity) * 0.9F;
+ 		this.nextPageAngle = this.nextPageAngle + this.pageTurningVelocity;
+ 	}
+ 
+ 	@Override

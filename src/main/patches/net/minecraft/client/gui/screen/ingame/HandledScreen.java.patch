@@ -13,3 +13,29 @@
  import net.minecraft.client.gui.screen.Screen;
  import net.minecraft.client.render.DiffuseLighting;
  import net.minecraft.client.texture.Sprite;
+@@ -13,11 +13,11 @@
+ import net.minecraft.inventory.slot.Slot;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.screen.ScreenHandler;
+ import net.minecraft.util.Formatting;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.lwjgl.input.Keyboard;
+ 
+ public abstract class HandledScreen extends Screen {
+ 	protected static final Identifier INVENTORY_TEXTURE = new Identifier("textures/gui/container/inventory.png");
+ 	protected int backgroundWidth = 176;
+@@ -109,11 +109,11 @@
+ 			int p = 8;
+ 			int q = this.touchDragStack == null ? 8 : 16;
+ 			String string = null;
+ 			if (this.touchDragStack != null && this.touchIsRightClickDrag) {
+ 				itemStack = itemStack.copy();
+-				itemStack.count = MathHelper.ceil((float)itemStack.count / 2.0F);
++				itemStack.count = Mth.ceil((float)itemStack.count / 2.0F);
+ 			} else if (this.isCursorDragging && this.cursorDragSlots.size() > 1) {
+ 				itemStack = itemStack.copy();
+ 				itemStack.count = this.draggedStackRemainder;
+ 				if (itemStack.count == 0) {
+ 					string = "" + Formatting.YELLOW + "0";

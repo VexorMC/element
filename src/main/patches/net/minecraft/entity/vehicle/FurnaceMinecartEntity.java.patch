@@ -1,6 +1,15 @@
 --- FurnaceMinecartEntity.java
 +++ FurnaceMinecartEntity.java
-@@ -17,27 +17,23 @@
+@@ -9,35 +9,31 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
  public class FurnaceMinecartEntity extends AbstractMinecartEntity {
  	private int fuel;
  	public double pushX;
@@ -38,7 +47,7 @@
  		double d = this.pushX * this.pushX + this.pushZ * this.pushZ;
  		if (d > 1.0E-4 && this.velocityX * this.velocityX + this.velocityZ * this.velocityZ > 0.001) {
 -			d = (double)MathHelper.sqrt(d);
-+			d = MathHelper.sqrt(d);
++			d = Mth.sqrt(d);
  			this.pushX /= d;
  			this.pushZ /= d;
  			if (this.pushX * this.velocityX + this.pushZ * this.velocityZ < 0.0) {
@@ -51,7 +60,7 @@
  		double d = this.pushX * this.pushX + this.pushZ * this.pushZ;
  		if (d > 1.0E-4) {
 -			d = (double)MathHelper.sqrt(d);
-+			d = MathHelper.sqrt(d);
++			d = Mth.sqrt(d);
  			this.pushX /= d;
  			this.pushZ /= d;
  			double e = 1.0;

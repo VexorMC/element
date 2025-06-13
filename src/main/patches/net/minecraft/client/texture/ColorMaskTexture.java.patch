@@ -1,0 +1,96 @@
+--- ColorMaskTexture.java
++++ ColorMaskTexture.java
+@@ -1,19 +1,28 @@
+ package net.minecraft.client.texture;
+ 
+ import java.awt.Graphics;
+-import java.awt.image.BufferedImage;
++import java.awt.image.*;
+ import java.io.IOException;
+ import java.io.InputStream;
++import java.nio.ByteBuffer;
++import java.nio.IntBuffer;
++import java.nio.ShortBuffer;
+ import java.util.List;
++
++import com.mojang.blaze3d.platform.NativeImage;
++import com.mojang.blaze3d.systems.GpuDevice;
++import com.mojang.blaze3d.systems.RenderSystem;
++import com.mojang.blaze3d.textures.TextureFormat;
+ import net.minecraft.block.material.MaterialColor;
+ import net.minecraft.resource.ResourceManager;
+ import net.minecraft.util.DyeColor;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.lwjgl.BufferUtils;
+ 
+ public class ColorMaskTexture extends AbstractTexture {
+ 	private static final Logger LOGGER = LogManager.getLogger();
+ 	private final Identifier identifier;
+ 	private final List<String> names;
+@@ -40,23 +49,23 @@
+ 			bufferedImage2 = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), i);
+ 			Graphics graphics = bufferedImage2.getGraphics();
+ 			graphics.drawImage(bufferedImage, 0, 0, null);
+ 
+ 			for (int j = 0; j < 17 && j < this.names.size() && j < this.colors.size(); j++) {
+-				String string = (String)this.names.get(j);
+-				MaterialColor materialColor = ((DyeColor)this.colors.get(j)).getMaterialColor();
++				String string = (String) this.names.get(j);
++				MaterialColor materialColor = ((DyeColor) this.colors.get(j)).getMaterialColor();
+ 				if (string != null) {
+ 					InputStream inputStream = resourceManager.getResource(new Identifier(string)).getInputStream();
+ 					BufferedImage bufferedImage3 = TextureUtil.create(inputStream);
+ 					if (bufferedImage3.getWidth() == bufferedImage2.getWidth() && bufferedImage3.getHeight() == bufferedImage2.getHeight() && bufferedImage3.getType() == 6) {
+ 						for (int k = 0; k < bufferedImage3.getHeight(); k++) {
+ 							for (int l = 0; l < bufferedImage3.getWidth(); l++) {
+ 								int m = bufferedImage3.getRGB(l, k);
+ 								if ((m & 0xFF000000) != 0) {
+ 									int n = (m & 0xFF0000) << 8 & 0xFF000000;
+ 									int o = bufferedImage.getRGB(l, k);
+-									int p = MathHelper.multiplyColors(o, materialColor.color) & 16777215;
++									int p = Mth.multiplyColors(o, materialColor.color) & 16777215;
+ 									bufferedImage3.setRGB(l, k, n | p);
+ 								}
+ 							}
+ 						}
+ 
+@@ -67,8 +76,34 @@
+ 		} catch (IOException var17) {
+ 			LOGGER.error("Couldn't load layered image", var17);
+ 			return;
+ 		}
+ 
+-		TextureUtil.method_5858(this.getGlId(), bufferedImage2);
++		ByteBuffer byteBuffer;
++		DataBuffer dataBuffer = bufferedImage2.getRaster().getDataBuffer();
++
++		if (dataBuffer instanceof DataBufferByte) {
++			byte[] pixelData = ((DataBufferByte) dataBuffer).getData();
++			byteBuffer = BufferUtils.createByteBuffer(pixelData.length).put(pixelData).flip();
++		} else if (dataBuffer instanceof DataBufferUShort) {
++			short[] pixelData = ((DataBufferUShort) dataBuffer).getData();
++			byteBuffer = ByteBuffer.allocate(pixelData.length * 2);
++			byteBuffer.asShortBuffer().put(BufferUtils.createShortBuffer(pixelData.length).put(pixelData).flip());
++		} else if (dataBuffer instanceof DataBufferShort) {
++			short[] pixelData = ((DataBufferShort) dataBuffer).getData();
++			byteBuffer = ByteBuffer.allocate(pixelData.length * 2);
++			byteBuffer.asShortBuffer().put(BufferUtils.createShortBuffer(pixelData.length).put(pixelData).flip());
++		} else if (dataBuffer instanceof DataBufferInt) {
++			int[] pixelData = ((DataBufferInt) dataBuffer).getData();
++			byteBuffer = ByteBuffer.allocate(pixelData.length * 4);
++			byteBuffer.asIntBuffer().put(BufferUtils.createIntBuffer(pixelData.length).put(pixelData).flip());
++		} else {
++			throw new IllegalArgumentException("Not implemented for data buffer type: " + dataBuffer.getClass());
++		}
++
++
++		GpuDevice gpuDevice = RenderSystem.getDevice();
++		this.texture = gpuDevice.createTexture(this.identifier::toString, 5, TextureFormat.RGBA8, bufferedImage2.getWidth(), bufferedImage2.getHeight(), 1, 1);
++		this.textureView = gpuDevice.createTextureView(this.texture);
++		gpuDevice.createCommandEncoder().writeToTexture(this.texture, NativeImage.read(byteBuffer));
+ 	}
+ }

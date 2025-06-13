@@ -1,0 +1,108 @@
+--- Util.java
++++ Util.java
+@@ -1,9 +1,22 @@
+ package net.minecraft.util;
+ 
++import java.util.List;
++import java.util.Map;
++import java.util.concurrent.CompletableFuture;
++import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ExecutionException;
+ import java.util.concurrent.FutureTask;
++import java.util.function.BiFunction;
++import java.util.function.Consumer;
++import java.util.function.Function;
++import java.util.function.Supplier;
++import java.util.stream.Collector;
++import java.util.stream.Collectors;
++
++import com.google.common.collect.Lists;
++import com.mojang.serialization.DataResult;
+ import org.apache.logging.log4j.Logger;
+ 
+ public class Util {
+ 	public static Util.OperatingSystem getOperatingSystem() {
+ 		String string = System.getProperty("os.name").toLowerCase();
+@@ -20,10 +33,25 @@
+ 		} else {
+ 			return string.contains("unix") ? Util.OperatingSystem.LINUX : Util.OperatingSystem.OTHER;
+ 		}
+ 	}
+ 
++	public static <V> CompletableFuture<List<V>> sequence(List<? extends CompletableFuture<V>> list) {
++		if (list.isEmpty()) {
++			return CompletableFuture.completedFuture(List.of());
++		} else if (list.size() == 1) {
++			return ((CompletableFuture)list.get(0)).thenApply(List::of);
++		} else {
++			CompletableFuture<Void> completableFuture = CompletableFuture.allOf((CompletableFuture[])list.toArray(new CompletableFuture[0]));
++			return completableFuture.thenApply(void_ -> list.stream().map(CompletableFuture::join).toList());
++		}
++	}
++
++	public static <T> Collector<T, ?, List<T>> toMutableList() {
++		return Collectors.toCollection(Lists::newArrayList);
++	}
++
+ 	public static <V> V executeTask(FutureTask<V> futureTask, Logger logger) {
+ 		try {
+ 			futureTask.run();
+ 			return (V)futureTask.get();
+ 		} catch (ExecutionException var3) {
+@@ -33,10 +61,56 @@
+ 		}
+ 
+ 		return null;
+ 	}
+ 
++	public static <T, R> Function<T, R> memoize(Function<T, R> function) {
++		return new Function<T, R>() {
++			private final Map<T, R> cache = new ConcurrentHashMap<>();
++
++			public R apply(T object) {
++				return (R)this.cache.computeIfAbsent(object, function);
++			}
++
++			public String toString() {
++				return "memoize/1[function=" + function + ", size=" + this.cache.size() + "]";
++			}
++		};
++	}
++
++	public static <T, U, R> BiFunction<T, U, R> memoize(BiFunction<T, U, R> biFunction) {
++		return new BiFunction<T, U, R>() {
++			private final Map<Pair<T, U>, R> cache = new ConcurrentHashMap<>();
++
++			public R apply(T object, U object2) {
++				return (R)this.cache.computeIfAbsent(Pair.of(object, object2), pair -> biFunction.apply(pair.getFirst(), pair.getSecond()));
++			}
++
++			public String toString() {
++				return "memoize/2[function=" + biFunction + ", size=" + this.cache.size() + "]";
++			}
++		};
++	}
++
++	public static <T> T make(Supplier<T> supplier) {
++		return (T)supplier.get();
++	}
++
++	public static <T> T make(T object, Consumer<? super T> consumer) {
++		consumer.accept(object);
++		return object;
++	}
++
++	public static <T> DataResult<List<T>> fixedSize(List<T> list, int i) {
++		if (list.size() != i) {
++			Supplier<String> supplier = () -> "Input is not a list of " + i + " elements";
++			return list.size() >= i ? DataResult.error(supplier, list.subList(0, i)) : DataResult.error(supplier);
++		} else {
++			return DataResult.success(list);
++		}
++	}
++
+ 	public static enum OperatingSystem {
+ 		LINUX,
+ 		SOLARIS,
+ 		WINDOWS,
+ 		MACOS,

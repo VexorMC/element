@@ -1,0 +1,28 @@
+--- NoteBlockBlockEntity.java
++++ NoteBlockBlockEntity.java
+@@ -2,11 +2,11 @@
+ 
+ import net.minecraft.block.Blocks;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class NoteBlockBlockEntity extends BlockEntity {
+ 	public byte note;
+ 	public boolean powered;
+@@ -19,11 +19,11 @@
+ 
+ 	@Override
+ 	public void fromNbt(NbtCompound nbtCompound) {
+ 		super.fromNbt(nbtCompound);
+ 		this.note = nbtCompound.getByte("note");
+-		this.note = (byte)MathHelper.clamp(this.note, 0, 24);
++		this.note = (byte) Mth.clamp(this.note, 0, 24);
+ 	}
+ 
+ 	public void increaseNote() {
+ 		this.note = (byte)((this.note + 1) % 25);
+ 		this.markDirty();

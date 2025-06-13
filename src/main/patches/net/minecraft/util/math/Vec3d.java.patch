@@ -1,0 +1,76 @@
+--- Vec3d.java
++++ Vec3d.java
+@@ -1,7 +1,9 @@
+ package net.minecraft.util.math;
+ 
++import net.minecraft.util.Mth;
++
+ public class Vec3d {
+ 	public final double x;
+ 	public final double y;
+ 	public final double z;
+ 
+@@ -30,11 +32,11 @@
+ 	public Vec3d reverseSubtract(Vec3d vec3d) {
+ 		return new Vec3d(vec3d.x - this.x, vec3d.y - this.y, vec3d.z - this.z);
+ 	}
+ 
+ 	public Vec3d normalize() {
+-		double d = (double)MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
++		double d = (double) Mth.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+ 		return d < 1.0E-4 ? new Vec3d(0.0, 0.0, 0.0) : new Vec3d(this.x / d, this.y / d, this.z / d);
+ 	}
+ 
+ 	public double dotProduct(Vec3d vec3d) {
+ 		return this.x * vec3d.x + this.y * vec3d.y + this.z * vec3d.z;
+@@ -62,22 +64,22 @@
+ 
+ 	public double distanceTo(Vec3d vec3d) {
+ 		double d = vec3d.x - this.x;
+ 		double e = vec3d.y - this.y;
+ 		double f = vec3d.z - this.z;
+-		return (double)MathHelper.sqrt(d * d + e * e + f * f);
++		return (double) Mth.sqrt(d * d + e * e + f * f);
+ 	}
+ 
+ 	public double squaredDistanceTo(Vec3d vec3d) {
+ 		double d = vec3d.x - this.x;
+ 		double e = vec3d.y - this.y;
+ 		double f = vec3d.z - this.z;
+ 		return d * d + e * e + f * f;
+ 	}
+ 
+ 	public double length() {
+-		return (double)MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
++		return (double) Mth.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+ 	}
+ 
+ 	public Vec3d lerpForX(Vec3d vec3d, double d) {
+ 		double e = vec3d.x - this.x;
+ 		double f = vec3d.y - this.y;
+@@ -117,21 +119,21 @@
+ 	public String toString() {
+ 		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
+ 	}
+ 
+ 	public Vec3d rotateX(float f) {
+-		float g = MathHelper.cos(f);
+-		float h = MathHelper.sin(f);
++		float g = Mth.cos(f);
++		float h = Mth.sin(f);
+ 		double d = this.x;
+ 		double e = this.y * (double)g + this.z * (double)h;
+ 		double i = this.z * (double)g - this.y * (double)h;
+ 		return new Vec3d(d, e, i);
+ 	}
+ 
+ 	public Vec3d rotateY(float f) {
+-		float g = MathHelper.cos(f);
+-		float h = MathHelper.sin(f);
++		float g = Mth.cos(f);
++		float h = Mth.sin(f);
+ 		double d = this.x * (double)g + this.z * (double)h;
+ 		double e = this.y;
+ 		double i = this.z * (double)g - this.x * (double)h;
+ 		return new Vec3d(d, e, i);
+ 	}

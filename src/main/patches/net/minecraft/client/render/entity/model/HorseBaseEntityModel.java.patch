@@ -1,6 +1,6 @@
 --- HorseBaseEntityModel.java
 +++ HorseBaseEntityModel.java
-@@ -1,8 +1,8 @@
+@@ -1,13 +1,13 @@
  package net.minecraft.client.render.entity.model;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -9,4 +9,84 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.LivingEntity;
  import net.minecraft.entity.passive.HorseBaseEntity;
- import net.minecraft.util.math.MathHelper;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class HorseBaseEntityModel extends EntityModel {
+ 	private ModelPart field_6415;
+ 	private ModelPart field_6416;
+ 	private ModelPart field_6417;
+@@ -314,11 +314,11 @@
+ 		if (l < -20.0F) {
+ 			l = -20.0F;
+ 		}
+ 
+ 		if (g > 0.2F) {
+-			m += MathHelper.cos(f * 0.4F) * 0.15F * g;
++			m += Mth.cos(f * 0.4F) * 0.15F * g;
+ 		}
+ 
+ 		HorseBaseEntity horseBaseEntity = (HorseBaseEntity)livingEntity;
+ 		float n = horseBaseEntity.method_6289(h);
+ 		float o = horseBaseEntity.getAngryAnimationProgress(h);
+@@ -326,11 +326,11 @@
+ 		float q = horseBaseEntity.getEatingAnimationProgress(h);
+ 		boolean bl = horseBaseEntity.field_6897 != 0;
+ 		boolean bl2 = horseBaseEntity.isSaddled();
+ 		boolean bl3 = horseBaseEntity.rider != null;
+ 		float r = (float)livingEntity.ticksAlive + h;
+-		float s = MathHelper.cos(f * 0.6662F + (float) Math.PI);
++		float s = Mth.cos(f * 0.6662F + (float) Math.PI);
+ 		float t = s * 0.8F * g;
+ 		this.field_6415.pivotY = 4.0F;
+ 		this.field_6415.pivotZ = -10.0F;
+ 		this.head.pivotY = 3.0F;
+ 		this.field_6427.pivotZ = 14.0F;
+@@ -384,25 +384,25 @@
+ 		this.field_6403.posX = -t / 5.0F;
+ 		float u = (float) (Math.PI / 2);
+ 		float v = (float) (Math.PI * 3.0 / 2.0);
+ 		float w = (float) (-Math.PI / 3);
+ 		float x = (float) (Math.PI / 12) * o;
+-		float y = MathHelper.cos(r * 0.6F + (float) Math.PI);
++		float y = Mth.cos(r * 0.6F + (float) Math.PI);
+ 		this.field_6396.pivotY = -2.0F * o + 9.0F * p;
+ 		this.field_6396.pivotZ = -2.0F * o + -8.0F * p;
+ 		this.field_6399.pivotY = this.field_6396.pivotY;
+ 		this.field_6399.pivotZ = this.field_6396.pivotZ;
+-		this.field_6430.pivotY = this.field_6429.pivotY + MathHelper.sin((float) (Math.PI / 2) + x + p * -s * 0.5F * g) * 7.0F;
+-		this.field_6430.pivotZ = this.field_6429.pivotZ + MathHelper.cos((float) (Math.PI * 3.0 / 2.0) + x + p * -s * 0.5F * g) * 7.0F;
+-		this.field_6433.pivotY = this.field_6432.pivotY + MathHelper.sin((float) (Math.PI / 2) + x + p * s * 0.5F * g) * 7.0F;
+-		this.field_6433.pivotZ = this.field_6432.pivotZ + MathHelper.cos((float) (Math.PI * 3.0 / 2.0) + x + p * s * 0.5F * g) * 7.0F;
++		this.field_6430.pivotY = this.field_6429.pivotY + Mth.sin((float) (Math.PI / 2) + x + p * -s * 0.5F * g) * 7.0F;
++		this.field_6430.pivotZ = this.field_6429.pivotZ + Mth.cos((float) (Math.PI * 3.0 / 2.0) + x + p * -s * 0.5F * g) * 7.0F;
++		this.field_6433.pivotY = this.field_6432.pivotY + Mth.sin((float) (Math.PI / 2) + x + p * s * 0.5F * g) * 7.0F;
++		this.field_6433.pivotZ = this.field_6432.pivotZ + Mth.cos((float) (Math.PI * 3.0 / 2.0) + x + p * s * 0.5F * g) * 7.0F;
+ 		float z = ((float) (-Math.PI / 3) + y) * o + t * p;
+ 		float aa = ((float) (-Math.PI / 3) + -y) * o + -t * p;
+-		this.field_6397.pivotY = this.field_6396.pivotY + MathHelper.sin((float) (Math.PI / 2) + z) * 7.0F;
+-		this.field_6397.pivotZ = this.field_6396.pivotZ + MathHelper.cos((float) (Math.PI * 3.0 / 2.0) + z) * 7.0F;
+-		this.field_6400.pivotY = this.field_6399.pivotY + MathHelper.sin((float) (Math.PI / 2) + aa) * 7.0F;
+-		this.field_6400.pivotZ = this.field_6399.pivotZ + MathHelper.cos((float) (Math.PI * 3.0 / 2.0) + aa) * 7.0F;
++		this.field_6397.pivotY = this.field_6396.pivotY + Mth.sin((float) (Math.PI / 2) + z) * 7.0F;
++		this.field_6397.pivotZ = this.field_6396.pivotZ + Mth.cos((float) (Math.PI * 3.0 / 2.0) + z) * 7.0F;
++		this.field_6400.pivotY = this.field_6399.pivotY + Mth.sin((float) (Math.PI / 2) + aa) * 7.0F;
++		this.field_6400.pivotZ = this.field_6399.pivotZ + Mth.cos((float) (Math.PI * 3.0 / 2.0) + aa) * 7.0F;
+ 		this.field_6429.posX = x + -s * 0.5F * g * p;
+ 		this.field_6430.posX = -0.08726646F * o + (-s * 0.5F * g - Math.max(0.0F, s * 0.5F * g)) * p;
+ 		this.field_6431.posX = this.field_6430.posX;
+ 		this.field_6432.posX = x + s * 0.5F * g * p;
+ 		this.field_6433.posX = -0.08726646F * o + (s * 0.5F * g - Math.max(0.0F, -s * 0.5F * g)) * p;
+@@ -486,11 +486,11 @@
+ 		if (u > 0.0F) {
+ 			u = 0.0F;
+ 		}
+ 
+ 		if (bl) {
+-			this.head.posY = MathHelper.cos(r * 0.7F);
++			this.head.posY = Mth.cos(r * 0.7F);
+ 			u = 0.0F;
+ 		} else {
+ 			this.head.posY = 0.0F;
+ 		}
+ 

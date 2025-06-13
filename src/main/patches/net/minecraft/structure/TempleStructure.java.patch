@@ -1,0 +1,28 @@
+--- TempleStructure.java
++++ TempleStructure.java
+@@ -6,11 +6,11 @@
+ import java.util.Map;
+ import java.util.Random;
+ import java.util.Map.Entry;
+ import net.minecraft.entity.mob.WitchEntity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.gen.GeneratorConfig;
+ 
+ public class TempleStructure extends StructureFeature {
+@@ -26,11 +26,11 @@
+ 	public TempleStructure(Map<String, String> map) {
+ 		this();
+ 
+ 		for (Entry<String, String> entry : map.entrySet()) {
+ 			if (((String)entry.getKey()).equals("distance")) {
+-				this.distance = MathHelper.parseInt((String)entry.getValue(), this.distance, this.field_4960 + 1);
++				this.distance = Mth.parseInt((String)entry.getValue(), this.distance, this.field_4960 + 1);
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override

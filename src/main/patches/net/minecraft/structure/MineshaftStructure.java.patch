@@ -1,0 +1,27 @@
+--- MineshaftStructure.java
++++ MineshaftStructure.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.structure;
+ 
+ import java.util.Map;
+ import java.util.Map.Entry;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.gen.GeneratorConfig;
+ import net.minecraft.world.gen.MineshaftGeneratorConfig;
+ 
+ public class MineshaftStructure extends StructureFeature {
+ 	private double chance = 0.004;
+@@ -18,11 +18,11 @@
+ 	}
+ 
+ 	public MineshaftStructure(Map<String, String> map) {
+ 		for (Entry<String, String> entry : map.entrySet()) {
+ 			if (((String)entry.getKey()).equals("chance")) {
+-				this.chance = MathHelper.parseDouble((String)entry.getValue(), this.chance);
++				this.chance = Mth.parseDouble((String)entry.getValue(), this.chance);
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override

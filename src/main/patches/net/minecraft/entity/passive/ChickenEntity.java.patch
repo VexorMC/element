@@ -1,0 +1,43 @@
+--- ChickenEntity.java
++++ ChickenEntity.java
+@@ -15,11 +15,11 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class ChickenEntity extends AnimalEntity {
+ 	public float flapProgress;
+ 	public float maxWingDeviation;
+@@ -59,11 +59,11 @@
+ 	public void tickMovement() {
+ 		super.tickMovement();
+ 		this.prevFlapProgress = this.flapProgress;
+ 		this.prevMaxWingDeviation = this.maxWingDeviation;
+ 		this.maxWingDeviation = (float)((double)this.maxWingDeviation + (double)(this.onGround ? -1 : 4) * 0.3);
+-		this.maxWingDeviation = MathHelper.clamp(this.maxWingDeviation, 0.0F, 1.0F);
++		this.maxWingDeviation = Mth.clamp(this.maxWingDeviation, 0.0F, 1.0F);
+ 		if (!this.onGround && this.flapSpeed < 1.0F) {
+ 			this.flapSpeed = 1.0F;
+ 		}
+ 
+ 		this.flapSpeed = (float)((double)this.flapSpeed * 0.9);
+@@ -159,12 +159,12 @@
+ 	}
+ 
+ 	@Override
+ 	public void updatePassengerPosition() {
+ 		super.updatePassengerPosition();
+-		float f = MathHelper.sin(this.bodyYaw * (float) Math.PI / 180.0F);
+-		float g = MathHelper.cos(this.bodyYaw * (float) Math.PI / 180.0F);
++		float f = Mth.sin(this.bodyYaw * (float) Math.PI / 180.0F);
++		float g = Mth.cos(this.bodyYaw * (float) Math.PI / 180.0F);
+ 		float h = 0.1F;
+ 		float i = 0.0F;
+ 		this.rider
+ 			.updatePosition(this.x + (double)(h * f), this.y + (double)(this.height * 0.5F) + this.rider.getHeightOffset() + (double)i, this.z - (double)(h * g));
+ 		if (this.rider instanceof LivingEntity) {

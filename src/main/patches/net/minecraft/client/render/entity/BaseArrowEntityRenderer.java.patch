@@ -1,6 +1,6 @@
 --- BaseArrowEntityRenderer.java
 +++ BaseArrowEntityRenderer.java
-@@ -1,8 +1,8 @@
+@@ -1,14 +1,14 @@
  package net.minecraft.client.render.entity;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -10,3 +10,23 @@
  import net.minecraft.client.render.VertexFormats;
  import net.minecraft.entity.projectile.AbstractArrowEntity;
  import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.lwjgl.opengl.GL11;
+ 
+ public class BaseArrowEntityRenderer extends EntityRenderer<AbstractArrowEntity> {
+ 	private static final Identifier TEXTURE = new Identifier("textures/entity/arrow.png");
+ 
+@@ -36,11 +36,11 @@
+ 		float q = (float)(10 + i * 10) / 32.0F;
+ 		float r = 0.05625F;
+ 		GlStateManager.enableRescaleNormal();
+ 		float s = (float)abstractArrowEntity.shake - h;
+ 		if (s > 0.0F) {
+-			float t = -MathHelper.sin(s * 3.0F) * s;
++			float t = -Mth.sin(s * 3.0F) * s;
+ 			GlStateManager.rotate(t, 0.0F, 0.0F, 1.0F);
+ 		}
+ 
+ 		GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
+ 		GlStateManager.scale(r, r, r);

@@ -13,3 +13,44 @@
  import net.minecraft.client.MinecraftClient;
  import net.minecraft.client.gui.DrawableHelper;
  import net.minecraft.client.network.ClientPlayNetworkHandler;
+@@ -16,11 +16,11 @@
+ import net.minecraft.scoreboard.ScoreboardCriterion;
+ import net.minecraft.scoreboard.ScoreboardObjective;
+ import net.minecraft.scoreboard.Team;
+ import net.minecraft.text.Text;
+ import net.minecraft.util.Formatting;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.level.LevelInfo;
+ 
+ public class PlayerListHud extends DrawableHelper {
+ 	private static final Ordering<PlayerListEntry> ENTRY_ORDERING = Ordering.from(new PlayerListHud.EntryOrderComparator());
+ 	private final MinecraftClient client;
+@@ -229,12 +229,12 @@
+ 				playerListEntry.setLastHealthTime(MinecraftClient.getTime());
+ 			}
+ 
+ 			playerListEntry.setShowTime(this.showTime);
+ 			playerListEntry.setLastHealth(l);
+-			int m = MathHelper.ceil((float)Math.max(l, playerListEntry.getHealth()) / 2.0F);
+-			int n = Math.max(MathHelper.ceil((float)(l / 2)), Math.max(MathHelper.ceil((float)(playerListEntry.getHealth() / 2)), 10));
++			int m = Mth.ceil((float)Math.max(l, playerListEntry.getHealth()) / 2.0F);
++			int n = Math.max(Mth.ceil((float)(l / 2)), Math.max(Mth.ceil((float)(playerListEntry.getHealth() / 2)), 10));
+ 			boolean bl = playerListEntry.getBlinkingHeartTime() > (long)this.inGameHud.getTicks()
+ 				&& (playerListEntry.getBlinkingHeartTime() - (long)this.inGameHud.getTicks()) / 3L % 2L == 1L;
+ 			if (m > 0) {
+ 				float f = Math.min((float)(k - j - 4) / (float)n, 9.0F);
+ 				if (f > 3.0F) {
+@@ -261,11 +261,11 @@
+ 						if (o * 2 + 1 == l) {
+ 							this.drawTexture((float)j + (float)o * f, (float)i, o >= 10 ? 169 : 61, 0, 9, 9);
+ 						}
+ 					}
+ 				} else {
+-					float g = MathHelper.clamp((float)l / 20.0F, 0.0F, 1.0F);
++					float g = Mth.clamp((float)l / 20.0F, 0.0F, 1.0F);
+ 					int p = (int)((1.0F - g) * 255.0F) << 16 | (int)(g * 255.0F) << 8;
+ 					String string2 = "" + (float)l / 2.0F;
+ 					if (k - this.client.textRenderer.getStringWidth(string2 + "hp") >= j) {
+ 						string2 = string2 + "hp";
+ 					}

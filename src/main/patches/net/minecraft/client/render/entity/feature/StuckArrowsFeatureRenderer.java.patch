@@ -1,6 +1,6 @@
 --- StuckArrowsFeatureRenderer.java
 +++ StuckArrowsFeatureRenderer.java
-@@ -1,8 +1,8 @@
+@@ -1,17 +1,17 @@
  package net.minecraft.client.render.entity.feature;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -10,3 +10,26 @@
  import net.minecraft.client.render.ModelBox;
  import net.minecraft.client.render.entity.LivingEntityRenderer;
  import net.minecraft.client.render.model.ModelPart;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.projectile.AbstractArrowEntity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class StuckArrowsFeatureRenderer implements FeatureRenderer<LivingEntity> {
+ 	private final LivingEntityRenderer entityRenderer;
+ 
+ 	public StuckArrowsFeatureRenderer(LivingEntityRenderer livingEntityRenderer) {
+@@ -42,11 +42,11 @@
+ 				p = p * 2.0F - 1.0F;
+ 				q = q * 2.0F - 1.0F;
+ 				o *= -1.0F;
+ 				p *= -1.0F;
+ 				q *= -1.0F;
+-				float u = MathHelper.sqrt(o * o + q * q);
++				float u = Mth.sqrt(o * o + q * q);
+ 				entity.prevYaw = entity.yaw = (float)(Math.atan2((double)o, (double)q) * 180.0 / (float) Math.PI);
+ 				entity.prevPitch = entity.pitch = (float)(Math.atan2((double)p, (double)u) * 180.0 / (float) Math.PI);
+ 				double d = 0.0;
+ 				double e = 0.0;
+ 				double v = 0.0;

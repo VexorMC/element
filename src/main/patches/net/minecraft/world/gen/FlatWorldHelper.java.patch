@@ -1,0 +1,39 @@
+--- FlatWorldHelper.java
++++ FlatWorldHelper.java
+@@ -5,11 +5,11 @@
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Map.Entry;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.Blocks;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.gen.layer.FlatWorldLayer;
+ 
+ public class FlatWorldHelper {
+ 	private final List<FlatWorldLayer> layers = Lists.newArrayList();
+@@ -179,21 +179,21 @@
+ 	public static FlatWorldHelper getHelper(String string) {
+ 		if (string == null) {
+ 			return createDefault();
+ 		} else {
+ 			String[] strings = string.split(";", -1);
+-			int i = strings.length == 1 ? 0 : MathHelper.parseInt(strings[0], 0);
++			int i = strings.length == 1 ? 0 : Mth.parseInt(strings[0], 0);
+ 			if (i >= 0 && i <= 3) {
+ 				FlatWorldHelper flatWorldHelper = new FlatWorldHelper();
+ 				int j = strings.length == 1 ? 0 : 1;
+ 				List<FlatWorldLayer> list = method_9227(i, strings[j++]);
+ 				if (list != null && !list.isEmpty()) {
+ 					flatWorldHelper.getLayers().addAll(list);
+ 					flatWorldHelper.updateLayerLevel();
+ 					int k = Biome.PLAINS.id;
+ 					if (i > 0 && strings.length > j) {
+-						k = MathHelper.parseInt(strings[j++], k);
++						k = Mth.parseInt(strings[j++], k);
+ 					}
+ 
+ 					flatWorldHelper.setBiomeId(k);
+ 					if (i > 0 && strings.length > j) {
+ 						String[] strings2 = strings[j++].toLowerCase().split(",");

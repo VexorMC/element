@@ -1,0 +1,63 @@
+--- ProtectionEnchantment.java
++++ ProtectionEnchantment.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.enchantment;
+ 
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.damage.DamageSource;
+ import net.minecraft.util.Identifier;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class ProtectionEnchantment extends Enchantment {
+ 	private static final String[] TYPES = new String[]{"all", "fire", "fall", "explosion", "projectile"};
+ 	private static final int[] MINIMUM_ENCHANTABILITY = new int[]{1, 10, 5, 5, 3};
+ 	private static final int[] field_4500 = new int[]{11, 8, 6, 8, 6};
+@@ -40,19 +40,19 @@
+ 		if (damageSource.isOutOfWorld()) {
+ 			return 0;
+ 		} else {
+ 			float f = (float)(6 + i * i) / 3.0F;
+ 			if (this.protectionTypeId == 0) {
+-				return MathHelper.floor(f * 0.75F);
++				return Mth.floor(f * 0.75F);
+ 			} else if (this.protectionTypeId == 1 && damageSource.isFire()) {
+-				return MathHelper.floor(f * 1.25F);
++				return Mth.floor(f * 1.25F);
+ 			} else if (this.protectionTypeId == 2 && damageSource == DamageSource.FALL) {
+-				return MathHelper.floor(f * 2.5F);
++				return Mth.floor(f * 2.5F);
+ 			} else if (this.protectionTypeId == 3 && damageSource.isExplosive()) {
+-				return MathHelper.floor(f * 1.5F);
++				return Mth.floor(f * 1.5F);
+ 			} else {
+-				return this.protectionTypeId == 4 && damageSource.isProjectile() ? MathHelper.floor(f * 1.5F) : 0;
++				return this.protectionTypeId == 4 && damageSource.isProjectile() ? Mth.floor(f * 1.5F) : 0;
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+@@ -71,20 +71,20 @@
+ 	}
+ 
+ 	public static int method_4659(Entity entity, int i) {
+ 		int j = EnchantmentHelper.getLevel(Enchantment.FIRE_PROTECTION.id, entity.getArmorStacks());
+ 		if (j > 0) {
+-			i -= MathHelper.floor((float)i * (float)j * 0.15F);
++			i -= Mth.floor((float)i * (float)j * 0.15F);
+ 		}
+ 
+ 		return i;
+ 	}
+ 
+ 	public static double method_4658(Entity entity, double d) {
+ 		int i = EnchantmentHelper.getLevel(Enchantment.BLAST_PROTECTION.id, entity.getArmorStacks());
+ 		if (i > 0) {
+-			d -= (double)MathHelper.floor(d * (double)((float)i * 0.15F));
++			d -= (double) Mth.floor(d * (double)((float)i * 0.15F));
+ 		}
+ 
+ 		return d;
+ 	}
+ }

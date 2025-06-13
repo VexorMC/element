@@ -1,0 +1,32 @@
+--- RedstoneWireBlock.java
++++ RedstoneWireBlock.java
+@@ -16,11 +16,11 @@
+ import net.minecraft.state.property.IntProperty;
+ import net.minecraft.util.StringIdentifiable;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.BlockView;
+ import net.minecraft.world.World;
+ 
+ public class RedstoneWireBlock extends Block {
+ 	public static final EnumProperty<RedstoneWireBlock.RedstoneWireType> NORTH = EnumProperty.of("north", RedstoneWireBlock.RedstoneWireType.class);
+@@ -337,13 +337,13 @@
+ 
+ 		if (j < 0.0F) {
+ 			j = 0.0F;
+ 		}
+ 
+-		int k = MathHelper.clamp((int)(g * 255.0F), 0, 255);
+-		int l = MathHelper.clamp((int)(h * 255.0F), 0, 255);
+-		int m = MathHelper.clamp((int)(j * 255.0F), 0, 255);
++		int k = Mth.clamp((int)(g * 255.0F), 0, 255);
++		int l = Mth.clamp((int)(h * 255.0F), 0, 255);
++		int m = Mth.clamp((int)(j * 255.0F), 0, 255);
+ 		return 0xFF000000 | k << 16 | l << 8 | m;
+ 	}
+ 
+ 	@Override
+ 	public void randomDisplayTick(World world, BlockPos blockPos, BlockState blockState, Random random) {

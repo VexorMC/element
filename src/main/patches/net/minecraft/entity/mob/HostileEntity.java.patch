@@ -1,0 +1,31 @@
+--- HostileEntity.java
++++ HostileEntity.java
+@@ -5,11 +5,11 @@
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.PathAwareEntity;
+ import net.minecraft.entity.attribute.EntityAttributes;
+ import net.minecraft.entity.damage.DamageSource;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.Difficulty;
+ import net.minecraft.world.LightType;
+ import net.minecraft.world.World;
+ 
+ public abstract class HostileEntity extends PathAwareEntity implements Monster {
+@@ -85,13 +85,13 @@
+ 
+ 		boolean bl = entity.damage(DamageSource.mob(this), f);
+ 		if (bl) {
+ 			if (i > 0) {
+ 				entity.addVelocity(
+-					(double)(-MathHelper.sin(this.yaw * (float) Math.PI / 180.0F) * (float)i * 0.5F),
++					(double)(-Mth.sin(this.yaw * (float) Math.PI / 180.0F) * (float)i * 0.5F),
+ 					0.1,
+-					(double)(MathHelper.cos(this.yaw * (float) Math.PI / 180.0F) * (float)i * 0.5F)
++					(double)(Mth.cos(this.yaw * (float) Math.PI / 180.0F) * (float)i * 0.5F)
+ 				);
+ 				this.velocityX *= 0.6;
+ 				this.velocityZ *= 0.6;
+ 			}
+ 

@@ -1,0 +1,49 @@
+--- FlyingEntity.java
++++ FlyingEntity.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.entity.mob;
+ 
+ import net.minecraft.block.Block;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public abstract class FlyingEntity extends MobEntity {
+ 	public FlyingEntity(World world) {
+ 		super(world);
+@@ -33,19 +33,19 @@
+ 			this.velocityY *= 0.5;
+ 			this.velocityZ *= 0.5;
+ 		} else {
+ 			float h = 0.91F;
+ 			if (this.onGround) {
+-				h = this.world.getBlockState(new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().minY) - 1, MathHelper.floor(this.z))).getBlock().slipperiness
++				h = this.world.getBlockState(new BlockPos(Mth.floor(this.x), Mth.floor(this.getBoundingBox().minY) - 1, Mth.floor(this.z))).getBlock().slipperiness
+ 					* 0.91F;
+ 			}
+ 
+ 			float i = 0.16277136F / (h * h * h);
+ 			this.updateVelocity(f, g, this.onGround ? 0.1F * i : 0.02F);
+ 			h = 0.91F;
+ 			if (this.onGround) {
+-				h = this.world.getBlockState(new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().minY) - 1, MathHelper.floor(this.z))).getBlock().slipperiness
++				h = this.world.getBlockState(new BlockPos(Mth.floor(this.x), Mth.floor(this.getBoundingBox().minY) - 1, Mth.floor(this.z))).getBlock().slipperiness
+ 					* 0.91F;
+ 			}
+ 
+ 			this.move(this.velocityX, this.velocityY, this.velocityZ);
+ 			this.velocityX *= (double)h;
+@@ -54,11 +54,11 @@
+ 		}
+ 
+ 		this.field_6748 = this.field_6749;
+ 		double d = this.x - this.prevX;
+ 		double e = this.z - this.prevZ;
+-		float j = MathHelper.sqrt(d * d + e * e) * 4.0F;
++		float j = Mth.sqrt(d * d + e * e) * 4.0F;
+ 		if (j > 1.0F) {
+ 			j = 1.0F;
+ 		}
+ 
+ 		this.field_6749 = this.field_6749 + (j - this.field_6749) * 0.4F;

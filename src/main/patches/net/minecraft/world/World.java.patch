@@ -1,5 +1,458 @@
 --- World.java
 +++ World.java
+@@ -40,11 +40,11 @@
+ import net.minecraft.util.math.BlockBox;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+ import net.minecraft.util.math.ChunkPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.util.profiler.Profiler;
+ import net.minecraft.village.VillageState;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.border.WorldBorder;
+@@ -614,16 +614,16 @@
+ 
+ 	public BlockHitResult rayTrace(Vec3d vec3d, Vec3d vec3d2, boolean bl, boolean bl2, boolean bl3) {
+ 		if (Double.isNaN(vec3d.x) || Double.isNaN(vec3d.y) || Double.isNaN(vec3d.z)) {
+ 			return null;
+ 		} else if (!Double.isNaN(vec3d2.x) && !Double.isNaN(vec3d2.y) && !Double.isNaN(vec3d2.z)) {
+-			int i = MathHelper.floor(vec3d2.x);
+-			int j = MathHelper.floor(vec3d2.y);
+-			int k = MathHelper.floor(vec3d2.z);
+-			int l = MathHelper.floor(vec3d.x);
+-			int m = MathHelper.floor(vec3d.y);
+-			int n = MathHelper.floor(vec3d.z);
++			int i = Mth.floor(vec3d2.x);
++			int j = Mth.floor(vec3d2.y);
++			int k = Mth.floor(vec3d2.z);
++			int l = Mth.floor(vec3d.x);
++			int m = Mth.floor(vec3d.y);
++			int n = Mth.floor(vec3d.z);
+ 			BlockPos blockPos = new BlockPos(l, m, n);
+ 			BlockState blockState = this.getBlockState(blockPos);
+ 			Block block = blockState.getBlock();
+ 			if ((!bl2 || block.getCollisionBox(this, blockPos, blockState) != null) && block.canCollide(blockState, bl)) {
+ 				BlockHitResult blockHitResult = block.rayTrace(this, blockPos, vec3d, vec3d2);
+@@ -714,13 +714,13 @@
+ 				} else {
+ 					direction = k > n ? Direction.NORTH : Direction.SOUTH;
+ 					vec3d = new Vec3d(vec3d.x + q * p, vec3d.y + r * p, f);
+ 				}
+ 
+-				l = MathHelper.floor(vec3d.x) - (direction == Direction.EAST ? 1 : 0);
+-				m = MathHelper.floor(vec3d.y) - (direction == Direction.UP ? 1 : 0);
+-				n = MathHelper.floor(vec3d.z) - (direction == Direction.SOUTH ? 1 : 0);
++				l = Mth.floor(vec3d.x) - (direction == Direction.EAST ? 1 : 0);
++				m = Mth.floor(vec3d.y) - (direction == Direction.UP ? 1 : 0);
++				n = Mth.floor(vec3d.z) - (direction == Direction.SOUTH ? 1 : 0);
+ 				blockPos = new BlockPos(l, m, n);
+ 				BlockState blockState2 = this.getBlockState(blockPos);
+ 				Block block2 = blockState2.getBlock();
+ 				if (!bl2 || block2.getCollisionBox(this, blockPos, blockState2) != null) {
+ 					if (block2.canCollide(blockState2, bl)) {
+@@ -785,12 +785,12 @@
+ 		this.entities.add(entity);
+ 		return true;
+ 	}
+ 
+ 	public boolean spawnEntity(Entity entity) {
+-		int i = MathHelper.floor(entity.x / 16.0);
+-		int j = MathHelper.floor(entity.z / 16.0);
++		int i = Mth.floor(entity.x / 16.0);
++		int j = Mth.floor(entity.z / 16.0);
+ 		boolean bl = entity.teleporting;
+ 		if (entity instanceof PlayerEntity) {
+ 			bl = true;
+ 		}
+ 
+@@ -864,16 +864,16 @@
+ 		this.eventListeners.remove(worldEventListener);
+ 	}
+ 
+ 	public List<Box> doesBoxCollide(Entity entity, Box box) {
+ 		List<Box> list = Lists.newArrayList();
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX + 1.0);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY + 1.0);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ + 1.0);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX + 1.0);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY + 1.0);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ + 1.0);
+ 		WorldBorder worldBorder = this.getWorldBorder();
+ 		boolean bl = entity.isOutsideWorldBorder();
+ 		boolean bl2 = this.isInsideWorld(worldBorder, entity);
+ 		BlockState blockState = Blocks.STONE.getDefaultState();
+ 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+@@ -940,16 +940,16 @@
+ 		return entity.x > d && entity.x < f && entity.z > e && entity.z < g;
+ 	}
+ 
+ 	public List<Box> method_3608(Box box) {
+ 		List<Box> list = Lists.newArrayList();
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX + 1.0);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY + 1.0);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ + 1.0);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX + 1.0);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY + 1.0);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ + 1.0);
+ 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 		for (int o = i; o < j; o++) {
+ 			for (int p = m; p < n; p++) {
+ 				if (this.blockExists(mutable.setPosition(o, 64, p))) {
+@@ -971,36 +971,36 @@
+ 		return list;
+ 	}
+ 
+ 	public int method_3597(float f) {
+ 		float g = this.getSkyAngle(f);
+-		float h = 1.0F - (MathHelper.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.5F);
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
++		float h = 1.0F - (Mth.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.5F);
++		h = Mth.clamp(h, 0.0F, 1.0F);
+ 		h = 1.0F - h;
+ 		h = (float)((double)h * (1.0 - (double)(this.getRainGradient(f) * 5.0F) / 16.0));
+ 		h = (float)((double)h * (1.0 - (double)(this.getThunderGradient(f) * 5.0F) / 16.0));
+ 		h = 1.0F - h;
+ 		return (int)(h * 11.0F);
+ 	}
+ 
+ 	public float method_3649(float f) {
+ 		float g = this.getSkyAngle(f);
+-		float h = 1.0F - (MathHelper.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
++		float h = 1.0F - (Mth.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
++		h = Mth.clamp(h, 0.0F, 1.0F);
+ 		h = 1.0F - h;
+ 		h = (float)((double)h * (1.0 - (double)(this.getRainGradient(f) * 5.0F) / 16.0));
+ 		h = (float)((double)h * (1.0 - (double)(this.getThunderGradient(f) * 5.0F) / 16.0));
+ 		return h * 0.8F + 0.2F;
+ 	}
+ 
+ 	public Vec3d method_3631(Entity entity, float f) {
+ 		float g = this.getSkyAngle(f);
+-		float h = MathHelper.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
+-		int i = MathHelper.floor(entity.x);
+-		int j = MathHelper.floor(entity.y);
+-		int k = MathHelper.floor(entity.z);
++		float h = Mth.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
++		h = Mth.clamp(h, 0.0F, 1.0F);
++		int i = Mth.floor(entity.x);
++		int j = Mth.floor(entity.y);
++		int k = Mth.floor(entity.z);
+ 		BlockPos blockPos = new BlockPos(i, j, k);
+ 		Biome biome = this.getBiome(blockPos);
+ 		float l = biome.getTemperature(blockPos);
+ 		int m = biome.getSkyColor(l);
+ 		float n = (float)(m >> 16 & 0xFF) / 255.0F;
+@@ -1059,12 +1059,12 @@
+ 		return g * (float) Math.PI * 2.0F;
+ 	}
+ 
+ 	public Vec3d getCloudColor(float f) {
+ 		float g = this.getSkyAngle(f);
+-		float h = MathHelper.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
++		float h = Mth.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
++		h = Mth.clamp(h, 0.0F, 1.0F);
+ 		float i = (float)(this.cloudColor >> 16 & 255L) / 255.0F;
+ 		float j = (float)(this.cloudColor >> 8 & 255L) / 255.0F;
+ 		float k = (float)(this.cloudColor & 255L) / 255.0F;
+ 		float l = this.getRainGradient(f);
+ 		if (l > 0.0F) {
+@@ -1116,12 +1116,12 @@
+ 		return blockPos2;
+ 	}
+ 
+ 	public float method_3707(float f) {
+ 		float g = this.getSkyAngle(f);
+-		float h = 1.0F - (MathHelper.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
++		float h = 1.0F - (Mth.cos(g * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
++		h = Mth.clamp(h, 0.0F, 1.0F);
+ 		return h * h * 0.5F;
+ 	}
+ 
+ 	public void createAndScheduleBlockTick(BlockPos blockPos, Block block, int i) {
+ 	}
+@@ -1302,12 +1302,12 @@
+ 	public void checkChunk(Entity entity) {
+ 		this.checkChunk(entity, true);
+ 	}
+ 
+ 	public void checkChunk(Entity entity, boolean bl) {
+-		int i = MathHelper.floor(entity.x);
+-		int j = MathHelper.floor(entity.z);
++		int i = Mth.floor(entity.x);
++		int j = Mth.floor(entity.z);
+ 		int k = 32;
+ 		if (!bl || this.isRegionLoaded(i - k, 0, j - k, i + k, 0, j + k, true)) {
+ 			entity.prevTickX = entity.x;
+ 			entity.prevTickY = entity.y;
+ 			entity.prevTickZ = entity.z;
+@@ -1341,13 +1341,13 @@
+ 
+ 			if (Double.isNaN((double)entity.yaw) || Double.isInfinite((double)entity.yaw)) {
+ 				entity.yaw = entity.prevYaw;
+ 			}
+ 
+-			int l = MathHelper.floor(entity.x / 16.0);
+-			int m = MathHelper.floor(entity.y / 16.0);
+-			int n = MathHelper.floor(entity.z / 16.0);
++			int l = Mth.floor(entity.x / 16.0);
++			int m = Mth.floor(entity.y / 16.0);
++			int n = Mth.floor(entity.z / 16.0);
+ 			if (!entity.updateNeeded || entity.chunkX != l || entity.chunkY != m || entity.chunkZ != n) {
+ 				if (entity.updateNeeded && this.isChunkLoaded(entity.chunkX, entity.chunkZ, true)) {
+ 					this.getChunk(entity.chunkX, entity.chunkZ).removeEntity(entity, entity.chunkY);
+ 				}
+ 
+@@ -1387,16 +1387,16 @@
+ 
+ 		return true;
+ 	}
+ 
+ 	public boolean isBoxNotEmpty(Box box) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ);
+ 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 		for (int o = i; o <= j; o++) {
+ 			for (int p = k; p <= l; p++) {
+ 				for (int q = m; q <= n; q++) {
+@@ -1410,16 +1410,16 @@
+ 
+ 		return false;
+ 	}
+ 
+ 	public boolean containsFluid(Box box) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ);
+ 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 		for (int o = i; o <= j; o++) {
+ 			for (int p = k; p <= l; p++) {
+ 				for (int q = m; q <= n; q++) {
+@@ -1433,16 +1433,16 @@
+ 
+ 		return false;
+ 	}
+ 
+ 	public boolean containsFireSource(Box box) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX + 1.0);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY + 1.0);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ + 1.0);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX + 1.0);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY + 1.0);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ + 1.0);
+ 		if (this.isRegionLoaded(i, k, m, j, l, n, true)) {
+ 			BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 			for (int o = i; o < j; o++) {
+ 				for (int p = k; p < l; p++) {
+@@ -1458,16 +1458,16 @@
+ 
+ 		return false;
+ 	}
+ 
+ 	public boolean method_3610(Box box, Material material, Entity entity) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX + 1.0);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY + 1.0);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ + 1.0);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX + 1.0);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY + 1.0);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ + 1.0);
+ 		if (!this.isRegionLoaded(i, k, m, j, l, n, true)) {
+ 			return false;
+ 		} else {
+ 			boolean bl = false;
+ 			Vec3d vec3d = new Vec3d(0.0, 0.0, 0.0);
+@@ -1501,16 +1501,16 @@
+ 			return bl;
+ 		}
+ 	}
+ 
+ 	public boolean containsMaterial(Box box, Material material) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX + 1.0);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY + 1.0);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ + 1.0);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX + 1.0);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY + 1.0);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ + 1.0);
+ 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 		for (int o = i; o < j; o++) {
+ 			for (int p = k; p < l; p++) {
+ 				for (int q = m; q < n; q++) {
+@@ -1523,16 +1523,16 @@
+ 
+ 		return false;
+ 	}
+ 
+ 	public boolean containsBlockWithMaterial(Box box, Material material) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.maxX + 1.0);
+-		int k = MathHelper.floor(box.minY);
+-		int l = MathHelper.floor(box.maxY + 1.0);
+-		int m = MathHelper.floor(box.minZ);
+-		int n = MathHelper.floor(box.maxZ + 1.0);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.maxX + 1.0);
++		int k = Mth.floor(box.minY);
++		int l = Mth.floor(box.maxY + 1.0);
++		int m = Mth.floor(box.minZ);
++		int n = Mth.floor(box.maxZ + 1.0);
+ 		BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 		for (int o = i; o < j; o++) {
+ 			for (int p = k; p < l; p++) {
+ 				for (int q = m; q < n; q++) {
+@@ -1783,11 +1783,11 @@
+ 					this.thunderGradient = (float)((double)this.thunderGradient + 0.01);
+ 				} else {
+ 					this.thunderGradient = (float)((double)this.thunderGradient - 0.01);
+ 				}
+ 
+-				this.thunderGradient = MathHelper.clamp(this.thunderGradient, 0.0F, 1.0F);
++				this.thunderGradient = Mth.clamp(this.thunderGradient, 0.0F, 1.0F);
+ 				int k = this.levelProperties.getRainTime();
+ 				if (k <= 0) {
+ 					if (this.levelProperties.isRaining()) {
+ 						this.levelProperties.setRainTime(this.random.nextInt(12000) + 12000);
+ 					} else {
+@@ -1805,23 +1805,23 @@
+ 					this.rainGradient = (float)((double)this.rainGradient + 0.01);
+ 				} else {
+ 					this.rainGradient = (float)((double)this.rainGradient - 0.01);
+ 				}
+ 
+-				this.rainGradient = MathHelper.clamp(this.rainGradient, 0.0F, 1.0F);
++				this.rainGradient = Mth.clamp(this.rainGradient, 0.0F, 1.0F);
+ 			}
+ 		}
+ 	}
+ 
+ 	protected void updateLighting() {
+ 		this.field_4530.clear();
+ 		this.profiler.push("buildList");
+ 
+ 		for (int i = 0; i < this.playerEntities.size(); i++) {
+ 			PlayerEntity playerEntity = (PlayerEntity)this.playerEntities.get(i);
+-			int j = MathHelper.floor(playerEntity.x / 16.0);
+-			int k = MathHelper.floor(playerEntity.z / 16.0);
++			int j = Mth.floor(playerEntity.x / 16.0);
++			int k = Mth.floor(playerEntity.z / 16.0);
+ 			int l = this.getNextMapId();
+ 
+ 			for (int m = -l; m <= l; m++) {
+ 				for (int n = -l; n <= l; n++) {
+ 					this.field_4530.add(new ChunkPos(m + j, n + k));
+@@ -1836,13 +1836,13 @@
+ 
+ 		this.profiler.push("playerCheckLight");
+ 		if (!this.playerEntities.isEmpty()) {
+ 			int i = this.random.nextInt(this.playerEntities.size());
+ 			PlayerEntity playerEntity = (PlayerEntity)this.playerEntities.get(i);
+-			int j = MathHelper.floor(playerEntity.x) + this.random.nextInt(11) - 5;
+-			int k = MathHelper.floor(playerEntity.y) + this.random.nextInt(11) - 5;
+-			int l = MathHelper.floor(playerEntity.z) + this.random.nextInt(11) - 5;
++			int j = Mth.floor(playerEntity.x) + this.random.nextInt(11) - 5;
++			int k = Mth.floor(playerEntity.y) + this.random.nextInt(11) - 5;
++			int l = Mth.floor(playerEntity.z) + this.random.nextInt(11) - 5;
+ 			this.method_8568(new BlockPos(j, k, l));
+ 		}
+ 
+ 		this.profiler.pop();
+ 	}
+@@ -2012,13 +2012,13 @@
+ 					BlockPos blockPos2 = new BlockPos(q, r, s);
+ 					int u = this.getLightAtPos(lightType, blockPos2);
+ 					if (u == t) {
+ 						this.method_8491(lightType, blockPos2, 0);
+ 						if (t > 0) {
+-							int v = MathHelper.abs(q - m);
+-							int w = MathHelper.abs(r - n);
+-							int x = MathHelper.abs(s - o);
++							int v = Mth.abs(q - m);
++							int w = Mth.abs(r - n);
++							int x = Mth.abs(s - o);
+ 							if (v + w + x < 17) {
+ 								BlockPos.Mutable mutable = new BlockPos.Mutable();
+ 
+ 								for (Direction direction : Direction.values()) {
+ 									int aa = q + direction.getOffsetX();
+@@ -2107,14 +2107,14 @@
+ 		return this.getEntitiesIn(entity, box, EntityPredicate.EXCEPT_SPECTATOR);
+ 	}
+ 
+ 	public List<Entity> getEntitiesIn(Entity entity, Box box, Predicate<? super Entity> predicate) {
+ 		List<Entity> list = Lists.newArrayList();
+-		int i = MathHelper.floor((box.minX - 2.0) / 16.0);
+-		int j = MathHelper.floor((box.maxX + 2.0) / 16.0);
+-		int k = MathHelper.floor((box.minZ - 2.0) / 16.0);
+-		int l = MathHelper.floor((box.maxZ + 2.0) / 16.0);
++		int i = Mth.floor((box.minX - 2.0) / 16.0);
++		int j = Mth.floor((box.maxX + 2.0) / 16.0);
++		int k = Mth.floor((box.minZ - 2.0) / 16.0);
++		int l = Mth.floor((box.maxZ + 2.0) / 16.0);
+ 
+ 		for (int m = i; m <= j; m++) {
+ 			for (int n = k; n <= l; n++) {
+ 				if (this.isChunkLoaded(m, n, true)) {
+ 					this.getChunk(m, n).method_9141(entity, box, list, predicate);
 @@ -2123,28 +2123,28 @@
  		}
  
@@ -34,3 +487,37 @@
  
  		return list;
  	}
+@@ -2152,14 +2152,14 @@
+ 	public <T extends Entity> List<T> getEntitiesInBox(Class<? extends T> class_, Box box) {
+ 		return this.getEntitiesInBox(class_, box, EntityPredicate.EXCEPT_SPECTATOR);
+ 	}
+ 
+ 	public <T extends Entity> List<T> getEntitiesInBox(Class<? extends T> class_, Box box, Predicate<? super T> predicate) {
+-		int i = MathHelper.floor((box.minX - 2.0) / 16.0);
+-		int j = MathHelper.floor((box.maxX + 2.0) / 16.0);
+-		int k = MathHelper.floor((box.minZ - 2.0) / 16.0);
+-		int l = MathHelper.floor((box.maxZ + 2.0) / 16.0);
++		int i = Mth.floor((box.minX - 2.0) / 16.0);
++		int j = Mth.floor((box.maxX + 2.0) / 16.0);
++		int k = Mth.floor((box.minZ - 2.0) / 16.0);
++		int l = Mth.floor((box.maxZ + 2.0) / 16.0);
+ 		List<T> list = Lists.newArrayList();
+ 
+ 		for (int m = i; m <= j; m++) {
+ 			for (int n = k; n <= l; n++) {
+ 				if (this.isChunkLoaded(m, n, true)) {
+@@ -2428,12 +2428,12 @@
+ 	public void setSpawnPos(BlockPos blockPos) {
+ 		this.levelProperties.setSpawnPos(blockPos);
+ 	}
+ 
+ 	public void loadEntity(Entity entity) {
+-		int i = MathHelper.floor(entity.x / 16.0);
+-		int j = MathHelper.floor(entity.z / 16.0);
++		int i = Mth.floor(entity.x / 16.0);
++		int j = Mth.floor(entity.z / 16.0);
+ 		int k = 2;
+ 
+ 		for (int l = i - k; l <= i + k; l++) {
+ 			for (int m = j - k; m <= j + k; m++) {
+ 				this.getChunk(l, m);

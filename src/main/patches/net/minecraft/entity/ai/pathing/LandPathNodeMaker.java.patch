@@ -1,0 +1,51 @@
+--- LandPathNodeMaker.java
++++ LandPathNodeMaker.java
+@@ -8,11 +8,11 @@
+ import net.minecraft.block.FenceGateBlock;
+ import net.minecraft.block.WallBlock;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.BlockView;
+ 
+ public class LandPathNodeMaker extends PathNodeMaker {
+ 	private boolean canEnterOpenDoors;
+ 	private boolean canOpenDoors;
+@@ -35,30 +35,30 @@
+ 	@Override
+ 	public PathNode getStart(Entity entity) {
+ 		int i;
+ 		if (this.canSwim && entity.isTouchingWater()) {
+ 			i = (int)entity.getBoundingBox().minY;
+-			BlockPos.Mutable mutable = new BlockPos.Mutable(MathHelper.floor(entity.x), i, MathHelper.floor(entity.z));
++			BlockPos.Mutable mutable = new BlockPos.Mutable(Mth.floor(entity.x), i, Mth.floor(entity.z));
+ 
+ 			for (Block block = this.blockView.getBlockState(mutable).getBlock();
+ 				block == Blocks.FLOWING_WATER || block == Blocks.WATER;
+ 				block = this.blockView.getBlockState(mutable).getBlock()
+ 			) {
+-				mutable.setPosition(MathHelper.floor(entity.x), ++i, MathHelper.floor(entity.z));
++				mutable.setPosition(Mth.floor(entity.x), ++i, Mth.floor(entity.z));
+ 			}
+ 
+ 			this.field_10243 = false;
+ 		} else {
+-			i = MathHelper.floor(entity.getBoundingBox().minY + 0.5);
++			i = Mth.floor(entity.getBoundingBox().minY + 0.5);
+ 		}
+ 
+-		return this.getNode(MathHelper.floor(entity.getBoundingBox().minX), i, MathHelper.floor(entity.getBoundingBox().minZ));
++		return this.getNode(Mth.floor(entity.getBoundingBox().minX), i, Mth.floor(entity.getBoundingBox().minZ));
+ 	}
+ 
+ 	@Override
+ 	public PathNode getNode(Entity entity, double d, double e, double f) {
+-		return this.getNode(MathHelper.floor(d - (double)(entity.width / 2.0F)), MathHelper.floor(e), MathHelper.floor(f - (double)(entity.width / 2.0F)));
++		return this.getNode(Mth.floor(d - (double)(entity.width / 2.0F)), Mth.floor(e), Mth.floor(f - (double)(entity.width / 2.0F)));
+ 	}
+ 
+ 	@Override
+ 	public int getSuccessors(PathNode[] pathNodes, Entity entity, PathNode pathNode, PathNode pathNode2, float f) {
+ 		int i = 0;

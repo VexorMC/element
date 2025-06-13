@@ -1,0 +1,53 @@
+--- LookControl.java
++++ LookControl.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.entity.ai.control;
+ 
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.mob.MobEntity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class LookControl {
+ 	private MobEntity entity;
+ 	private float yaw;
+ 	private float pitch;
+@@ -46,20 +46,20 @@
+ 		if (this.active) {
+ 			this.active = false;
+ 			double d = this.lookX - this.entity.x;
+ 			double e = this.lookY - (this.entity.y + (double)this.entity.getEyeHeight());
+ 			double f = this.lookZ - this.entity.z;
+-			double g = (double)MathHelper.sqrt(d * d + f * f);
+-			float h = (float)(MathHelper.atan2(f, d) * 180.0 / (float) Math.PI) - 90.0F;
+-			float i = (float)(-(MathHelper.atan2(e, g) * 180.0 / (float) Math.PI));
++			double g = (double) Mth.sqrt(d * d + f * f);
++			float h = (float)(Mth.atan2(f, d) * 180.0 / (float) Math.PI) - 90.0F;
++			float i = (float)(-(Mth.atan2(e, g) * 180.0 / (float) Math.PI));
+ 			this.entity.pitch = this.clampAndWrapAngle(this.entity.pitch, i, this.pitch);
+ 			this.entity.headYaw = this.clampAndWrapAngle(this.entity.headYaw, h, this.yaw);
+ 		} else {
+ 			this.entity.headYaw = this.clampAndWrapAngle(this.entity.headYaw, this.entity.bodyYaw, 10.0F);
+ 		}
+ 
+-		float j = MathHelper.wrapDegrees(this.entity.headYaw - this.entity.bodyYaw);
++		float j = Mth.wrapDegrees(this.entity.headYaw - this.entity.bodyYaw);
+ 		if (!this.entity.getNavigation().isIdle()) {
+ 			if (j < -75.0F) {
+ 				this.entity.headYaw = this.entity.bodyYaw - 75.0F;
+ 			}
+ 
+@@ -68,11 +68,11 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	private float clampAndWrapAngle(float f, float g, float h) {
+-		float i = MathHelper.wrapDegrees(g - f);
++		float i = Mth.wrapDegrees(g - f);
+ 		if (i > h) {
+ 			i = h;
+ 		}
+ 
+ 		if (i < -h) {

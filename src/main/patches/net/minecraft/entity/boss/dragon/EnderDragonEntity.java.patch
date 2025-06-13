@@ -1,0 +1,215 @@
+--- EnderDragonEntity.java
++++ EnderDragonEntity.java
+@@ -21,11 +21,11 @@
+ import net.minecraft.entity.mob.Monster;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ 
+ public class EnderDragonEntity extends MobEntity implements BossBarProvider, MultipartEntityProvider, Monster {
+ 	public double field_3742;
+@@ -87,11 +87,11 @@
+ 		f = 1.0F - f;
+ 		int j = this.latestSegment - i * 1 & 63;
+ 		int k = this.latestSegment - i * 1 - 1 & 63;
+ 		double[] ds = new double[3];
+ 		double d = this.segmentCircularBuffer[j][0];
+-		double e = MathHelper.wrapDegrees(this.segmentCircularBuffer[k][0] - d);
++		double e = Mth.wrapDegrees(this.segmentCircularBuffer[k][0] - d);
+ 		ds[0] = d + e * (double)f;
+ 		d = this.segmentCircularBuffer[j][1];
+ 		e = this.segmentCircularBuffer[k][1] - d;
+ 		ds[1] = d + e * (double)f;
+ 		ds[2] = this.segmentCircularBuffer[j][2] + (this.segmentCircularBuffer[k][2] - this.segmentCircularBuffer[j][2]) * (double)f;
+@@ -99,12 +99,12 @@
+ 	}
+ 
+ 	@Override
+ 	public void tickMovement() {
+ 		if (this.world.isClient) {
+-			float f = MathHelper.cos(this.wingPosition * (float) Math.PI * 2.0F);
+-			float g = MathHelper.cos(this.prevWingPosition * (float) Math.PI * 2.0F);
++			float f = Mth.cos(this.wingPosition * (float) Math.PI * 2.0F);
++			float g = Mth.cos(this.prevWingPosition * (float) Math.PI * 2.0F);
+ 			if (g <= -0.3F && f >= -0.3F && !this.isSilent()) {
+ 				this.world.playSound(this.x, this.y, this.z, "mob.enderdragon.wings", 5.0F, 0.8F + this.random.nextFloat() * 0.3F, false);
+ 			}
+ 		}
+ 
+@@ -114,19 +114,19 @@
+ 			float g = (this.random.nextFloat() - 0.5F) * 4.0F;
+ 			float h = (this.random.nextFloat() - 0.5F) * 8.0F;
+ 			this.world.addParticle(ParticleType.LARGE_EXPLOSION, this.x + (double)f, this.y + 2.0 + (double)g, this.z + (double)h, 0.0, 0.0, 0.0);
+ 		} else {
+ 			this.tickWithEndCrystals();
+-			float f = 0.2F / (MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ) * 10.0F + 1.0F);
++			float f = 0.2F / (Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ) * 10.0F + 1.0F);
+ 			f *= (float)Math.pow(2.0, this.velocityY);
+ 			if (this.field_3745) {
+ 				this.wingPosition += f * 0.5F;
+ 			} else {
+ 				this.wingPosition += f;
+ 			}
+ 
+-			this.yaw = MathHelper.wrapDegrees(this.yaw);
++			this.yaw = Mth.wrapDegrees(this.yaw);
+ 			if (this.hasNoAi()) {
+ 				this.wingPosition = 0.5F;
+ 			} else {
+ 				if (this.latestSegment < 0) {
+ 					for (int i = 0; i < this.segmentCircularBuffer.length; i++) {
+@@ -144,11 +144,11 @@
+ 				if (this.world.isClient) {
+ 					if (this.bodyTrackingIncrements > 0) {
+ 						double d = this.x + (this.serverX - this.x) / (double)this.bodyTrackingIncrements;
+ 						double e = this.y + (this.serverY - this.y) / (double)this.bodyTrackingIncrements;
+ 						double j = this.z + (this.serverZ - this.z) / (double)this.bodyTrackingIncrements;
+-						double k = MathHelper.wrapDegrees(this.serverYaw - (double)this.yaw);
++						double k = Mth.wrapDegrees(this.serverYaw - (double)this.yaw);
+ 						this.yaw = (float)((double)this.yaw + k / (double)this.bodyTrackingIncrements);
+ 						this.pitch = (float)((double)this.pitch + (this.serverPitch - (double)this.pitch) / (double)this.bodyTrackingIncrements);
+ 						this.bodyTrackingIncrements--;
+ 						this.updatePosition(d, e, j);
+ 						this.setRotation(this.yaw, this.pitch);
+@@ -177,35 +177,35 @@
+ 
+ 					if (this.field_3744 || k < 100.0 || k > 22500.0 || this.horizontalCollision || this.verticalCollision) {
+ 						this.method_2906();
+ 					}
+ 
+-					e /= (double)MathHelper.sqrt(d * d + j * j);
++					e /= (double) Mth.sqrt(d * d + j * j);
+ 					float p = 0.6F;
+-					e = MathHelper.clamp(e, (double)(-p), (double)p);
++					e = Mth.clamp(e, (double)(-p), (double)p);
+ 					this.velocityY += e * 0.1F;
+-					this.yaw = MathHelper.wrapDegrees(this.yaw);
+-					double q = 180.0 - MathHelper.atan2(d, j) * 180.0 / (float) Math.PI;
+-					double r = MathHelper.wrapDegrees(q - (double)this.yaw);
++					this.yaw = Mth.wrapDegrees(this.yaw);
++					double q = 180.0 - Mth.atan2(d, j) * 180.0 / (float) Math.PI;
++					double r = Mth.wrapDegrees(q - (double)this.yaw);
+ 					if (r > 50.0) {
+ 						r = 50.0;
+ 					}
+ 
+ 					if (r < -50.0) {
+ 						r = -50.0;
+ 					}
+ 
+ 					Vec3d vec3d = new Vec3d(this.field_3742 - this.x, this.field_3751 - this.y, this.field_3752 - this.z).normalize();
+-					double o = (double)(-MathHelper.cos(this.yaw * (float) Math.PI / 180.0F));
+-					Vec3d vec3d2 = new Vec3d((double)MathHelper.sin(this.yaw * (float) Math.PI / 180.0F), this.velocityY, o).normalize();
++					double o = (double)(-Mth.cos(this.yaw * (float) Math.PI / 180.0F));
++					Vec3d vec3d2 = new Vec3d((double) Mth.sin(this.yaw * (float) Math.PI / 180.0F), this.velocityY, o).normalize();
+ 					float s = ((float)vec3d2.dotProduct(vec3d) + 0.5F) / 1.5F;
+ 					if (s < 0.0F) {
+ 						s = 0.0F;
+ 					}
+ 
+ 					this.field_6782 *= 0.8F;
+-					float t = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ) * 1.0F + 1.0F;
++					float t = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ) * 1.0F + 1.0F;
+ 					double u = Math.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ) * 1.0 + 1.0;
+ 					if (u > 40.0) {
+ 						u = 40.0;
+ 					}
+ 
+@@ -238,15 +238,15 @@
+ 				this.partWingRight.height = 2.0F;
+ 				this.partWingRight.width = 4.0F;
+ 				this.partWingLeft.height = 3.0F;
+ 				this.partWingLeft.width = 4.0F;
+ 				float g = (float)(this.getSegmentProperties(5, 1.0F)[1] - this.getSegmentProperties(10, 1.0F)[1]) * 10.0F / 180.0F * (float) Math.PI;
+-				float h = MathHelper.cos(g);
+-				float y = -MathHelper.sin(g);
++				float h = Mth.cos(g);
++				float y = -Mth.sin(g);
+ 				float z = this.yaw * (float) Math.PI / 180.0F;
+-				float aa = MathHelper.sin(z);
+-				float ab = MathHelper.cos(z);
++				float aa = Mth.sin(z);
++				float ab = Mth.cos(z);
+ 				this.partBody.tick();
+ 				this.partBody.refreshPositionAndAngles(this.x + (double)(aa * 0.5F), this.y, this.z - (double)(ab * 0.5F), 0.0F, 0.0F);
+ 				this.partWingRight.tick();
+ 				this.partWingRight.refreshPositionAndAngles(this.x + (double)(ab * 4.5F), this.y + 2.0, this.z + (double)(aa * 4.5F), 0.0F, 0.0F);
+ 				this.partWingLeft.tick();
+@@ -257,12 +257,12 @@
+ 					this.damageLivingEntities(this.world.getEntitiesIn(this, this.partHead.getBoundingBox().expand(1.0, 1.0, 1.0)));
+ 				}
+ 
+ 				double[] ds = this.getSegmentProperties(5, 1.0F);
+ 				double[] es = this.getSegmentProperties(0, 1.0F);
+-				float px = MathHelper.sin(this.yaw * (float) Math.PI / 180.0F - this.field_6782 * 0.01F);
+-				float ac = MathHelper.cos(this.yaw * (float) Math.PI / 180.0F - this.field_6782 * 0.01F);
++				float px = Mth.sin(this.yaw * (float) Math.PI / 180.0F - this.field_6782 * 0.01F);
++				float ac = Mth.cos(this.yaw * (float) Math.PI / 180.0F - this.field_6782 * 0.01F);
+ 				this.partHead.tick();
+ 				this.partHead
+ 					.refreshPositionAndAngles(
+ 						this.x + (double)(px * 5.5F * h), this.y + (es[1] - ds[1]) * 1.0 + (double)(y * 5.5F), this.z - (double)(ac * 5.5F * h), 0.0F, 0.0F
+ 					);
+@@ -281,12 +281,12 @@
+ 						enderDragonPart = this.partTail3;
+ 					}
+ 
+ 					double[] fs = this.getSegmentProperties(12 + ad * 2, 1.0F);
+ 					float ae = this.yaw * (float) Math.PI / 180.0F + this.wrapYawChange(fs[0] - ds[0]) * (float) Math.PI / 180.0F * 1.0F;
+-					float af = MathHelper.sin(ae);
+-					float ag = MathHelper.cos(ae);
++					float af = Mth.sin(ae);
++					float ag = Mth.cos(ae);
+ 					float ah = 1.5F;
+ 					float ai = (float)(ad + 1) * 2.0F;
+ 					enderDragonPart.tick();
+ 					enderDragonPart.refreshPositionAndAngles(
+ 						this.x - (double)((aa * ah + af * ai) * h),
+@@ -389,20 +389,20 @@
+ 			this.target = null;
+ 		}
+ 	}
+ 
+ 	private float wrapYawChange(double d) {
+-		return (float)MathHelper.wrapDegrees(d);
++		return (float) Mth.wrapDegrees(d);
+ 	}
+ 
+ 	private boolean destroyBlocks(Box box) {
+-		int i = MathHelper.floor(box.minX);
+-		int j = MathHelper.floor(box.minY);
+-		int k = MathHelper.floor(box.minZ);
+-		int l = MathHelper.floor(box.maxX);
+-		int m = MathHelper.floor(box.maxY);
+-		int n = MathHelper.floor(box.maxZ);
++		int i = Mth.floor(box.minX);
++		int j = Mth.floor(box.minY);
++		int k = Mth.floor(box.minZ);
++		int l = Mth.floor(box.maxX);
++		int m = Mth.floor(box.maxY);
++		int n = Mth.floor(box.maxZ);
+ 		boolean bl = false;
+ 		boolean bl2 = false;
+ 
+ 		for (int o = i; o <= l; o++) {
+ 			for (int p = j; p <= m; p++) {
+@@ -440,12 +440,12 @@
+ 		if (enderDragonPart != this.partHead) {
+ 			f = f / 4.0F + 1.0F;
+ 		}
+ 
+ 		float g = this.yaw * (float) Math.PI / 180.0F;
+-		float h = MathHelper.sin(g);
+-		float i = MathHelper.cos(g);
++		float h = Mth.sin(g);
++		float i = Mth.cos(g);
+ 		this.field_3742 = this.x + (double)(h * 5.0F) + (double)((this.random.nextFloat() - 0.5F) * 2.0F);
+ 		this.field_3751 = this.y + (double)(this.random.nextFloat() * 3.0F) + 1.0;
+ 		this.field_3752 = this.z - (double)(i * 5.0F) + (double)((this.random.nextFloat() - 0.5F) * 2.0F);
+ 		this.target = null;
+ 		if (damageSource.getAttacker() instanceof PlayerEntity || damageSource.isExplosive()) {

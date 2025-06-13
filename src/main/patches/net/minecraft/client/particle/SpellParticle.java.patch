@@ -1,0 +1,28 @@
+--- SpellParticle.java
++++ SpellParticle.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.client.particle;
+ 
+ import java.util.Random;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.entity.Entity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class SpellParticle extends Particle {
+ 	private static final Random spellRandom = new Random();
+ 	private int textureIndex = 128;
+@@ -24,11 +24,11 @@
+ 	}
+ 
+ 	@Override
+ 	public void draw(BufferBuilder bufferBuilder, Entity entity, float f, float g, float h, float i, float j, float k) {
+ 		float l = ((float)this.age + f) / (float)this.maxAge * 32.0F;
+-		l = MathHelper.clamp(l, 0.0F, 1.0F);
++		l = Mth.clamp(l, 0.0F, 1.0F);
+ 		super.draw(bufferBuilder, entity, f, g, h, i, j, k);
+ 	}
+ 
+ 	@Override
+ 	public void tick() {

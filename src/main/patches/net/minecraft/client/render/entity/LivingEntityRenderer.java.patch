@@ -13,6 +13,19 @@
  import net.minecraft.client.MinecraftClient;
  import net.minecraft.client.font.TextRenderer;
  import net.minecraft.client.render.BufferBuilder;
+@@ -18,11 +18,11 @@
+ import net.minecraft.entity.player.ClientPlayerEntity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.scoreboard.AbstractTeam;
+ import net.minecraft.scoreboard.Team;
+ import net.minecraft.util.Formatting;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ import org.lwjgl.opengl.GL11;
+ 
+ public abstract class LivingEntityRenderer<T extends LivingEntity> extends EntityRenderer<T> {
 @@ -37,11 +37,11 @@
  		super(entityRenderDispatcher);
  		this.model = entityModel;
@@ -26,6 +39,19 @@
  
  	protected <V extends LivingEntity, U extends FeatureRenderer<V>> boolean removeFeature(U featureRenderer) {
  		return this.features.remove(featureRenderer);
+@@ -81,11 +81,11 @@
+ 			float k = j - i;
+ 			if (livingEntity.hasVehicle() && livingEntity.vehicle instanceof LivingEntity) {
+ 				LivingEntity livingEntity2 = (LivingEntity)livingEntity.vehicle;
+ 				i = this.method_5769(livingEntity2.prevBodyYaw, livingEntity2.bodyYaw, h);
+ 				k = j - i;
+-				float l = MathHelper.wrapDegrees(k);
++				float l = Mth.wrapDegrees(k);
+ 				if (l < -85.0F) {
+ 					l = -85.0F;
+ 				}
+ 
+ 				if (l >= 85.0F) {
 @@ -269,11 +269,11 @@
  				this.buffer.put(l);
  				this.buffer.put(1.0F - h);
@@ -39,3 +65,16 @@
  			GlStateManager.bindTexture(TEX.getGlId());
  			GL11.glTexEnvi(8960, 8704, GLX.combine);
  			GL11.glTexEnvi(8960, GLX.combineRgb, 8448);
+@@ -335,11 +335,11 @@
+ 
+ 	protected void method_5777(T livingEntity, float f, float g, float h) {
+ 		GlStateManager.rotate(180.0F - g, 0.0F, 1.0F, 0.0F);
+ 		if (livingEntity.deathTime > 0) {
+ 			float i = ((float)livingEntity.deathTime + h - 1.0F) / 20.0F * 1.6F;
+-			i = MathHelper.sqrt(i);
++			i = Mth.sqrt(i);
+ 			if (i > 1.0F) {
+ 				i = 1.0F;
+ 			}
+ 
+ 			GlStateManager.rotate(i * this.method_5771(livingEntity), 0.0F, 0.0F, 1.0F);

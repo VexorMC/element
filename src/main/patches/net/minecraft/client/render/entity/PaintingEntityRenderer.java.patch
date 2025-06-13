@@ -1,6 +1,6 @@
 --- PaintingEntityRenderer.java
 +++ PaintingEntityRenderer.java
-@@ -1,9 +1,9 @@
+@@ -1,17 +1,17 @@
  package net.minecraft.client.render.entity;
  
 -import com.mojang.blaze3d.platform.GLX;
@@ -12,3 +12,48 @@
  import net.minecraft.client.render.VertexFormats;
  import net.minecraft.entity.decoration.painting.PaintingEntity;
  import net.minecraft.util.Identifier;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class PaintingEntityRenderer extends EntityRenderer<PaintingEntity> {
+ 	private static final Identifier field_6511 = new Identifier("textures/painting/paintings_kristoffer_zetterstrand.png");
+ 
+ 	public PaintingEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
+@@ -96,28 +96,28 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	private void method_1576(PaintingEntity paintingEntity, float f, float g) {
+-		int i = MathHelper.floor(paintingEntity.x);
+-		int j = MathHelper.floor(paintingEntity.y + (double)(g / 16.0F));
+-		int k = MathHelper.floor(paintingEntity.z);
++		int i = Mth.floor(paintingEntity.x);
++		int j = Mth.floor(paintingEntity.y + (double)(g / 16.0F));
++		int k = Mth.floor(paintingEntity.z);
+ 		Direction direction = paintingEntity.direction;
+ 		if (direction == Direction.NORTH) {
+-			i = MathHelper.floor(paintingEntity.x + (double)(f / 16.0F));
++			i = Mth.floor(paintingEntity.x + (double)(f / 16.0F));
+ 		}
+ 
+ 		if (direction == Direction.WEST) {
+-			k = MathHelper.floor(paintingEntity.z - (double)(f / 16.0F));
++			k = Mth.floor(paintingEntity.z - (double)(f / 16.0F));
+ 		}
+ 
+ 		if (direction == Direction.SOUTH) {
+-			i = MathHelper.floor(paintingEntity.x - (double)(f / 16.0F));
++			i = Mth.floor(paintingEntity.x - (double)(f / 16.0F));
+ 		}
+ 
+ 		if (direction == Direction.EAST) {
+-			k = MathHelper.floor(paintingEntity.z + (double)(f / 16.0F));
++			k = Mth.floor(paintingEntity.z + (double)(f / 16.0F));
+ 		}
+ 
+ 		int l = this.dispatcher.world.getLight(new BlockPos(i, j, k), 0);
+ 		int m = l % 65536;
+ 		int n = l / 65536;

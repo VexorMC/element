@@ -12,3 +12,114 @@
  import net.minecraft.client.gui.screen.world.CreateWorldScreen;
  import net.minecraft.client.gui.widget.ButtonWidget;
  import net.minecraft.client.gui.widget.PagedEntryListWidget;
+@@ -13,11 +13,11 @@
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.render.Tessellator;
+ import net.minecraft.client.render.VertexFormats;
+ import net.minecraft.client.resource.language.I18n;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.biome.Biome;
+ import net.minecraft.world.gen.CustomizedWorldProperties;
+ 
+ public class CustomizeWorldScreen extends Screen implements SliderWidget.LabelSupplier, PagedEntryListWidget.Listener {
+ 	private CreateWorldScreen parent;
+@@ -384,56 +384,56 @@
+ 		}
+ 
+ 		float g = 0.0F;
+ 		switch (i) {
+ 			case 132:
+-				g = this.props.mainNoiseScaleX = MathHelper.clamp(f, 1.0F, 5000.0F);
++				g = this.props.mainNoiseScaleX = Mth.clamp(f, 1.0F, 5000.0F);
+ 				break;
+ 			case 133:
+-				g = this.props.mainNoiseScaleY = MathHelper.clamp(f, 1.0F, 5000.0F);
++				g = this.props.mainNoiseScaleY = Mth.clamp(f, 1.0F, 5000.0F);
+ 				break;
+ 			case 134:
+-				g = this.props.mainNoiseScaleZ = MathHelper.clamp(f, 1.0F, 5000.0F);
++				g = this.props.mainNoiseScaleZ = Mth.clamp(f, 1.0F, 5000.0F);
+ 				break;
+ 			case 135:
+-				g = this.props.depthNoiseScaleX = MathHelper.clamp(f, 1.0F, 2000.0F);
++				g = this.props.depthNoiseScaleX = Mth.clamp(f, 1.0F, 2000.0F);
+ 				break;
+ 			case 136:
+-				g = this.props.depthNoiseScaleZ = MathHelper.clamp(f, 1.0F, 2000.0F);
++				g = this.props.depthNoiseScaleZ = Mth.clamp(f, 1.0F, 2000.0F);
+ 				break;
+ 			case 137:
+-				g = this.props.depthNoiseScaleExponent = MathHelper.clamp(f, 0.01F, 20.0F);
++				g = this.props.depthNoiseScaleExponent = Mth.clamp(f, 0.01F, 20.0F);
+ 				break;
+ 			case 138:
+-				g = this.props.baseSize = MathHelper.clamp(f, 1.0F, 25.0F);
++				g = this.props.baseSize = Mth.clamp(f, 1.0F, 25.0F);
+ 				break;
+ 			case 139:
+-				g = this.props.coordinateScale = MathHelper.clamp(f, 1.0F, 6000.0F);
++				g = this.props.coordinateScale = Mth.clamp(f, 1.0F, 6000.0F);
+ 				break;
+ 			case 140:
+-				g = this.props.heightScale = MathHelper.clamp(f, 1.0F, 6000.0F);
++				g = this.props.heightScale = Mth.clamp(f, 1.0F, 6000.0F);
+ 				break;
+ 			case 141:
+-				g = this.props.stretchY = MathHelper.clamp(f, 0.01F, 50.0F);
++				g = this.props.stretchY = Mth.clamp(f, 0.01F, 50.0F);
+ 				break;
+ 			case 142:
+-				g = this.props.upperLimitScale = MathHelper.clamp(f, 1.0F, 5000.0F);
++				g = this.props.upperLimitScale = Mth.clamp(f, 1.0F, 5000.0F);
+ 				break;
+ 			case 143:
+-				g = this.props.lowerLimitScale = MathHelper.clamp(f, 1.0F, 5000.0F);
++				g = this.props.lowerLimitScale = Mth.clamp(f, 1.0F, 5000.0F);
+ 				break;
+ 			case 144:
+-				g = this.props.biomeDepthWeight = MathHelper.clamp(f, 1.0F, 20.0F);
++				g = this.props.biomeDepthWeight = Mth.clamp(f, 1.0F, 20.0F);
+ 				break;
+ 			case 145:
+-				g = this.props.biomeDepthOffset = MathHelper.clamp(f, 0.0F, 20.0F);
++				g = this.props.biomeDepthOffset = Mth.clamp(f, 0.0F, 20.0F);
+ 				break;
+ 			case 146:
+-				g = this.props.biomeScaleWeight = MathHelper.clamp(f, 1.0F, 20.0F);
++				g = this.props.biomeScaleWeight = Mth.clamp(f, 1.0F, 20.0F);
+ 				break;
+ 			case 147:
+-				g = this.props.biomeScaleOffset = MathHelper.clamp(f, 0.0F, 20.0F);
++				g = this.props.biomeScaleOffset = Mth.clamp(f, 0.0F, 20.0F);
+ 		}
+ 
+ 		if (g != f && f != 0.0F) {
+ 			((TextFieldWidget)this.settingsWidget.getWidget(i)).setText(this.getFormattedValue(i, g));
+ 		}
+@@ -852,22 +852,22 @@
+ 						DrawableHelper drawableHelper = dualDrawableEntry.getFirst();
+ 						if (drawableHelper instanceof ButtonWidget) {
+ 							ButtonWidget buttonWidget2 = (ButtonWidget)drawableHelper;
+ 							if (buttonWidget2 instanceof SliderWidget) {
+ 								float f = ((SliderWidget)buttonWidget2).getProgress() * (0.75F + this.random.nextFloat() * 0.5F) + (this.random.nextFloat() * 0.1F - 0.05F);
+-								((SliderWidget)buttonWidget2).setSliderProgress(MathHelper.clamp(f, 0.0F, 1.0F));
++								((SliderWidget)buttonWidget2).setSliderProgress(Mth.clamp(f, 0.0F, 1.0F));
+ 							} else if (buttonWidget2 instanceof SwitchWidget) {
+ 								((SwitchWidget)buttonWidget2).setValue(this.random.nextBoolean());
+ 							}
+ 						}
+ 
+ 						DrawableHelper drawableHelper2 = dualDrawableEntry.getSecond();
+ 						if (drawableHelper2 instanceof ButtonWidget) {
+ 							ButtonWidget buttonWidget3 = (ButtonWidget)drawableHelper2;
+ 							if (buttonWidget3 instanceof SliderWidget) {
+ 								float g = ((SliderWidget)buttonWidget3).getProgress() * (0.75F + this.random.nextFloat() * 0.5F) + (this.random.nextFloat() * 0.1F - 0.05F);
+-								((SliderWidget)buttonWidget3).setSliderProgress(MathHelper.clamp(g, 0.0F, 1.0F));
++								((SliderWidget)buttonWidget3).setSliderProgress(Mth.clamp(g, 0.0F, 1.0F));
+ 							} else if (buttonWidget3 instanceof SwitchWidget) {
+ 								((SwitchWidget)buttonWidget3).setValue(this.random.nextBoolean());
+ 							}
+ 						}
+ 					}

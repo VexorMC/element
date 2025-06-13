@@ -1,0 +1,46 @@
+--- ModelRotation.java
++++ ModelRotation.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.client.render.model;
+ 
+ import com.google.common.collect.Maps;
+ import java.util.Map;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.lwjgl.util.vector.Matrix4f;
+ import org.lwjgl.util.vector.Vector3f;
+ 
+ public enum ModelRotation {
+ 	X0_Y0(0, 0),
+@@ -39,15 +39,15 @@
+ 		this.index = getIndex(j, k);
+ 		this.matrix = new Matrix4f();
+ 		Matrix4f matrix4f = new Matrix4f();
+ 		matrix4f.setIdentity();
+ 		Matrix4f.rotate((float)(-j) * (float) (Math.PI / 180.0), new Vector3f(1.0F, 0.0F, 0.0F), matrix4f, matrix4f);
+-		this.quarterX = MathHelper.abs(j / 90);
++		this.quarterX = Mth.abs(j / 90);
+ 		Matrix4f matrix4f2 = new Matrix4f();
+ 		matrix4f2.setIdentity();
+ 		Matrix4f.rotate((float)(-k) * (float) (Math.PI / 180.0), new Vector3f(0.0F, 1.0F, 0.0F), matrix4f2, matrix4f2);
+-		this.quarterY = MathHelper.abs(k / 90);
++		this.quarterY = Mth.abs(k / 90);
+ 		Matrix4f.mul(matrix4f2, matrix4f, this.matrix);
+ 	}
+ 
+ 	public Matrix4f getMatrix() {
+ 		return this.matrix;
+@@ -87,11 +87,11 @@
+ 
+ 		return j;
+ 	}
+ 
+ 	public static ModelRotation get(int i, int j) {
+-		return (ModelRotation)ROTATIONS.get(getIndex(MathHelper.floorMod(i, 360), MathHelper.floorMod(j, 360)));
++		return (ModelRotation)ROTATIONS.get(getIndex(Mth.floorMod(i, 360), Mth.floorMod(j, 360)));
+ 	}
+ 
+ 	static {
+ 		for (ModelRotation modelRotation : values()) {
+ 			ROTATIONS.put(modelRotation.index, modelRotation);

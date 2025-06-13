@@ -1,0 +1,41 @@
+--- FireworksSparkParticle.java
++++ FireworksSparkParticle.java
+@@ -5,11 +5,11 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.item.DyeItem;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.nbt.NbtList;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class FireworksSparkParticle {
+ 	public static class Explosion extends Particle {
+ 		private int textureIndex = 160;
+@@ -295,11 +295,11 @@
+ 				for (int k = -i; k <= i; k++) {
+ 					for (int l = -i; l <= i; l++) {
+ 						double h = (double)k + (this.random.nextDouble() - this.random.nextDouble()) * 0.5;
+ 						double m = (double)j + (this.random.nextDouble() - this.random.nextDouble()) * 0.5;
+ 						double n = (double)l + (this.random.nextDouble() - this.random.nextDouble()) * 0.5;
+-						double o = (double)MathHelper.sqrt(h * h + m * m + n * n) / d + this.random.nextGaussian() * 0.05;
++						double o = (double) Mth.sqrt(h * h + m * m + n * n) / d + this.random.nextGaussian() * 0.05;
+ 						this.addExplosionParticle(e, f, g, h / o, m / o, n / o, is, js, bl, bl2);
+ 						if (j != -i && j != i && k != -i && k != i) {
+ 							l += i * 2 - 1;
+ 						}
+ 					}
+@@ -368,11 +368,11 @@
+ 		public void draw(BufferBuilder bufferBuilder, Entity entity, float f, float g, float h, float i, float j, float k) {
+ 			float l = 0.25F;
+ 			float m = 0.5F;
+ 			float n = 0.125F;
+ 			float o = 0.375F;
+-			float p = 7.1F * MathHelper.sin(((float)this.age + f - 1.0F) * 0.25F * (float) Math.PI);
++			float p = 7.1F * Mth.sin(((float)this.age + f - 1.0F) * 0.25F * (float) Math.PI);
+ 			this.alpha = 0.6F - ((float)this.age + f - 1.0F) * 0.25F * 0.5F;
+ 			float q = (float)(this.prevX + (this.x - this.prevX) * (double)f - field_1722);
+ 			float r = (float)(this.prevY + (this.y - this.prevY) * (double)f - field_1723);
+ 			float s = (float)(this.prevZ + (this.z - this.prevZ) * (double)f - field_1724);
+ 			int t = this.getLightmapCoordinates(f);

@@ -1,0 +1,28 @@
+--- ForestBiome.java
++++ ForestBiome.java
+@@ -3,11 +3,11 @@
+ import java.util.Random;
+ import net.minecraft.block.DoublePlantBlock;
+ import net.minecraft.block.FlowerBlock;
+ import net.minecraft.entity.passive.WolfEntity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ import net.minecraft.world.gen.feature.BirchTreeFeature;
+ import net.minecraft.world.gen.feature.DarkOakTreeFeature;
+ import net.minecraft.world.gen.feature.FoliageFeature;
+ import net.minecraft.world.gen.feature.HugeMushroomFeature;
+@@ -71,11 +71,11 @@
+ 	}
+ 
+ 	@Override
+ 	public FlowerBlock.FlowerType pickFlower(Random random, BlockPos blockPos) {
+ 		if (this.field_7237 == 1) {
+-			double d = MathHelper.clamp((1.0 + FOLIAGE_NOISE.noise((double)blockPos.getX() / 48.0, (double)blockPos.getZ() / 48.0)) / 2.0, 0.0, 0.9999);
++			double d = Mth.clamp((1.0 + FOLIAGE_NOISE.noise((double)blockPos.getX() / 48.0, (double)blockPos.getZ() / 48.0)) / 2.0, 0.0, 0.9999);
+ 			FlowerBlock.FlowerType flowerType = FlowerBlock.FlowerType.values()[(int)(d * (double)FlowerBlock.FlowerType.values().length)];
+ 			return flowerType == FlowerBlock.FlowerType.BLUE_ORCHID ? FlowerBlock.FlowerType.POPPY : flowerType;
+ 		} else {
+ 			return super.pickFlower(random, blockPos);
+ 		}

@@ -14,3 +14,61 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockState;
  import net.minecraft.client.ClientBrandRetriever;
+@@ -19,11 +19,11 @@
+ import net.minecraft.util.Formatting;
+ import net.minecraft.util.MetricsData;
+ import net.minecraft.util.hit.BlockHitResult;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.LightType;
+ import net.minecraft.world.LocalDifficulty;
+ import net.minecraft.world.chunk.Chunk;
+ import net.minecraft.world.level.LevelGeneratorType;
+ import org.lwjgl.opengl.Display;
+@@ -140,11 +140,11 @@
+ 						blockPos.getZ() & 15,
+ 						blockPos.getX() >> 4,
+ 						blockPos.getY() >> 4,
+ 						blockPos.getZ() >> 4
+ 					),
+-					String.format("Facing: %s (%s) (%.1f / %.1f)", direction, string, MathHelper.wrapDegrees(entity.yaw), MathHelper.wrapDegrees(entity.pitch))
++					String.format("Facing: %s (%s) (%.1f / %.1f)", direction, string, Mth.wrapDegrees(entity.yaw), Mth.wrapDegrees(entity.pitch))
+ 				}
+ 			);
+ 			if (this.client.world != null && this.client.world.blockExists(blockPos)) {
+ 				Chunk chunk = this.client.world.getChunk(blockPos);
+ 				list.add("Biome: " + chunk.getBiomeAt(blockPos, this.client.world.getBiomeSource()).name);
+@@ -239,11 +239,11 @@
+ 		int l = 0;
+ 		fill(0, window.getHeight() - 60, 240, window.getHeight(), -1873784752);
+ 
+ 		while (k != j) {
+ 			int m = metricsData.getFps(ls[k], 30);
+-			int n = this.getMetricsLineColor(MathHelper.clamp(m, 0, 60), 0, 30, 60);
++			int n = this.getMetricsLineColor(Mth.clamp(m, 0, 60), 0, 30, 60);
+ 			this.drawVerticalLine(l, window.getHeight(), window.getHeight() - m, n);
+ 			l++;
+ 			k = metricsData.wrapIndex(k + 1);
+ 		}
+ 
+@@ -274,14 +274,14 @@
+ 		int n = i & 0xFF;
+ 		int o = j >> 24 & 0xFF;
+ 		int p = j >> 16 & 0xFF;
+ 		int q = j >> 8 & 0xFF;
+ 		int r = j & 0xFF;
+-		int s = MathHelper.clamp((int)((float)k + (float)(o - k) * f), 0, 255);
+-		int t = MathHelper.clamp((int)((float)l + (float)(p - l) * f), 0, 255);
+-		int u = MathHelper.clamp((int)((float)m + (float)(q - m) * f), 0, 255);
+-		int v = MathHelper.clamp((int)((float)n + (float)(r - n) * f), 0, 255);
++		int s = Mth.clamp((int)((float)k + (float)(o - k) * f), 0, 255);
++		int t = Mth.clamp((int)((float)l + (float)(p - l) * f), 0, 255);
++		int u = Mth.clamp((int)((float)m + (float)(q - m) * f), 0, 255);
++		int v = Mth.clamp((int)((float)n + (float)(r - n) * f), 0, 255);
+ 		return s << 24 | t << 16 | u << 8 | v;
+ 	}
+ 
+ 	private static long toMiB(long l) {
+ 		return l / 1024L / 1024L;

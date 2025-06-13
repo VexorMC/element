@@ -1,0 +1,177 @@
+--- AbstractArrowEntity.java
++++ AbstractArrowEntity.java
+@@ -18,11 +18,11 @@
+ import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
+ import net.minecraft.util.Identifier;
+ import net.minecraft.util.hit.BlockHitResult;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ 
+ public class AbstractArrowEntity extends Entity implements Projectile {
+ 	private int blockX = -1;
+@@ -62,14 +62,14 @@
+ 
+ 		this.y = livingEntity.y + (double)livingEntity.getEyeHeight() - 0.1F;
+ 		double d = livingEntity2.x - livingEntity.x;
+ 		double e = livingEntity2.getBoundingBox().minY + (double)(livingEntity2.height / 3.0F) - this.y;
+ 		double h = livingEntity2.z - livingEntity.z;
+-		double i = (double)MathHelper.sqrt(d * d + h * h);
++		double i = (double) Mth.sqrt(d * d + h * h);
+ 		if (!(i < 1.0E-7)) {
+-			float j = (float)(MathHelper.atan2(h, d) * 180.0 / (float) Math.PI) - 90.0F;
+-			float k = (float)(-(MathHelper.atan2(e, i) * 180.0 / (float) Math.PI));
++			float j = (float)(Mth.atan2(h, d) * 180.0 / (float) Math.PI) - 90.0F;
++			float k = (float)(-(Mth.atan2(e, i) * 180.0 / (float) Math.PI));
+ 			double l = d / i;
+ 			double m = h / i;
+ 			this.refreshPositionAndAngles(livingEntity.x + l, this.y, livingEntity.z + m, j, k);
+ 			float n = (float)(i * 0.2F);
+ 			this.setVelocity(d, e + (double)n, h, f, g);
+@@ -84,28 +84,28 @@
+ 			this.pickup = 1;
+ 		}
+ 
+ 		this.setBounds(0.5F, 0.5F);
+ 		this.refreshPositionAndAngles(livingEntity.x, livingEntity.y + (double)livingEntity.getEyeHeight(), livingEntity.z, livingEntity.yaw, livingEntity.pitch);
+-		this.x = this.x - (double)(MathHelper.cos(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
++		this.x = this.x - (double)(Mth.cos(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
+ 		this.y -= 0.1F;
+-		this.z = this.z - (double)(MathHelper.sin(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
++		this.z = this.z - (double)(Mth.sin(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
+ 		this.updatePosition(this.x, this.y, this.z);
+-		this.velocityX = (double)(-MathHelper.sin(this.yaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.pitch / 180.0F * (float) Math.PI));
+-		this.velocityZ = (double)(MathHelper.cos(this.yaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.pitch / 180.0F * (float) Math.PI));
+-		this.velocityY = (double)(-MathHelper.sin(this.pitch / 180.0F * (float) Math.PI));
++		this.velocityX = (double)(-Mth.sin(this.yaw / 180.0F * (float) Math.PI) * Mth.cos(this.pitch / 180.0F * (float) Math.PI));
++		this.velocityZ = (double)(Mth.cos(this.yaw / 180.0F * (float) Math.PI) * Mth.cos(this.pitch / 180.0F * (float) Math.PI));
++		this.velocityY = (double)(-Mth.sin(this.pitch / 180.0F * (float) Math.PI));
+ 		this.setVelocity(this.velocityX, this.velocityY, this.velocityZ, f * 1.5F, 1.0F);
+ 	}
+ 
+ 	@Override
+ 	protected void initDataTracker() {
+ 		this.dataTracker.track(16, (byte)0);
+ 	}
+ 
+ 	@Override
+ 	public void setVelocity(double d, double e, double f, float g, float h) {
+-		float i = MathHelper.sqrt(d * d + e * e + f * f);
++		float i = Mth.sqrt(d * d + e * e + f * f);
+ 		d /= (double)i;
+ 		e /= (double)i;
+ 		f /= (double)i;
+ 		d += this.random.nextGaussian() * (double)(this.random.nextBoolean() ? -1 : 1) * 0.0075F * (double)h;
+ 		e += this.random.nextGaussian() * (double)(this.random.nextBoolean() ? -1 : 1) * 0.0075F * (double)h;
+@@ -114,13 +114,13 @@
+ 		e *= (double)g;
+ 		f *= (double)g;
+ 		this.velocityX = d;
+ 		this.velocityY = e;
+ 		this.velocityZ = f;
+-		float j = MathHelper.sqrt(d * d + f * f);
+-		this.prevYaw = this.yaw = (float)(MathHelper.atan2(d, f) * 180.0 / (float) Math.PI);
+-		this.prevPitch = this.pitch = (float)(MathHelper.atan2(e, (double)j) * 180.0 / (float) Math.PI);
++		float j = Mth.sqrt(d * d + f * f);
++		this.prevYaw = this.yaw = (float)(Mth.atan2(d, f) * 180.0 / (float) Math.PI);
++		this.prevPitch = this.pitch = (float)(Mth.atan2(e, (double)j) * 180.0 / (float) Math.PI);
+ 		this.life = 0;
+ 	}
+ 
+ 	@Override
+ 	public void updateTrackedPositionAndAngles(double d, double e, double f, float g, float h, int i, boolean bl) {
+@@ -132,13 +132,13 @@
+ 	public void setVelocityClient(double d, double e, double f) {
+ 		this.velocityX = d;
+ 		this.velocityY = e;
+ 		this.velocityZ = f;
+ 		if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
+-			float g = MathHelper.sqrt(d * d + f * f);
+-			this.prevYaw = this.yaw = (float)(MathHelper.atan2(d, f) * 180.0 / (float) Math.PI);
+-			this.prevPitch = this.pitch = (float)(MathHelper.atan2(e, (double)g) * 180.0 / (float) Math.PI);
++			float g = Mth.sqrt(d * d + f * f);
++			this.prevYaw = this.yaw = (float)(Mth.atan2(d, f) * 180.0 / (float) Math.PI);
++			this.prevPitch = this.pitch = (float)(Mth.atan2(e, (double)g) * 180.0 / (float) Math.PI);
+ 			this.prevPitch = this.pitch;
+ 			this.prevYaw = this.yaw;
+ 			this.refreshPositionAndAngles(this.x, this.y, this.z, this.yaw, this.pitch);
+ 			this.life = 0;
+ 		}
+@@ -146,13 +146,13 @@
+ 
+ 	@Override
+ 	public void tick() {
+ 		super.tick();
+ 		if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
+-			float f = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+-			this.prevYaw = this.yaw = (float)(MathHelper.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
+-			this.prevPitch = this.pitch = (float)(MathHelper.atan2(this.velocityY, (double)f) * 180.0 / (float) Math.PI);
++			float f = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
++			this.prevYaw = this.yaw = (float)(Mth.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
++			this.prevPitch = this.pitch = (float)(Mth.atan2(this.velocityY, (double)f) * 180.0 / (float) Math.PI);
+ 		}
+ 
+ 		BlockPos blockPos = new BlockPos(this.blockX, this.blockY, this.blockZ);
+ 		BlockState blockState = this.world.getBlockState(blockPos);
+ 		Block block = blockState.getBlock();
+@@ -225,12 +225,12 @@
+ 				}
+ 			}
+ 
+ 			if (blockHitResult != null) {
+ 				if (blockHitResult.entity != null) {
+-					float h = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
+-					int k = MathHelper.ceil((double)h * this.damage);
++					float h = Mth.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
++					int k = Mth.ceil((double)h * this.damage);
+ 					if (this.isCritical()) {
+ 						k += this.random.nextInt(k / 2 + 2);
+ 					}
+ 
+ 					DamageSource damageSource;
+@@ -250,11 +250,11 @@
+ 							if (!this.world.isClient) {
+ 								livingEntity.setStuckArrows(livingEntity.getStuckArrows() + 1);
+ 							}
+ 
+ 							if (this.punch > 0) {
+-								float l = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
++								float l = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+ 								if (l > 0.0F) {
+ 									blockHitResult.entity.addVelocity(this.velocityX * (double)this.punch * 0.6F / (double)l, 0.1, this.velocityZ * (double)this.punch * 0.6F / (double)l);
+ 								}
+ 							}
+ 
+@@ -292,11 +292,11 @@
+ 					this.block = blockState2.getBlock();
+ 					this.blockData = this.block.getData(blockState2);
+ 					this.velocityX = (double)((float)(blockHitResult.pos.x - this.x));
+ 					this.velocityY = (double)((float)(blockHitResult.pos.y - this.y));
+ 					this.velocityZ = (double)((float)(blockHitResult.pos.z - this.z));
+-					float g = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
++					float g = Mth.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
+ 					this.x = this.x - this.velocityX / (double)g * 0.05F;
+ 					this.y = this.y - this.velocityY / (double)g * 0.05F;
+ 					this.z = this.z - this.velocityZ / (double)g * 0.05F;
+ 					this.playSound("random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+ 					this.inGround = true;
+@@ -324,13 +324,13 @@
+ 			}
+ 
+ 			this.x = this.x + this.velocityX;
+ 			this.y = this.y + this.velocityY;
+ 			this.z = this.z + this.velocityZ;
+-			float hx = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+-			this.yaw = (float)(MathHelper.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
+-			this.pitch = (float)(MathHelper.atan2(this.velocityY, (double)hx) * 180.0 / (float) Math.PI);
++			float hx = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
++			this.yaw = (float)(Mth.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
++			this.pitch = (float)(Mth.atan2(this.velocityY, (double)hx) * 180.0 / (float) Math.PI);
+ 
+ 			while (this.pitch - this.prevPitch < -180.0F) {
+ 				this.prevPitch -= 360.0F;
+ 			}
+ 

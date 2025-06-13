@@ -1,0 +1,28 @@
+--- CauldronBlock.java
++++ CauldronBlock.java
+@@ -18,11 +18,11 @@
+ import net.minecraft.state.StateManager;
+ import net.minecraft.state.property.IntProperty;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class CauldronBlock extends Block {
+ 	public static final IntProperty LEVEL = IntProperty.of("level", 0, 3);
+ 
+@@ -157,11 +157,11 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	public void setLevel(World world, BlockPos blockPos, BlockState blockState, int i) {
+-		world.setBlockState(blockPos, blockState.with(LEVEL, MathHelper.clamp(i, 0, 3)), 2);
++		world.setBlockState(blockPos, blockState.with(LEVEL, Mth.clamp(i, 0, 3)), 2);
+ 		world.updateHorizontalAdjacent(blockPos, this);
+ 	}
+ 
+ 	@Override
+ 	public void onRainTick(World world, BlockPos blockPos) {

@@ -1,0 +1,39 @@
+--- Transformation.java
++++ Transformation.java
+@@ -6,11 +6,11 @@
+ import com.google.gson.JsonElement;
+ import com.google.gson.JsonObject;
+ import com.google.gson.JsonParseException;
+ import java.lang.reflect.Type;
+ import net.minecraft.util.JsonHelper;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.lwjgl.util.vector.Vector3f;
+ 
+ public class Transformation {
+ 	public static final Transformation DEFAULT = new Transformation(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F));
+ 	public final Vector3f rotation;
+@@ -52,17 +52,17 @@
+ 		public Transformation deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+ 			JsonObject jsonObject = jsonElement.getAsJsonObject();
+ 			Vector3f vector3f = this.deserializeVector3f(jsonObject, "rotation", rotation);
+ 			Vector3f vector3f2 = this.deserializeVector3f(jsonObject, "translation", translation);
+ 			vector3f2.scale(0.0625F);
+-			vector3f2.x = MathHelper.clamp(vector3f2.x, -1.5F, 1.5F);
+-			vector3f2.y = MathHelper.clamp(vector3f2.y, -1.5F, 1.5F);
+-			vector3f2.z = MathHelper.clamp(vector3f2.z, -1.5F, 1.5F);
++			vector3f2.x = Mth.clamp(vector3f2.x, -1.5F, 1.5F);
++			vector3f2.y = Mth.clamp(vector3f2.y, -1.5F, 1.5F);
++			vector3f2.z = Mth.clamp(vector3f2.z, -1.5F, 1.5F);
+ 			Vector3f vector3f3 = this.deserializeVector3f(jsonObject, "scale", scale);
+-			vector3f3.x = MathHelper.clamp(vector3f3.x, -4.0F, 4.0F);
+-			vector3f3.y = MathHelper.clamp(vector3f3.y, -4.0F, 4.0F);
+-			vector3f3.z = MathHelper.clamp(vector3f3.z, -4.0F, 4.0F);
++			vector3f3.x = Mth.clamp(vector3f3.x, -4.0F, 4.0F);
++			vector3f3.y = Mth.clamp(vector3f3.y, -4.0F, 4.0F);
++			vector3f3.z = Mth.clamp(vector3f3.z, -4.0F, 4.0F);
+ 			return new Transformation(vector3f, vector3f2, vector3f3);
+ 		}
+ 
+ 		private Vector3f deserializeVector3f(JsonObject jsonObject, String string, Vector3f vector3f) {
+ 			if (!jsonObject.has(string)) {

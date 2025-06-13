@@ -1,0 +1,28 @@
+--- PlaySoundIdS2CPacket.java
++++ PlaySoundIdS2CPacket.java
+@@ -2,11 +2,11 @@
+ 
+ import java.io.IOException;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.listener.ClientPlayPacketListener;
+ import net.minecraft.util.PacketByteBuf;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.apache.commons.lang3.Validate;
+ 
+ public class PlaySoundIdS2CPacket implements Packet<ClientPlayPacketListener> {
+ 	private String name;
+ 	private int fixedX;
+@@ -24,11 +24,11 @@
+ 		this.fixedX = (int)(d * 8.0);
+ 		this.fixedY = (int)(e * 8.0);
+ 		this.fixedZ = (int)(f * 8.0);
+ 		this.volume = g;
+ 		this.pitch = (int)(h * 63.0F);
+-		h = MathHelper.clamp(h, 0.0F, 255.0F);
++		h = Mth.clamp(h, 0.0F, 255.0F);
+ 	}
+ 
+ 	@Override
+ 	public void read(PacketByteBuf packetByteBuf) throws IOException {
+ 		this.name = packetByteBuf.readString(256);

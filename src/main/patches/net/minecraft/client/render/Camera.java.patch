@@ -1,6 +1,6 @@
 --- Camera.java
 +++ Camera.java
-@@ -1,8 +1,8 @@
+@@ -1,18 +1,18 @@
  package net.minecraft.client.render;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
@@ -10,7 +10,18 @@
  import net.minecraft.block.AbstractFluidBlock;
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockState;
-@@ -29,11 +29,11 @@
+ import net.minecraft.client.util.GlAllocationUtils;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ import org.lwjgl.opengl.GL11;
+ import org.lwjgl.util.glu.GLU;
+ 
+@@ -29,23 +29,23 @@
  	private static float rotationXY;
  
  	public static void update(PlayerEntity playerEntity, boolean bl) {
@@ -23,3 +34,20 @@
  		GLU.gluUnProject(f, g, 0.0F, MODEL_MATRIX, PROJECTION_MATRIX, VIEWPORT, OBJECT_POS);
  		position = new Vec3d((double)OBJECT_POS.get(0), (double)OBJECT_POS.get(1), (double)OBJECT_POS.get(2));
  		int i = bl ? 1 : 0;
+ 		float h = playerEntity.pitch;
+ 		float j = playerEntity.yaw;
+-		rotationX = MathHelper.cos(j * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationZ = MathHelper.sin(j * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationYZ = -rotationZ * MathHelper.sin(h * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationXY = rotationX * MathHelper.sin(h * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationXZ = MathHelper.cos(h * (float) Math.PI / 180.0F);
++		rotationX = Mth.cos(j * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
++		rotationZ = Mth.sin(j * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
++		rotationYZ = -rotationZ * Mth.sin(h * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
++		rotationXY = rotationX * Mth.sin(h * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
++		rotationXZ = Mth.cos(h * (float) Math.PI / 180.0F);
+ 	}
+ 
+ 	public static Vec3d getEntityPos(Entity entity, double d) {
+ 		double e = entity.prevX + (entity.x - entity.prevX) * d;
+ 		double f = entity.prevY + (entity.y - entity.prevY) * d;

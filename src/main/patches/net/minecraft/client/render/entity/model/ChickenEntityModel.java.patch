@@ -1,12 +1,30 @@
 --- ChickenEntityModel.java
 +++ ChickenEntityModel.java
-@@ -1,8 +1,8 @@
+@@ -1,11 +1,11 @@
  package net.minecraft.client.render.entity.model;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
 +import com.mojang.blaze3d.platform.legacy.GlStateManager;
  import net.minecraft.client.render.model.ModelPart;
  import net.minecraft.entity.Entity;
- import net.minecraft.util.math.MathHelper;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
  
  public class ChickenEntityModel extends EntityModel {
+ 	public ModelPart head;
+ 	public ModelPart torso;
+ 	public ModelPart rightLeg;
+@@ -82,11 +82,11 @@
+ 		this.beak.posX = this.head.posX;
+ 		this.beak.posY = this.head.posY;
+ 		this.wattle.posX = this.head.posX;
+ 		this.wattle.posY = this.head.posY;
+ 		this.torso.posX = (float) (Math.PI / 2);
+-		this.rightLeg.posX = MathHelper.cos(f * 0.6662F) * 1.4F * g;
+-		this.leftLeg.posX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.4F * g;
++		this.rightLeg.posX = Mth.cos(f * 0.6662F) * 1.4F * g;
++		this.leftLeg.posX = Mth.cos(f * 0.6662F + (float) Math.PI) * 1.4F * g;
+ 		this.rightWing.posZ = h;
+ 		this.leftWing.posZ = -h;
+ 	}
+ }

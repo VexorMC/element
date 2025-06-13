@@ -1,0 +1,49 @@
+--- GhastEntity.java
++++ GhastEntity.java
+@@ -13,11 +13,11 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.Difficulty;
+ import net.minecraft.world.World;
+ 
+ public class GhastEntity extends FlyingEntity implements Monster {
+@@ -203,11 +203,11 @@
+ 				double e = this.targetY - this.ghast.y;
+ 				double f = this.targetZ - this.ghast.z;
+ 				double g = d * d + e * e + f * f;
+ 				if (this.collisionCheckCooldown-- <= 0) {
+ 					this.collisionCheckCooldown = this.collisionCheckCooldown + this.ghast.getRandom().nextInt(5) + 2;
+-					g = (double)MathHelper.sqrt(g);
++					g = (double) Mth.sqrt(g);
+ 					if (this.willCollide(this.targetX, this.targetY, this.targetZ, g)) {
+ 						this.ghast.velocityX += d / g * 0.1;
+ 						this.ghast.velocityY += e / g * 0.1;
+ 						this.ghast.velocityZ += f / g * 0.1;
+ 					} else {
+@@ -248,18 +248,18 @@
+ 		}
+ 
+ 		@Override
+ 		public void tick() {
+ 			if (this.ghast.getTarget() == null) {
+-				this.ghast.bodyYaw = this.ghast.yaw = -((float)MathHelper.atan2(this.ghast.velocityX, this.ghast.velocityZ)) * 180.0F / (float) Math.PI;
++				this.ghast.bodyYaw = this.ghast.yaw = -((float) Mth.atan2(this.ghast.velocityX, this.ghast.velocityZ)) * 180.0F / (float) Math.PI;
+ 			} else {
+ 				LivingEntity livingEntity = this.ghast.getTarget();
+ 				double d = 64.0;
+ 				if (livingEntity.squaredDistanceTo(this.ghast) < d * d) {
+ 					double e = livingEntity.x - this.ghast.x;
+ 					double f = livingEntity.z - this.ghast.z;
+-					this.ghast.bodyYaw = this.ghast.yaw = -((float)MathHelper.atan2(e, f)) * 180.0F / (float) Math.PI;
++					this.ghast.bodyYaw = this.ghast.yaw = -((float) Mth.atan2(e, f)) * 180.0F / (float) Math.PI;
+ 				}
+ 			}
+ 		}
+ 	}
+ 

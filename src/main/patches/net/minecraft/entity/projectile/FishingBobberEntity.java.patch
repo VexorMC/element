@@ -1,0 +1,211 @@
+--- FishingBobberEntity.java
++++ FishingBobberEntity.java
+@@ -23,11 +23,11 @@
+ import net.minecraft.util.WeightedRandomFishingLoot;
+ import net.minecraft.util.collection.Weighting;
+ import net.minecraft.util.hit.BlockHitResult;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ 
+ public class FishingBobberEntity extends Entity {
+ 	private static final List<WeightedRandomFishingLoot> JUNK_LOOT = Arrays.asList(
+@@ -104,18 +104,18 @@
+ 		this.ignoreCameraFrustum = true;
+ 		this.thrower = playerEntity;
+ 		this.thrower.fishHook = this;
+ 		this.setBounds(0.25F, 0.25F);
+ 		this.refreshPositionAndAngles(playerEntity.x, playerEntity.y + (double)playerEntity.getEyeHeight(), playerEntity.z, playerEntity.yaw, playerEntity.pitch);
+-		this.x = this.x - (double)(MathHelper.cos(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
++		this.x = this.x - (double)(Mth.cos(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
+ 		this.y -= 0.1F;
+-		this.z = this.z - (double)(MathHelper.sin(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
++		this.z = this.z - (double)(Mth.sin(this.yaw / 180.0F * (float) Math.PI) * 0.16F);
+ 		this.updatePosition(this.x, this.y, this.z);
+ 		float f = 0.4F;
+-		this.velocityX = (double)(-MathHelper.sin(this.yaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.pitch / 180.0F * (float) Math.PI) * f);
+-		this.velocityZ = (double)(MathHelper.cos(this.yaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.pitch / 180.0F * (float) Math.PI) * f);
+-		this.velocityY = (double)(-MathHelper.sin(this.pitch / 180.0F * (float) Math.PI) * f);
++		this.velocityX = (double)(-Mth.sin(this.yaw / 180.0F * (float) Math.PI) * Mth.cos(this.pitch / 180.0F * (float) Math.PI) * f);
++		this.velocityZ = (double)(Mth.cos(this.yaw / 180.0F * (float) Math.PI) * Mth.cos(this.pitch / 180.0F * (float) Math.PI) * f);
++		this.velocityY = (double)(-Mth.sin(this.pitch / 180.0F * (float) Math.PI) * f);
+ 		this.method_3230(this.velocityX, this.velocityY, this.velocityZ, 1.5F, 1.0F);
+ 	}
+ 
+ 	@Override
+ 	protected void initDataTracker() {
+@@ -131,11 +131,11 @@
+ 		e *= 64.0;
+ 		return d < e * e;
+ 	}
+ 
+ 	public void method_3230(double d, double e, double f, float g, float h) {
+-		float i = MathHelper.sqrt(d * d + e * e + f * f);
++		float i = Mth.sqrt(d * d + e * e + f * f);
+ 		d /= (double)i;
+ 		e /= (double)i;
+ 		f /= (double)i;
+ 		d += this.random.nextGaussian() * 0.0075F * (double)h;
+ 		e += this.random.nextGaussian() * 0.0075F * (double)h;
+@@ -144,13 +144,13 @@
+ 		e *= (double)g;
+ 		f *= (double)g;
+ 		this.velocityX = d;
+ 		this.velocityY = e;
+ 		this.velocityZ = f;
+-		float j = MathHelper.sqrt(d * d + f * f);
+-		this.prevYaw = this.yaw = (float)(MathHelper.atan2(d, f) * 180.0 / (float) Math.PI);
+-		this.prevPitch = this.pitch = (float)(MathHelper.atan2(e, (double)j) * 180.0 / (float) Math.PI);
++		float j = Mth.sqrt(d * d + f * f);
++		this.prevYaw = this.yaw = (float)(Mth.atan2(d, f) * 180.0 / (float) Math.PI);
++		this.prevPitch = this.pitch = (float)(Mth.atan2(e, (double)j) * 180.0 / (float) Math.PI);
+ 		this.removalTimer = 0;
+ 	}
+ 
+ 	@Override
+ 	public void updateTrackedPositionAndAngles(double d, double e, double f, float g, float h, int i, boolean bl) {
+@@ -177,11 +177,11 @@
+ 		super.tick();
+ 		if (this.field_4053 > 0) {
+ 			double d = this.x + (this.field_4054 - this.x) / (double)this.field_4053;
+ 			double e = this.y + (this.field_4055 - this.y) / (double)this.field_4053;
+ 			double f = this.z + (this.field_4056 - this.z) / (double)this.field_4053;
+-			double g = MathHelper.wrapDegrees(this.field_4057 - (double)this.yaw);
++			double g = Mth.wrapDegrees(this.field_4057 - (double)this.yaw);
+ 			this.yaw = (float)((double)this.yaw + g / (double)this.field_4053);
+ 			this.pitch = (float)((double)this.pitch + (this.field_4058 - (double)this.pitch) / (double)this.field_4053);
+ 			this.field_4053--;
+ 			this.updatePosition(d, e, f);
+ 			this.setRotation(this.yaw, this.pitch);
+@@ -278,13 +278,13 @@
+ 				}
+ 			}
+ 
+ 			if (!this.inGround) {
+ 				this.move(this.velocityX, this.velocityY, this.velocityZ);
+-				float l = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+-				this.yaw = (float)(MathHelper.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
+-				this.pitch = (float)(MathHelper.atan2(this.velocityY, (double)l) * 180.0 / (float) Math.PI);
++				float l = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
++				this.yaw = (float)(Mth.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
++				this.pitch = (float)(Mth.atan2(this.velocityY, (double)l) * 180.0 / (float) Math.PI);
+ 
+ 				while (this.pitch - this.prevPitch < -180.0F) {
+ 					this.prevPitch -= 360.0F;
+ 				}
+ 
+@@ -342,25 +342,25 @@
+ 					} else if (this.fishTravelCountdown > 0) {
+ 						this.fishTravelCountdown -= t;
+ 						if (this.fishTravelCountdown <= 0) {
+ 							this.velocityY -= 0.2F;
+ 							this.playSound("random.splash", 0.25F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
+-							float u = (float)MathHelper.floor(this.getBoundingBox().minY);
++							float u = (float) Mth.floor(this.getBoundingBox().minY);
+ 							serverWorld.addParticle(
+ 								ParticleType.BUBBLE, this.x, (double)(u + 1.0F), this.z, (int)(1.0F + this.width * 20.0F), (double)this.width, 0.0, (double)this.width, 0.2F
+ 							);
+ 							serverWorld.addParticle(
+ 								ParticleType.WATER_WAKE, this.x, (double)(u + 1.0F), this.z, (int)(1.0F + this.width * 20.0F), (double)this.width, 0.0, (double)this.width, 0.2F
+ 							);
+-							this.hookCountdown = MathHelper.nextInt(this.random, 10, 30);
++							this.hookCountdown = Mth.nextInt(this.random, 10, 30);
+ 						} else {
+ 							this.fishAngle = (float)((double)this.fishAngle + this.random.nextGaussian() * 4.0);
+ 							float u = this.fishAngle * (float) (Math.PI / 180.0);
+-							float v = MathHelper.sin(u);
+-							float w = MathHelper.cos(u);
++							float v = Mth.sin(u);
++							float w = Mth.cos(u);
+ 							double s = this.x + (double)(v * (float)this.fishTravelCountdown * 0.1F);
+-							double x = (double)((float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F);
++							double x = (double)((float) Mth.floor(this.getBoundingBox().minY) + 1.0F);
+ 							double y = this.z + (double)(w * (float)this.fishTravelCountdown * 0.1F);
+ 							Block block = serverWorld.getBlockState(new BlockPos((int)s, (int)x - 1, (int)y)).getBlock();
+ 							if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+ 								if (this.random.nextFloat() < 0.15F) {
+ 									serverWorld.addParticle(ParticleType.BUBBLE, s, x - 0.1F, y, 1, (double)v, 0.1, (double)w, 0.0);
+@@ -382,27 +382,27 @@
+ 						} else if (this.waitCountdown < 60) {
+ 							u = (float)((double)u + (double)(60 - this.waitCountdown) * 0.01);
+ 						}
+ 
+ 						if (this.random.nextFloat() < u) {
+-							float v = MathHelper.nextFloat(this.random, 0.0F, 360.0F) * (float) (Math.PI / 180.0);
+-							float w = MathHelper.nextFloat(this.random, 25.0F, 60.0F);
+-							double s = this.x + (double)(MathHelper.sin(v) * w * 0.1F);
+-							double x = (double)((float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F);
+-							double y = this.z + (double)(MathHelper.cos(v) * w * 0.1F);
++							float v = Mth.nextFloat(this.random, 0.0F, 360.0F) * (float) (Math.PI / 180.0);
++							float w = Mth.nextFloat(this.random, 25.0F, 60.0F);
++							double s = this.x + (double)(Mth.sin(v) * w * 0.1F);
++							double x = (double)((float) Mth.floor(this.getBoundingBox().minY) + 1.0F);
++							double y = this.z + (double)(Mth.cos(v) * w * 0.1F);
+ 							Block block = serverWorld.getBlockState(new BlockPos((int)s, (int)x - 1, (int)y)).getBlock();
+ 							if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+ 								serverWorld.addParticle(ParticleType.WATER, s, x, y, 2 + this.random.nextInt(2), 0.1F, 0.0, 0.1F, 0.0);
+ 							}
+ 						}
+ 
+ 						if (this.waitCountdown <= 0) {
+-							this.fishAngle = MathHelper.nextFloat(this.random, 0.0F, 360.0F);
+-							this.fishTravelCountdown = MathHelper.nextInt(this.random, 20, 80);
++							this.fishAngle = Mth.nextFloat(this.random, 0.0F, 360.0F);
++							this.fishTravelCountdown = Mth.nextInt(this.random, 20, 80);
+ 						}
+ 					} else {
+-						this.waitCountdown = MathHelper.nextInt(this.random, 100, 900);
++						this.waitCountdown = Mth.nextInt(this.random, 100, 900);
+ 						this.waitCountdown = this.waitCountdown - EnchantmentHelper.getLure(this.thrower) * 20 * 5;
+ 					}
+ 
+ 					if (this.hookCountdown > 0) {
+ 						this.velocityY = this.velocityY - (double)(this.random.nextFloat() * this.random.nextFloat() * this.random.nextFloat()) * 0.2;
+@@ -457,25 +457,25 @@
+ 			int i = 0;
+ 			if (this.caughtEntity != null) {
+ 				double d = this.thrower.x - this.x;
+ 				double e = this.thrower.y - this.y;
+ 				double f = this.thrower.z - this.z;
+-				double g = (double)MathHelper.sqrt(d * d + e * e + f * f);
++				double g = (double) Mth.sqrt(d * d + e * e + f * f);
+ 				double h = 0.1;
+ 				this.caughtEntity.velocityX += d * h;
+-				this.caughtEntity.velocityY = this.caughtEntity.velocityY + e * h + (double)MathHelper.sqrt(g) * 0.08;
++				this.caughtEntity.velocityY = this.caughtEntity.velocityY + e * h + (double) Mth.sqrt(g) * 0.08;
+ 				this.caughtEntity.velocityZ += f * h;
+ 				i = 3;
+ 			} else if (this.hookCountdown > 0) {
+ 				ItemEntity itemEntity = new ItemEntity(this.world, this.x, this.y, this.z, this.getResult());
+ 				double j = this.thrower.x - this.x;
+ 				double k = this.thrower.y - this.y;
+ 				double l = this.thrower.z - this.z;
+-				double m = (double)MathHelper.sqrt(j * j + k * k + l * l);
++				double m = (double) Mth.sqrt(j * j + k * k + l * l);
+ 				double n = 0.1;
+ 				itemEntity.velocityX = j * n;
+-				itemEntity.velocityY = k * n + (double)MathHelper.sqrt(m) * 0.08;
++				itemEntity.velocityY = k * n + (double) Mth.sqrt(m) * 0.08;
+ 				itemEntity.velocityZ = l * n;
+ 				this.world.spawnEntity(itemEntity);
+ 				this.thrower
+ 					.world
+ 					.spawnEntity(new ExperienceOrbEntity(this.thrower.world, this.thrower.x, this.thrower.y + 0.5, this.thrower.z + 0.5, this.random.nextInt(6) + 1));
+@@ -496,12 +496,12 @@
+ 		float f = this.world.random.nextFloat();
+ 		int i = EnchantmentHelper.getLuckOfTheSea(this.thrower);
+ 		int j = EnchantmentHelper.getLure(this.thrower);
+ 		float g = 0.1F - (float)i * 0.025F - (float)j * 0.01F;
+ 		float h = 0.05F + (float)i * 0.01F - (float)j * 0.01F;
+-		g = MathHelper.clamp(g, 0.0F, 1.0F);
+-		h = MathHelper.clamp(h, 0.0F, 1.0F);
++		g = Mth.clamp(g, 0.0F, 1.0F);
++		h = Mth.clamp(h, 0.0F, 1.0F);
+ 		if (f < g) {
+ 			this.thrower.incrementStat(Stats.JUNK_FISHED);
+ 			return Weighting.<WeightedRandomFishingLoot>rand(this.random, JUNK_LOOT).getItemStack(this.random);
+ 		} else {
+ 			f -= g;

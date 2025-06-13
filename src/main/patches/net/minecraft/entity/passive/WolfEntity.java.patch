@@ -1,5 +1,18 @@
 --- WolfEntity.java
 +++ WolfEntity.java
+@@ -32,11 +32,11 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.DyeColor;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class WolfEntity extends TameableEntity {
+ 	private float field_3727;
+ 	private float field_3728;
 @@ -60,16 +60,16 @@
  		this.goals.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
  		this.goals.add(9, new LookAroundGoal(this));
@@ -36,6 +49,32 @@
  	@Override
  	protected void playStepSound(BlockPos blockPos, Block block) {
  		this.playSound("mob.wolf.step", 0.15F, 1.0F);
+@@ -204,11 +204,11 @@
+ 				this.field_3731 = 0.0F;
+ 			}
+ 
+ 			if (this.field_3731 > 0.4F) {
+ 				float f = (float)this.getBoundingBox().minY;
+-				int i = (int)(MathHelper.sin((this.field_3731 - 0.4F) * (float) Math.PI) * 7.0F);
++				int i = (int)(Mth.sin((this.field_3731 - 0.4F) * (float) Math.PI) * 7.0F);
+ 
+ 				for (int j = 0; j < i; j++) {
+ 					float g = (this.random.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
+ 					float h = (this.random.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
+ 					this.world.addParticle(ParticleType.WATER, this.x + (double)g, (double)(f + 0.8F), this.z + (double)h, this.velocityX, this.velocityY, this.velocityZ);
+@@ -231,11 +231,11 @@
+ 			h = 0.0F;
+ 		} else if (h > 1.0F) {
+ 			h = 1.0F;
+ 		}
+ 
+-		return MathHelper.sin(h * (float) Math.PI) * MathHelper.sin(h * (float) Math.PI * 11.0F) * 0.15F * (float) Math.PI;
++		return Mth.sin(h * (float) Math.PI) * Mth.sin(h * (float) Math.PI * 11.0F) * 0.15F * (float) Math.PI;
+ 	}
+ 
+ 	public float method_2880(float f) {
+ 		return (this.field_3728 + (this.field_3727 - this.field_3728) * f) * 0.15F * (float) Math.PI;
+ 	}
 @@ -290,13 +290,12 @@
  	@Override
  	public boolean method_2537(PlayerEntity playerEntity) {

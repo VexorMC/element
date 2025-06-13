@@ -1,0 +1,32 @@
+--- EntityPositionS2CPacket.java
++++ EntityPositionS2CPacket.java
+@@ -3,11 +3,11 @@
+ import java.io.IOException;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.listener.ClientPlayPacketListener;
+ import net.minecraft.util.PacketByteBuf;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class EntityPositionS2CPacket implements Packet<ClientPlayPacketListener> {
+ 	private int id;
+ 	private int x;
+ 	private int y;
+@@ -19,13 +19,13 @@
+ 	public EntityPositionS2CPacket() {
+ 	}
+ 
+ 	public EntityPositionS2CPacket(Entity entity) {
+ 		this.id = entity.getEntityId();
+-		this.x = MathHelper.floor(entity.x * 32.0);
+-		this.y = MathHelper.floor(entity.y * 32.0);
+-		this.z = MathHelper.floor(entity.z * 32.0);
++		this.x = Mth.floor(entity.x * 32.0);
++		this.y = Mth.floor(entity.y * 32.0);
++		this.z = Mth.floor(entity.z * 32.0);
+ 		this.yaw = (byte)((int)(entity.yaw * 256.0F / 360.0F));
+ 		this.pitch = (byte)((int)(entity.pitch * 256.0F / 360.0F));
+ 		this.onGround = entity.onGround;
+ 	}
+ 

@@ -1,0 +1,44 @@
+--- RandomVectorGenerator.java
++++ RandomVectorGenerator.java
+@@ -1,11 +1,10 @@
+ package net.minecraft.util;
+ 
+ import java.util.Random;
+ import net.minecraft.entity.PathAwareEntity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
+ import net.minecraft.util.math.Vec3d;
+ 
+ public class RandomVectorGenerator {
+ 	private static Vec3d field_3660 = new Vec3d(0.0, 0.0, 0.0);
+ 
+@@ -31,11 +30,11 @@
+ 		int m = 0;
+ 		float f = -99999.0F;
+ 		boolean bl2;
+ 		if (pathAwareEntity.hasPositionTarget()) {
+ 			double d = pathAwareEntity.getPositionTarget()
+-					.squaredDistanceTo((double)MathHelper.floor(pathAwareEntity.x), (double)MathHelper.floor(pathAwareEntity.y), (double)MathHelper.floor(pathAwareEntity.z))
++					.squaredDistanceTo((double) Mth.floor(pathAwareEntity.x), (double) Mth.floor(pathAwareEntity.y), (double) Mth.floor(pathAwareEntity.z))
+ 				+ 4.0;
+ 			double e = (double)(pathAwareEntity.getPositionTargetRange() + (float)i);
+ 			bl2 = d < e * e;
+ 		} else {
+ 			bl2 = false;
+@@ -59,13 +58,13 @@
+ 					} else {
+ 						q += random.nextInt(i / 2);
+ 					}
+ 				}
+ 
+-				o += MathHelper.floor(pathAwareEntity.x);
+-				p += MathHelper.floor(pathAwareEntity.y);
+-				q += MathHelper.floor(pathAwareEntity.z);
++				o += Mth.floor(pathAwareEntity.x);
++				p += Mth.floor(pathAwareEntity.y);
++				q += Mth.floor(pathAwareEntity.z);
+ 				BlockPos blockPosx = new BlockPos(o, p, q);
+ 				if (!bl2 || pathAwareEntity.isInWalkTargetRange(blockPosx)) {
+ 					float g = pathAwareEntity.getPathfindingFavor(blockPosx);
+ 					if (g > f) {
+ 						f = g;

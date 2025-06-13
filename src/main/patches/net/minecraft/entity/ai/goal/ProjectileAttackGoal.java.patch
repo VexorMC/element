@@ -1,0 +1,36 @@
+--- ProjectileAttackGoal.java
++++ ProjectileAttackGoal.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.entity.ai.goal;
+ 
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.ai.RangedAttackMob;
+ import net.minecraft.entity.mob.MobEntity;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class ProjectileAttackGoal extends Goal {
+ 	private final MobEntity entity;
+ 	private final RangedAttackMob rangedAttackMob;
+ 	private LivingEntity target;
+@@ -79,15 +79,15 @@
+ 		if (--this.updateCountdownTicks == 0) {
+ 			if (d > (double)this.squaredMaxShootRange || !bl) {
+ 				return;
+ 			}
+ 
+-			float f = MathHelper.sqrt(d) / this.maxShootRange;
+-			float g = MathHelper.clamp(f, 0.1F, 1.0F);
++			float f = Mth.sqrt(d) / this.maxShootRange;
++			float g = Mth.clamp(f, 0.1F, 1.0F);
+ 			this.rangedAttackMob.rangedAttack(this.target, g);
+-			this.updateCountdownTicks = MathHelper.floor(f * (float)(this.maxIntervalTicks - this.minIntervalTicks) + (float)this.minIntervalTicks);
++			this.updateCountdownTicks = Mth.floor(f * (float)(this.maxIntervalTicks - this.minIntervalTicks) + (float)this.minIntervalTicks);
+ 		} else if (this.updateCountdownTicks < 0) {
+-			float f = MathHelper.sqrt(d) / this.maxShootRange;
+-			this.updateCountdownTicks = MathHelper.floor(f * (float)(this.maxIntervalTicks - this.minIntervalTicks) + (float)this.minIntervalTicks);
++			float f = Mth.sqrt(d) / this.maxShootRange;
++			this.updateCountdownTicks = Mth.floor(f * (float)(this.maxIntervalTicks - this.minIntervalTicks) + (float)this.minIntervalTicks);
+ 		}
+ 	}
+ }

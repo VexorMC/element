@@ -1,5 +1,42 @@
 --- MobEntity.java
 +++ MobEntity.java
+@@ -33,11 +33,11 @@
+ import net.minecraft.nbt.NbtFloat;
+ import net.minecraft.nbt.NbtList;
+ import net.minecraft.network.packet.s2c.play.EntityAttachS2CPacket;
+ import net.minecraft.server.world.ServerWorld;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.Difficulty;
+ import net.minecraft.world.LocalDifficulty;
+ import net.minecraft.world.World;
+ 
+ public abstract class MobEntity extends LivingEntity {
+@@ -477,19 +477,19 @@
+ 			h = livingEntity.y + (double)livingEntity.getEyeHeight() - (this.y + (double)this.getEyeHeight());
+ 		} else {
+ 			h = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2.0 - (this.y + (double)this.getEyeHeight());
+ 		}
+ 
+-		double i = (double)MathHelper.sqrt(d * d + e * e);
+-		float j = (float)(MathHelper.atan2(e, d) * 180.0 / (float) Math.PI) - 90.0F;
+-		float k = (float)(-(MathHelper.atan2(h, i) * 180.0 / (float) Math.PI));
++		double i = (double) Mth.sqrt(d * d + e * e);
++		float j = (float)(Mth.atan2(e, d) * 180.0 / (float) Math.PI) - 90.0F;
++		float k = (float)(-(Mth.atan2(h, i) * 180.0 / (float) Math.PI));
+ 		this.pitch = this.changeAngle(this.pitch, k, g);
+ 		this.yaw = this.changeAngle(this.yaw, j, f);
+ 	}
+ 
+ 	private float changeAngle(float f, float g, float h) {
+-		float i = MathHelper.wrapDegrees(g - f);
++		float i = Mth.wrapDegrees(g - f);
+ 		if (i > h) {
+ 			i = h;
+ 		}
+ 
+ 		if (i < -h) {
 @@ -733,11 +733,11 @@
  	public boolean isPersistent() {
  		return this.persistent;

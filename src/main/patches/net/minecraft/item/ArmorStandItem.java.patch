@@ -1,0 +1,28 @@
+--- ArmorStandItem.java
++++ ArmorStandItem.java
+@@ -9,11 +9,11 @@
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+ import net.minecraft.util.math.Direction;
+ import net.minecraft.util.math.EulerAngle;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class ArmorStandItem extends Item {
+ 	public ArmorStandItem() {
+ 		this.setItemGroup(ItemGroup.DECORATIONS);
+@@ -44,11 +44,11 @@
+ 					} else {
+ 						if (!world.isClient) {
+ 							world.setAir(blockPos2);
+ 							world.setAir(blockPos3);
+ 							ArmorStandEntity armorStandEntity = new ArmorStandEntity(world, d + 0.5, e, i + 0.5);
+-							float j = (float)MathHelper.floor((MathHelper.wrapDegrees(playerEntity.yaw - 180.0F) + 22.5F) / 45.0F) * 45.0F;
++							float j = (float) Mth.floor((Mth.wrapDegrees(playerEntity.yaw - 180.0F) + 22.5F) / 45.0F) * 45.0F;
+ 							armorStandEntity.refreshPositionAndAngles(d + 0.5, e, i + 0.5, j, 0.0F);
+ 							this.place(armorStandEntity, world.random);
+ 							NbtCompound nbtCompound = itemStack.getNbt();
+ 							if (nbtCompound != null && nbtCompound.contains("EntityTag", 10)) {
+ 								NbtCompound nbtCompound2 = new NbtCompound();

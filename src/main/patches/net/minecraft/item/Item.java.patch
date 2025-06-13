@@ -1,0 +1,34 @@
+--- Item.java
++++ Item.java
+@@ -38,11 +38,11 @@
+ import net.minecraft.util.Rarity;
+ import net.minecraft.util.UseAction;
+ import net.minecraft.util.hit.BlockHitResult;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.util.registry.SimpleRegistry;
+ import net.minecraft.world.World;
+ 
+ public class Item {
+@@ -264,14 +264,14 @@
+ 		float g = playerEntity.yaw;
+ 		double d = playerEntity.x;
+ 		double e = playerEntity.y + (double)playerEntity.getEyeHeight();
+ 		double h = playerEntity.z;
+ 		Vec3d vec3d = new Vec3d(d, e, h);
+-		float i = MathHelper.cos(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
+-		float j = MathHelper.sin(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
+-		float k = -MathHelper.cos(-f * (float) (Math.PI / 180.0));
+-		float l = MathHelper.sin(-f * (float) (Math.PI / 180.0));
++		float i = Mth.cos(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
++		float j = Mth.sin(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
++		float k = -Mth.cos(-f * (float) (Math.PI / 180.0));
++		float l = Mth.sin(-f * (float) (Math.PI / 180.0));
+ 		float m = j * k;
+ 		float o = i * k;
+ 		double p = 5.0;
+ 		Vec3d vec3d2 = vec3d.add((double)m * p, (double)l * p, (double)o * p);
+ 		return world.rayTrace(vec3d, vec3d2, bl, !bl, false);

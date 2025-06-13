@@ -1,0 +1,75 @@
+--- EyeOfEnderEntity.java
++++ EyeOfEnderEntity.java
+@@ -5,11 +5,11 @@
+ import net.minecraft.entity.ItemEntity;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class EyeOfEnderEntity extends Entity {
+ 	private double targetX;
+ 	private double targetY;
+@@ -48,11 +48,11 @@
+ 		double d = (double)blockPos.getX();
+ 		int i = blockPos.getY();
+ 		double e = (double)blockPos.getZ();
+ 		double f = d - this.x;
+ 		double g = e - this.z;
+-		float h = MathHelper.sqrt(f * f + g * g);
++		float h = Mth.sqrt(f * f + g * g);
+ 		if (h > 12.0F) {
+ 			this.targetX = this.x + f / (double)h * 12.0;
+ 			this.targetZ = this.z + g / (double)h * 12.0;
+ 			this.targetY = this.y + 8.0;
+ 		} else {
+@@ -69,13 +69,13 @@
+ 	public void setVelocityClient(double d, double e, double f) {
+ 		this.velocityX = d;
+ 		this.velocityY = e;
+ 		this.velocityZ = f;
+ 		if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
+-			float g = MathHelper.sqrt(d * d + f * f);
+-			this.prevYaw = this.yaw = (float)(MathHelper.atan2(d, f) * 180.0 / (float) Math.PI);
+-			this.prevPitch = this.pitch = (float)(MathHelper.atan2(e, (double)g) * 180.0 / (float) Math.PI);
++			float g = Mth.sqrt(d * d + f * f);
++			this.prevYaw = this.yaw = (float)(Mth.atan2(d, f) * 180.0 / (float) Math.PI);
++			this.prevPitch = this.pitch = (float)(Mth.atan2(e, (double)g) * 180.0 / (float) Math.PI);
+ 		}
+ 	}
+ 
+ 	@Override
+ 	public void tick() {
+@@ -84,13 +84,13 @@
+ 		this.prevTickZ = this.z;
+ 		super.tick();
+ 		this.x = this.x + this.velocityX;
+ 		this.y = this.y + this.velocityY;
+ 		this.z = this.z + this.velocityZ;
+-		float f = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+-		this.yaw = (float)(MathHelper.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
+-		this.pitch = (float)(MathHelper.atan2(this.velocityY, (double)f) * 180.0 / (float) Math.PI);
++		float f = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
++		this.yaw = (float)(Mth.atan2(this.velocityX, this.velocityZ) * 180.0 / (float) Math.PI);
++		this.pitch = (float)(Mth.atan2(this.velocityY, (double)f) * 180.0 / (float) Math.PI);
+ 
+ 		while (this.pitch - this.prevPitch < -180.0F) {
+ 			this.prevPitch -= 360.0F;
+ 		}
+ 
+@@ -110,11 +110,11 @@
+ 		this.yaw = this.prevYaw + (this.yaw - this.prevYaw) * 0.2F;
+ 		if (!this.world.isClient) {
+ 			double d = this.targetX - this.x;
+ 			double e = this.targetZ - this.z;
+ 			float g = (float)Math.sqrt(d * d + e * e);
+-			float h = (float)MathHelper.atan2(e, d);
++			float h = (float) Mth.atan2(e, d);
+ 			double i = (double)f + (double)(g - f) * 0.0025;
+ 			if (g < 1.0F) {
+ 				i *= 0.8;
+ 				this.velocityY *= 0.8;
+ 			}

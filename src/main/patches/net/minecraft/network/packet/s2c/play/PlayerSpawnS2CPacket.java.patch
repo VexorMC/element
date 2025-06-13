@@ -1,0 +1,32 @@
+--- PlayerSpawnS2CPacket.java
++++ PlayerSpawnS2CPacket.java
+@@ -8,11 +8,11 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.listener.ClientPlayPacketListener;
+ import net.minecraft.util.PacketByteBuf;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class PlayerSpawnS2CPacket implements Packet<ClientPlayPacketListener> {
+ 	private int id;
+ 	private UUID uuid;
+ 	private int x;
+@@ -28,13 +28,13 @@
+ 	}
+ 
+ 	public PlayerSpawnS2CPacket(PlayerEntity playerEntity) {
+ 		this.id = playerEntity.getEntityId();
+ 		this.uuid = playerEntity.getGameProfile().getId();
+-		this.x = MathHelper.floor(playerEntity.x * 32.0);
+-		this.y = MathHelper.floor(playerEntity.y * 32.0);
+-		this.z = MathHelper.floor(playerEntity.z * 32.0);
++		this.x = Mth.floor(playerEntity.x * 32.0);
++		this.y = Mth.floor(playerEntity.y * 32.0);
++		this.z = Mth.floor(playerEntity.z * 32.0);
+ 		this.yaw = (byte)((int)(playerEntity.yaw * 256.0F / 360.0F));
+ 		this.pitch = (byte)((int)(playerEntity.pitch * 256.0F / 360.0F));
+ 		ItemStack itemStack = playerEntity.inventory.getMainHandStack();
+ 		this.handStackId = itemStack == null ? 0 : Item.getRawId(itemStack.getItem());
+ 		this.tracker = playerEntity.getDataTracker();

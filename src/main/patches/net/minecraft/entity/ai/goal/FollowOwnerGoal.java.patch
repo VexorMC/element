@@ -1,0 +1,32 @@
+--- FollowOwnerGoal.java
++++ FollowOwnerGoal.java
+@@ -7,11 +7,11 @@
+ import net.minecraft.entity.ai.pathing.EntityNavigation;
+ import net.minecraft.entity.ai.pathing.MobNavigation;
+ import net.minecraft.entity.passive.TameableEntity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public class FollowOwnerGoal extends Goal {
+ 	private TameableEntity tameable;
+ 	private LivingEntity owner;
+@@ -85,13 +85,13 @@
+ 			if (--this.updateCountdownTicks <= 0) {
+ 				this.updateCountdownTicks = 10;
+ 				if (!this.navigation.startMovingTo(this.owner, this.speed)) {
+ 					if (!this.tameable.isLeashed()) {
+ 						if (!(this.tameable.squaredDistanceTo(this.owner) < 144.0)) {
+-							int i = MathHelper.floor(this.owner.x) - 2;
+-							int j = MathHelper.floor(this.owner.z) - 2;
+-							int k = MathHelper.floor(this.owner.getBoundingBox().minY);
++							int i = Mth.floor(this.owner.x) - 2;
++							int j = Mth.floor(this.owner.z) - 2;
++							int k = Mth.floor(this.owner.getBoundingBox().minY);
+ 
+ 							for (int l = 0; l <= 4; l++) {
+ 								for (int m = 0; m <= 4; m++) {
+ 									if ((l < 1 || m < 1 || l > 3 || m > 3)
+ 										&& World.isOpaque(this.world, new BlockPos(i + l, k - 1, j + m))

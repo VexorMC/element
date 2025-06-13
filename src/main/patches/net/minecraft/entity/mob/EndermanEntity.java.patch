@@ -1,9 +1,9 @@
 --- EndermanEntity.java
 +++ EndermanEntity.java
-@@ -1,14 +1,12 @@
+@@ -1,14 +1,11 @@
  package net.minecraft.entity.mob;
  
- import com.google.common.base.Predicate;
+-import com.google.common.base.Predicate;
  import com.google.common.collect.Sets;
 -import java.util.Collections;
 -import java.util.List;
@@ -18,7 +18,20 @@
  import net.minecraft.block.Blocks;
  import net.minecraft.block.material.Material;
  import net.minecraft.client.particle.ParticleType;
-@@ -56,15 +54,11 @@
+@@ -32,11 +29,11 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ 
+ public class EndermanEntity extends HostileEntity {
+ 	private static final UUID ATTACKING_SPEED_BOOST_UUID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
+@@ -56,15 +53,11 @@
  		this.goals.add(8, new LookAroundGoal(this));
  		this.goals.add(10, new EndermanEntity.PlaceBlockGoal(this));
  		this.goals.add(11, new EndermanEntity.PickUpBlockGoal(this));
@@ -35,7 +48,7 @@
  	@Override
  	protected void initializeAttributes() {
  		super.initializeAttributes();
-@@ -75,13 +69,13 @@
+@@ -75,13 +68,13 @@
  	}
  
  	@Override
@@ -52,7 +65,7 @@
  	@Override
  	public void writeCustomDataToNbt(NbtCompound nbtCompound) {
  		super.writeCustomDataToNbt(nbtCompound);
-@@ -93,11 +87,11 @@
+@@ -93,11 +86,11 @@
  	@Override
  	public void readCustomDataFromNbt(NbtCompound nbtCompound) {
  		super.readCustomDataFromNbt(nbtCompound);
@@ -65,7 +78,7 @@
  		}
  
  		this.setCarriedBlock(blockState);
-@@ -115,11 +109,11 @@
+@@ -115,11 +108,11 @@
  				this.z - playerEntity.z
  			);
  			double d = vec3d2.length();
@@ -78,7 +91,7 @@
  
  	@Override
  	public float getEyeHeight() {
-@@ -232,11 +226,11 @@
+@@ -232,11 +225,11 @@
  				float n = (this.random.nextFloat() - 0.5F) * 0.2F;
  				float o = (this.random.nextFloat() - 0.5F) * 0.2F;
  				double p = g + (this.x - g) * l + (this.random.nextDouble() - 0.5) * (double)this.width * 2.0;
@@ -91,7 +104,7 @@
  			this.world.playSound(g, h, i, "mob.endermen.portal", 1.0F, 1.0F);
  			this.playSound("mob.endermen.portal", 1.0F, 1.0F);
  			return true;
-@@ -358,11 +352,11 @@
+@@ -358,21 +351,21 @@
  		@Override
  		public boolean canStart() {
  			if (!this.enderman.world.getGameRules().getBoolean("mobGriefing")) {
@@ -104,7 +117,20 @@
  
  		@Override
  		public void tick() {
-@@ -391,11 +385,11 @@
+ 			Random random = this.enderman.getRandom();
+ 			World world = this.enderman.world;
+-			int i = MathHelper.floor(this.enderman.x - 2.0 + random.nextDouble() * 4.0);
+-			int j = MathHelper.floor(this.enderman.y + random.nextDouble() * 3.0);
+-			int k = MathHelper.floor(this.enderman.z - 2.0 + random.nextDouble() * 4.0);
++			int i = Mth.floor(this.enderman.x - 2.0 + random.nextDouble() * 4.0);
++			int j = Mth.floor(this.enderman.y + random.nextDouble() * 3.0);
++			int k = Mth.floor(this.enderman.z - 2.0 + random.nextDouble() * 4.0);
+ 			BlockPos blockPos = new BlockPos(i, j, k);
+ 			BlockState blockState = world.getBlockState(blockPos);
+ 			Block block = blockState.getBlock();
+ 			if (EndermanEntity.HOLDABLES.contains(block)) {
+ 				this.enderman.setCarriedBlock(blockState);
+@@ -391,21 +384,21 @@
  		@Override
  		public boolean canStart() {
  			if (!this.entity.world.getGameRules().getBoolean("mobGriefing")) {
@@ -117,7 +143,20 @@
  
  		@Override
  		public void tick() {
-@@ -417,35 +411,36 @@
+ 			Random random = this.entity.getRandom();
+ 			World world = this.entity.world;
+-			int i = MathHelper.floor(this.entity.x - 1.0 + random.nextDouble() * 2.0);
+-			int j = MathHelper.floor(this.entity.y + random.nextDouble() * 2.0);
+-			int k = MathHelper.floor(this.entity.z - 1.0 + random.nextDouble() * 2.0);
++			int i = Mth.floor(this.entity.x - 1.0 + random.nextDouble() * 2.0);
++			int j = Mth.floor(this.entity.y + random.nextDouble() * 2.0);
++			int k = Mth.floor(this.entity.z - 1.0 + random.nextDouble() * 2.0);
+ 			BlockPos blockPos = new BlockPos(i, j, k);
+ 			Block block = world.getBlockState(blockPos).getBlock();
+ 			Block block2 = world.getBlockState(blockPos.down()).getBlock();
+ 			if (this.canPlaceOn(world, blockPos, this.entity.getCarriedBlock().getBlock(), block, block2)) {
+ 				world.setBlockState(blockPos, this.entity.getCarriedBlock(), 3);
+@@ -417,35 +410,36 @@
  			if (!block.canBePlacedAtPos(world, blockPos)) {
  				return false;
  			} else if (block2.getMaterial() != Material.AIR) {

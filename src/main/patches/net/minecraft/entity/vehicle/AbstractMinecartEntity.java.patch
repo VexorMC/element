@@ -1,5 +1,18 @@
 --- AbstractMinecartEntity.java
 +++ AbstractMinecartEntity.java
+@@ -22,11 +22,11 @@
+ import net.minecraft.text.Text;
+ import net.minecraft.text.TranslatableText;
+ import net.minecraft.util.Identifier;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ 
+ public abstract class AbstractMinecartEntity extends Entity implements Nameable {
+ 	private boolean yawFlipped;
 @@ -83,15 +83,15 @@
  		return false;
  	}
@@ -21,3 +34,179 @@
  
  	@Override
  	public Box getHardCollisionBox(Entity entity) {
+@@ -236,11 +236,11 @@
+ 		if (this.world.isClient) {
+ 			if (this.clientInterpolationSteps > 0) {
+ 				double d = this.x + (this.clientX - this.x) / (double)this.clientInterpolationSteps;
+ 				double e = this.y + (this.clientY - this.y) / (double)this.clientInterpolationSteps;
+ 				double f = this.z + (this.clientZ - this.z) / (double)this.clientInterpolationSteps;
+-				double g = MathHelper.wrapDegrees(this.clientYaw - (double)this.yaw);
++				double g = Mth.wrapDegrees(this.clientYaw - (double)this.yaw);
+ 				this.yaw = (float)((double)this.yaw + g / (double)this.clientInterpolationSteps);
+ 				this.pitch = (float)((double)this.pitch + (this.clientPitch - (double)this.pitch) / (double)this.clientInterpolationSteps);
+ 				this.clientInterpolationSteps--;
+ 				this.updatePosition(d, e, f);
+ 				this.setRotation(this.yaw, this.pitch);
+@@ -251,13 +251,13 @@
+ 		} else {
+ 			this.prevX = this.x;
+ 			this.prevY = this.y;
+ 			this.prevZ = this.z;
+ 			this.velocityY -= 0.04F;
+-			int k = MathHelper.floor(this.x);
+-			int ix = MathHelper.floor(this.y);
+-			int j = MathHelper.floor(this.z);
++			int k = Mth.floor(this.x);
++			int ix = Mth.floor(this.y);
++			int j = Mth.floor(this.z);
+ 			if (AbstractRailBlock.isRail(this.world, new BlockPos(k, ix - 1, j))) {
+ 				ix--;
+ 			}
+ 
+ 			BlockPos blockPos = new BlockPos(k, ix, j);
+@@ -274,17 +274,17 @@
+ 			this.checkBlockCollision();
+ 			this.pitch = 0.0F;
+ 			double h = this.prevX - this.x;
+ 			double l = this.prevZ - this.z;
+ 			if (h * h + l * l > 0.001) {
+-				this.yaw = (float)(MathHelper.atan2(l, h) * 180.0 / Math.PI);
++				this.yaw = (float)(Mth.atan2(l, h) * 180.0 / Math.PI);
+ 				if (this.yawFlipped) {
+ 					this.yaw += 180.0F;
+ 				}
+ 			}
+ 
+-			double m = (double)MathHelper.wrapDegrees(this.yaw - this.prevYaw);
++			double m = (double) Mth.wrapDegrees(this.yaw - this.prevYaw);
+ 			if (m < -170.0 || m >= 170.0) {
+ 				this.yaw += 180.0F;
+ 				this.yawFlipped = !this.yawFlipped;
+ 			}
+ 
+@@ -315,12 +315,12 @@
+ 	public void onActivatorRail(int i, int j, int k, boolean bl) {
+ 	}
+ 
+ 	protected void moveOffRail() {
+ 		double d = this.getMaxOffRailSpeed();
+-		this.velocityX = MathHelper.clamp(this.velocityX, -d, d);
+-		this.velocityZ = MathHelper.clamp(this.velocityZ, -d, d);
++		this.velocityX = Mth.clamp(this.velocityX, -d, d);
++		this.velocityZ = Mth.clamp(this.velocityZ, -d, d);
+ 		if (this.onGround) {
+ 			this.velocityX *= 0.5;
+ 			this.velocityY *= 0.5;
+ 			this.velocityZ *= 0.5;
+ 		}
+@@ -437,16 +437,16 @@
+ 			o *= 0.75;
+ 			p *= 0.75;
+ 		}
+ 
+ 		double q = this.getMaxOffRailSpeed();
+-		o = MathHelper.clamp(o, -q, q);
+-		p = MathHelper.clamp(p, -q, q);
++		o = Mth.clamp(o, -q, q);
++		p = Mth.clamp(p, -q, q);
+ 		this.move(o, 0.0, p);
+-		if (is[0][1] != 0 && MathHelper.floor(this.x) - blockPos.getX() == is[0][0] && MathHelper.floor(this.z) - blockPos.getZ() == is[0][2]) {
++		if (is[0][1] != 0 && Mth.floor(this.x) - blockPos.getX() == is[0][0] && Mth.floor(this.z) - blockPos.getZ() == is[0][2]) {
+ 			this.updatePosition(this.x, this.y + (double)is[0][1], this.z);
+-		} else if (is[1][1] != 0 && MathHelper.floor(this.x) - blockPos.getX() == is[1][0] && MathHelper.floor(this.z) - blockPos.getZ() == is[1][2]) {
++		} else if (is[1][1] != 0 && Mth.floor(this.x) - blockPos.getX() == is[1][0] && Mth.floor(this.z) - blockPos.getZ() == is[1][2]) {
+ 			this.updatePosition(this.x, this.y + (double)is[1][1], this.z);
+ 		}
+ 
+ 		this.applySlowdown();
+ 		Vec3d vec3d2 = this.snapPositionToRail(this.x, this.y, this.z);
+@@ -459,12 +459,12 @@
+ 			}
+ 
+ 			this.updatePosition(this.x, vec3d2.y, this.z);
+ 		}
+ 
+-		int s = MathHelper.floor(this.x);
+-		int t = MathHelper.floor(this.z);
++		int s = Mth.floor(this.x);
++		int t = Mth.floor(this.z);
+ 		if (s != blockPos.getX() || t != blockPos.getZ()) {
+ 			i = Math.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+ 			this.velocityX = i * (double)(s - blockPos.getX());
+ 			this.velocityZ = i * (double)(t - blockPos.getZ());
+ 		}
+@@ -512,13 +512,13 @@
+ 		float h = this.height;
+ 		this.setBoundingBox(new Box(d - (double)g, e, f - (double)g, d + (double)g, e + (double)h, f + (double)g));
+ 	}
+ 
+ 	public Vec3d snapPositionToRailWithOffset(double d, double e, double f, double g) {
+-		int i = MathHelper.floor(d);
+-		int j = MathHelper.floor(e);
+-		int k = MathHelper.floor(f);
++		int i = Mth.floor(d);
++		int j = Mth.floor(e);
++		int k = Mth.floor(f);
+ 		if (AbstractRailBlock.isRail(this.world, new BlockPos(i, j - 1, k))) {
+ 			j--;
+ 		}
+ 
+ 		BlockState blockState = this.world.getBlockState(new BlockPos(i, j, k));
+@@ -535,26 +535,26 @@
+ 			double m = Math.sqrt(h * h + l * l);
+ 			h /= m;
+ 			l /= m;
+ 			d += h * g;
+ 			f += l * g;
+-			if (is[0][1] != 0 && MathHelper.floor(d) - i == is[0][0] && MathHelper.floor(f) - k == is[0][2]) {
++			if (is[0][1] != 0 && Mth.floor(d) - i == is[0][0] && Mth.floor(f) - k == is[0][2]) {
+ 				e += (double)is[0][1];
+-			} else if (is[1][1] != 0 && MathHelper.floor(d) - i == is[1][0] && MathHelper.floor(f) - k == is[1][2]) {
++			} else if (is[1][1] != 0 && Mth.floor(d) - i == is[1][0] && Mth.floor(f) - k == is[1][2]) {
+ 				e += (double)is[1][1];
+ 			}
+ 
+ 			return this.snapPositionToRail(d, e, f);
+ 		} else {
+ 			return null;
+ 		}
+ 	}
+ 
+ 	public Vec3d snapPositionToRail(double d, double e, double f) {
+-		int i = MathHelper.floor(d);
+-		int j = MathHelper.floor(e);
+-		int k = MathHelper.floor(f);
++		int i = Mth.floor(d);
++		int j = Mth.floor(e);
++		int k = Mth.floor(f);
+ 		if (AbstractRailBlock.isRail(this.world, new BlockPos(i, j - 1, k))) {
+ 			j--;
+ 		}
+ 
+ 		BlockState blockState = this.world.getBlockState(new BlockPos(i, j, k));
+@@ -661,11 +661,11 @@
+ 
+ 					double d = entity.x - this.x;
+ 					double e = entity.z - this.z;
+ 					double f = d * d + e * e;
+ 					if (f >= 1.0E-4F) {
+-						f = (double)MathHelper.sqrt(f);
++						f = (double) Mth.sqrt(f);
+ 						d /= f;
+ 						e /= f;
+ 						double g = 1.0 / f;
+ 						if (g > 1.0) {
+ 							g = 1.0;
+@@ -681,11 +681,11 @@
+ 						e *= 0.5;
+ 						if (entity instanceof AbstractMinecartEntity) {
+ 							double h = entity.x - this.x;
+ 							double i = entity.z - this.z;
+ 							Vec3d vec3d = new Vec3d(h, 0.0, i).normalize();
+-							Vec3d vec3d2 = new Vec3d((double)MathHelper.cos(this.yaw * (float) Math.PI / 180.0F), 0.0, (double)MathHelper.sin(this.yaw * (float) Math.PI / 180.0F))
++							Vec3d vec3d2 = new Vec3d((double) Mth.cos(this.yaw * (float) Math.PI / 180.0F), 0.0, (double) Mth.sin(this.yaw * (float) Math.PI / 180.0F))
+ 								.normalize();
+ 							double j = Math.abs(vec3d.dotProduct(vec3d2));
+ 							if (j < 0.8F) {
+ 								return;
+ 							}

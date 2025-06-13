@@ -1,0 +1,32 @@
+--- AnimalEntity.java
++++ AnimalEntity.java
+@@ -8,11 +8,11 @@
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.Items;
+ import net.minecraft.nbt.NbtCompound;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ 
+ public abstract class AnimalEntity extends PassiveEntity implements EntityCategoryProvider {
+ 	protected Block field_11973 = Blocks.GRASS;
+ 	private int loveTicks;
+@@ -85,13 +85,13 @@
+ 		this.loveTicks = nbtCompound.getInt("InLove");
+ 	}
+ 
+ 	@Override
+ 	public boolean canSpawn() {
+-		int i = MathHelper.floor(this.x);
+-		int j = MathHelper.floor(this.getBoundingBox().minY);
+-		int k = MathHelper.floor(this.z);
++		int i = Mth.floor(this.x);
++		int j = Mth.floor(this.getBoundingBox().minY);
++		int k = Mth.floor(this.z);
+ 		BlockPos blockPos = new BlockPos(i, j, k);
+ 		return this.world.getBlockState(blockPos.down()).getBlock() == this.field_11973 && this.world.getLightLevel(blockPos) > 8 && super.canSpawn();
+ 	}
+ 
+ 	@Override

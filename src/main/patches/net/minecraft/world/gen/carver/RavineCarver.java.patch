@@ -1,0 +1,63 @@
+--- RavineCarver.java
++++ RavineCarver.java
+@@ -2,11 +2,11 @@
+ 
+ import java.util.Random;
+ import net.minecraft.block.BlockState;
+ import net.minecraft.block.Blocks;
+ import net.minecraft.util.math.BlockPos;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.World;
+ import net.minecraft.world.chunk.ChunkBlockStateStorage;
+ 
+ public class RavineCarver extends Carver {
+ 	private float[] heightToHorizontalStretchFactor = new float[1024];
+@@ -39,19 +39,19 @@
+ 
+ 			this.heightToHorizontalStretchFactor[v] = u * u;
+ 		}
+ 
+ 		for (; m < n; m++) {
+-			double w = 1.5 + (double)(MathHelper.sin((float)m * (float) Math.PI / (float)n) * g * 1.0F);
++			double w = 1.5 + (double)(Mth.sin((float)m * (float) Math.PI / (float)n) * g * 1.0F);
+ 			double x = w * o;
+ 			w *= (double)random.nextFloat() * 0.25 + 0.75;
+ 			x *= (double)random.nextFloat() * 0.25 + 0.75;
+-			float y = MathHelper.cos(k);
+-			float z = MathHelper.sin(k);
+-			d += (double)(MathHelper.cos(h) * y);
++			float y = Mth.cos(k);
++			float z = Mth.sin(k);
++			d += (double)(Mth.cos(h) * y);
+ 			e += (double)z;
+-			f += (double)(MathHelper.sin(h) * y);
++			f += (double)(Mth.sin(h) * y);
+ 			k *= 0.7F;
+ 			k += s * 0.05F;
+ 			h += r * 0.05F;
+ 			s *= 0.8F;
+ 			r *= 0.5F;
+@@ -65,16 +65,16 @@
+ 				if (aa * aa + ab * ab - ac * ac > ad * ad) {
+ 					return;
+ 				}
+ 
+ 				if (!(d < p - 16.0 - w * 2.0) && !(f < q - 16.0 - w * 2.0) && !(d > p + 16.0 + w * 2.0) && !(f > q + 16.0 + w * 2.0)) {
+-					int ae = MathHelper.floor(d - w) - i * 16 - 1;
+-					int af = MathHelper.floor(d + w) - i * 16 + 1;
+-					int ag = MathHelper.floor(e - x) - 1;
+-					int ah = MathHelper.floor(e + x) + 1;
+-					int ai = MathHelper.floor(f - w) - j * 16 - 1;
+-					int aj = MathHelper.floor(f + w) - j * 16 + 1;
++					int ae = Mth.floor(d - w) - i * 16 - 1;
++					int af = Mth.floor(d + w) - i * 16 + 1;
++					int ag = Mth.floor(e - x) - 1;
++					int ah = Mth.floor(e + x) + 1;
++					int ai = Mth.floor(f - w) - j * 16 - 1;
++					int aj = Mth.floor(f + w) - j * 16 + 1;
+ 					if (ae < 0) {
+ 						ae = 0;
+ 					}
+ 
+ 					if (af > 16) {

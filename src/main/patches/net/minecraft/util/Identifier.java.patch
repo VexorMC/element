@@ -1,0 +1,84 @@
+--- Identifier.java
++++ Identifier.java
+@@ -1,11 +1,15 @@
+ package net.minecraft.util;
+ 
++import com.mojang.serialization.Codec;
++import com.mojang.serialization.DataResult;
+ import org.apache.commons.lang3.StringUtils;
+ import org.apache.commons.lang3.Validate;
+ 
+ public class Identifier {
++	public static final Codec<Identifier> CODEC = Codec.STRING.<Identifier>comapFlatMap(Identifier::read, Identifier::toString).stable();
++
+ 	protected final String namespace;
+ 	protected final String path;
+ 
+ 	protected Identifier(int i, String... strings) {
+ 		this.namespace = StringUtils.isEmpty(strings[0]) ? "minecraft" : strings[0].toLowerCase();
+@@ -19,10 +23,65 @@
+ 
+ 	public Identifier(String string, String string2) {
+ 		this(0, string, string2);
+ 	}
+ 
++	public Identifier withPrefix(String string) {
++		Validate.notNull(string, "Prefix cannot be null");
++		Validate.isTrue(!string.contains(":"), "Prefix cannot contain namespace separator ':'");
++		return new Identifier(string + this.path);
++	}
++
++	public Identifier withPath(String string) {
++		Validate.notNull(string, "Path cannot be null");
++		Validate.isTrue(!string.contains(":"), "Path cannot contain namespace separator ':'");
++		return new Identifier(this.namespace, string);
++	}
++
++	public Identifier withSuffix(String string) {
++		Validate.notNull(string, "Suffix cannot be null");
++		Validate.isTrue(!string.contains(":"), "Suffix cannot contain namespace separator ':'");
++		return new Identifier(this.namespace, this.path + string);
++	}
++
++
++	public static Identifier parse(String string) {
++		return bySeparator(string, ':');
++	}
++
++	private static Identifier createUntrusted(String string, String string2) {
++		return new Identifier(string, string2);
++	}
++
++	public static Identifier bySeparator(String string, char c) {
++		int i = string.indexOf(c);
++		if (i >= 0) {
++			String string2 = string.substring(i + 1);
++			if (i != 0) {
++				String string3 = string.substring(0, i);
++				return createUntrusted(string3, string2);
++			} else {
++				return withDefaultNamespace(string2);
++			}
++		} else {
++			return withDefaultNamespace(string);
++		}
++	}
++
++
++	public static DataResult<Identifier> read(String string) {
++		try {
++			return DataResult.success(parse(string));
++		} catch (Exception var2) {
++			return DataResult.error(() -> "Not a valid resource location: " + string + " " + var2.getMessage());
++		}
++	}
++
++	public static Identifier withDefaultNamespace(String string) {
++		return new Identifier(string);
++	}
++
+ 	protected static String[] method_10737(String string) {
+ 		String[] strings = new String[]{null, string};
+ 		int i = string.indexOf(58);
+ 		if (i >= 0) {
+ 			strings[1] = string.substring(i + 1, string.length());

@@ -1,0 +1,28 @@
+--- ModelElement.java
++++ ModelElement.java
+@@ -10,11 +10,11 @@
+ import java.lang.reflect.Type;
+ import java.util.Map;
+ import java.util.Map.Entry;
+ import net.minecraft.util.JsonHelper;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import org.lwjgl.util.vector.Vector3f;
+ 
+ public class ModelElement {
+ 	public final Vector3f from;
+ 	public final Vector3f to;
+@@ -90,11 +90,11 @@
+ 			return modelRotation;
+ 		}
+ 
+ 		private float deserializeRotationAngle(JsonObject jsonObject) {
+ 			float f = JsonHelper.getFloat(jsonObject, "angle");
+-			if (f != 0.0F && MathHelper.abs(f) != 22.5F && MathHelper.abs(f) != 45.0F) {
++			if (f != 0.0F && Mth.abs(f) != 22.5F && Mth.abs(f) != 45.0F) {
+ 				throw new JsonParseException("Invalid rotation " + f + " found, only -45/-22.5/0/22.5/45 allowed");
+ 			} else {
+ 				return f;
+ 			}
+ 		}

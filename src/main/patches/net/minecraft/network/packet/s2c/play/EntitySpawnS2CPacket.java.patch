@@ -1,0 +1,36 @@
+--- EntitySpawnS2CPacket.java
++++ EntitySpawnS2CPacket.java
+@@ -3,11 +3,11 @@
+ import java.io.IOException;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.listener.ClientPlayPacketListener;
+ import net.minecraft.util.PacketByteBuf;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ 
+ public class EntitySpawnS2CPacket implements Packet<ClientPlayPacketListener> {
+ 	private int id;
+ 	private int x;
+ 	private int y;
+@@ -27,15 +27,15 @@
+ 		this(entity, i, 0);
+ 	}
+ 
+ 	public EntitySpawnS2CPacket(Entity entity, int i, int j) {
+ 		this.id = entity.getEntityId();
+-		this.x = MathHelper.floor(entity.x * 32.0);
+-		this.y = MathHelper.floor(entity.y * 32.0);
+-		this.z = MathHelper.floor(entity.z * 32.0);
+-		this.pitch = MathHelper.floor(entity.pitch * 256.0F / 360.0F);
+-		this.yaw = MathHelper.floor(entity.yaw * 256.0F / 360.0F);
++		this.x = Mth.floor(entity.x * 32.0);
++		this.y = Mth.floor(entity.y * 32.0);
++		this.z = Mth.floor(entity.z * 32.0);
++		this.pitch = Mth.floor(entity.pitch * 256.0F / 360.0F);
++		this.yaw = Mth.floor(entity.yaw * 256.0F / 360.0F);
+ 		this.type = i;
+ 		this.dataId = j;
+ 		if (j > 0) {
+ 			double d = entity.velocityX;
+ 			double e = entity.velocityY;

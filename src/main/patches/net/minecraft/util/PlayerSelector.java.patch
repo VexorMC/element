@@ -1,6 +1,18 @@
 --- PlayerSelector.java
 +++ PlayerSelector.java
-@@ -123,11 +123,11 @@
+@@ -29,11 +29,10 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.text.Text;
+ import net.minecraft.text.TranslatableText;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Box;
+-import net.minecraft.util.math.MathHelper;
+ import net.minecraft.world.World;
+ import net.minecraft.world.level.LevelInfo;
+ 
+ public class PlayerSelector {
+ 	private static final Pattern field_4946 = Pattern.compile("^@([pare])(?:\\[([\\w=,!-]*)\\])?$");
+@@ -123,11 +122,11 @@
  		}
  	}
  
@@ -13,7 +25,7 @@
  			string2 = string2.substring(1);
  		}
  
-@@ -140,13 +140,14 @@
+@@ -140,13 +139,14 @@
  						return entity instanceof PlayerEntity;
  					}
  				});
@@ -29,7 +41,7 @@
  		}
  
  		return list;
-@@ -191,11 +192,11 @@
+@@ -191,11 +191,11 @@
  		return list;
  	}
  
@@ -42,7 +54,7 @@
  			string = string.substring(1);
  		}
  
-@@ -262,20 +263,21 @@
+@@ -262,20 +262,21 @@
  		return list;
  	}
  
@@ -66,7 +78,7 @@
  		}
  
  		return list;
-@@ -366,27 +368,27 @@
+@@ -366,27 +367,27 @@
  					(double)(blockPos.getX() + l + 1),
  					(double)(blockPos.getY() + l + 1),
  					(double)(blockPos.getZ() + l + 1)
@@ -99,7 +111,7 @@
  		return list2;
  	}
  
-@@ -406,11 +408,11 @@
+@@ -406,11 +407,11 @@
  			});
  		}
  
@@ -112,3 +124,29 @@
  		if (i != 0) {
  			if (i < 0) {
  				Collections.reverse(list);
+@@ -461,11 +462,11 @@
+ 
+ 		return false;
+ 	}
+ 
+ 	private static int method_10860(Map<String, String> map, String string, int i) {
+-		return map.containsKey(string) ? MathHelper.parseInt((String)map.get(string), i) : i;
++		return map.containsKey(string) ? Mth.parseInt((String)map.get(string), i) : i;
+ 	}
+ 
+ 	private static String method_10865(Map<String, String> map, String string) {
+ 		return (String)map.get(string);
+ 	}
+@@ -473,11 +474,11 @@
+ 	public static Map<String, Integer> method_4728(Map<String, String> map) {
+ 		Map<String, Integer> map2 = Maps.newHashMap();
+ 
+ 		for (String string : map.keySet()) {
+ 			if (string.startsWith("score_") && string.length() > "score_".length()) {
+-				map2.put(string.substring("score_".length()), MathHelper.parseInt((String)map.get(string), 1));
++				map2.put(string.substring("score_".length()), Mth.parseInt((String)map.get(string), 1));
+ 			}
+ 		}
+ 
+ 		return map2;
+ 	}

@@ -1,0 +1,30 @@
+--- FluidRenderer.java
++++ FluidRenderer.java
+@@ -7,11 +7,11 @@
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.texture.Sprite;
+ import net.minecraft.client.texture.SpriteAtlasTexture;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.Direction;
+-import net.minecraft.util.math.MathHelper;
++import net.minecraft.util.Mth;
+ import net.minecraft.world.BlockView;
+ 
+ public class FluidRenderer {
+ 	private Sprite[] lavaSprites = new Sprite[2];
+ 	private Sprite[] waterSprites = new Sprite[2];
+@@ -89,12 +89,12 @@
+ 					y = sprite.getFrameU(16.0);
+ 					z = x;
+ 					aa = y;
+ 					ab = v;
+ 				} else {
+-					float ac = MathHelper.sin(t) * 0.25F;
+-					float ad = MathHelper.cos(t) * 0.25F;
++					float ac = Mth.sin(t) * 0.25F;
++					float ad = Mth.cos(t) * 0.25F;
+ 					float ae = 8.0F;
+ 					u = sprite.getFrameU((double)(8.0F + (-ad - ac) * 16.0F));
+ 					v = sprite.getFrameV((double)(8.0F + (-ad + ac) * 16.0F));
+ 					w = sprite.getFrameU((double)(8.0F + (-ad + ac) * 16.0F));
+ 					x = sprite.getFrameV((double)(8.0F + (ad + ac) * 16.0F));
