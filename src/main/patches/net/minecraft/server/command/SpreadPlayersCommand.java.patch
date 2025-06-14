@@ -1,18 +1,5 @@
 --- SpreadPlayersCommand.java
 +++ SpreadPlayersCommand.java
-@@ -20,11 +20,11 @@
- import net.minecraft.scoreboard.AbstractTeam;
- import net.minecraft.server.MinecraftServer;
- import net.minecraft.text.TranslatableText;
- import net.minecraft.util.PlayerSelector;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.World;
- 
- public class SpreadPlayersCommand extends AbstractCommand {
- 	@Override
- 	public String getCommandName() {
 @@ -196,11 +196,11 @@
  			} else {
  				pile = piles[i++];
@@ -20,35 +7,9 @@
  
  			entity.refreshPositionAfterTeleport(
 -				(double)((float)MathHelper.floor(pile.x) + 0.5F), (double)pile.method_5559(world), (double)MathHelper.floor(pile.z) + 0.5
-+				(double)((float) Mth.floor(pile.x) + 0.5F), (double)pile.method_5559(world), (double) Mth.floor(pile.z) + 0.5
++				(double)((float) MathHelper.floor(pile.x) + 0.5F), (double)pile.method_5559(world), (double) MathHelper.floor(pile.z) + 0.5
  			);
  			double e = Double.MAX_VALUE;
  
  			for (int k = 0; k < piles.length; k++) {
  				if (pile != piles[k]) {
-@@ -255,11 +255,11 @@
- 			this.x /= d;
- 			this.z /= d;
- 		}
- 
- 		float absolute() {
--			return MathHelper.sqrt(this.x * this.x + this.z * this.z);
-+			return Mth.sqrt(this.x * this.x + this.z * this.z);
- 		}
- 
- 		public void subtract(SpreadPlayersCommand.Pile pile) {
- 			this.x = this.x - pile.x;
- 			this.z = this.z - pile.z;
-@@ -312,10 +312,10 @@
- 
- 			return false;
- 		}
- 
- 		public void setPileLocation(Random random, double d, double e, double f, double g) {
--			this.x = MathHelper.nextDouble(random, d, f);
--			this.z = MathHelper.nextDouble(random, e, g);
-+			this.x = Mth.nextDouble(random, d, f);
-+			this.z = Mth.nextDouble(random, e, g);
- 		}
- 	}
- }

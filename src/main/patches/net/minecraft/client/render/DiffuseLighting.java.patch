@@ -1,15 +1,5 @@
 --- DiffuseLighting.java
 +++ DiffuseLighting.java
-@@ -1,8 +1,8 @@
- package net.minecraft.client.render;
- 
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
- import java.nio.FloatBuffer;
- import net.minecraft.client.util.GlAllocationUtils;
- import net.minecraft.util.math.Vec3d;
- import org.lwjgl.opengl.GL11;
- 
 @@ -25,20 +25,20 @@
  		GlStateManager.enableColorMaterial();
  		GlStateManager.colorMaterial(1032, 5634);

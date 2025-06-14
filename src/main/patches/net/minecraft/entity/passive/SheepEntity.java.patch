@@ -1,18 +1,5 @@
 --- SheepEntity.java
 +++ SheepEntity.java
-@@ -26,11 +26,11 @@
- import net.minecraft.nbt.NbtCompound;
- import net.minecraft.recipe.RecipeDispatcher;
- import net.minecraft.screen.ScreenHandler;
- import net.minecraft.util.DyeColor;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.LocalDifficulty;
- import net.minecraft.world.World;
- 
- public class SheepEntity extends AnimalEntity {
- 	private final CraftingInventory field_5369 = new CraftingInventory(new ScreenHandler() {
 @@ -39,11 +39,11 @@
  			return false;
  		}
@@ -39,19 +26,6 @@
  	@Override
  	protected void dropLoot(boolean bl, int i) {
  		if (!this.isSheared()) {
-@@ -134,11 +134,11 @@
- 	}
- 
- 	public float method_2865(float f) {
- 		if (this.eatGrassTimer > 4 && this.eatGrassTimer <= 36) {
- 			float g = ((float)(this.eatGrassTimer - 4) - f) / 32.0F;
--			return (float) (Math.PI / 5) + 0.21991149F * MathHelper.sin(g * 28.7F);
-+			return (float) (Math.PI / 5) + 0.21991149F * Mth.sin(g * 28.7F);
- 		} else {
- 			return this.eatGrassTimer > 0 ? (float) (Math.PI / 5) : this.pitch / (180.0F / (float)Math.PI);
- 		}
- 	}
- 
 @@ -261,11 +261,11 @@
  	private DyeColor getChildColor(AnimalEntity animalEntity, AnimalEntity animalEntity2) {
  		int i = ((SheepEntity)animalEntity).getColor().getSwappedId();

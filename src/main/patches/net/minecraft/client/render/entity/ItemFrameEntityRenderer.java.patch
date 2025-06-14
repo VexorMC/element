@@ -1,28 +1,5 @@
 --- ItemFrameEntityRenderer.java
 +++ ItemFrameEntityRenderer.java
-@@ -1,8 +1,8 @@
- package net.minecraft.client.render.entity;
- 
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
- import net.minecraft.client.MinecraftClient;
- import net.minecraft.client.font.TextRenderer;
- import net.minecraft.client.render.BufferBuilder;
- import net.minecraft.client.render.DiffuseLighting;
- import net.minecraft.client.render.Tessellator;
-@@ -23,11 +23,11 @@
- import net.minecraft.item.Items;
- import net.minecraft.item.SkullItem;
- import net.minecraft.item.map.MapState;
- import net.minecraft.util.Identifier;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import org.lwjgl.opengl.GL11;
- 
- public class ItemFrameEntityRenderer extends EntityRenderer<ItemFrameEntity> {
- 	private static final Identifier field_6497 = new Identifier("textures/map/map_background.png");
- 	private final MinecraftClient field_8000 = MinecraftClient.getInstance();
 @@ -116,11 +116,11 @@
  						compassSprite.field_2151 = 0.0;
  						compassSprite.method_5241(
@@ -30,7 +7,7 @@
  							itemFrameEntity.x,
  							itemFrameEntity.z,
 -							(double)MathHelper.wrapDegrees((float)(180 + itemFrameEntity.direction.getHorizontal() * 90)),
-+							(double) Mth.wrapDegrees((float)(180 + itemFrameEntity.direction.getHorizontal() * 90)),
++							(double) MathHelper.wrapDegrees((float)(180 + itemFrameEntity.direction.getHorizontal() * 90)),
  							false,
  							true
  						);

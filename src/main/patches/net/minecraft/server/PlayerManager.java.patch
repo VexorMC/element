@@ -1,42 +1,5 @@
 --- PlayerManager.java
 +++ PlayerManager.java
-@@ -49,11 +49,11 @@
- import net.minecraft.text.TranslatableText;
- import net.minecraft.util.Formatting;
- import net.minecraft.util.PacketByteBuf;
- import net.minecraft.util.UserCache;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.PlayerDataHandler;
- import net.minecraft.world.World;
- import net.minecraft.world.border.WorldBorder;
- import net.minecraft.world.border.WorldBorderListener;
- import net.minecraft.world.level.LevelInfo;
-@@ -470,19 +470,19 @@
- 		double e = entity.z;
- 		double f = 8.0;
- 		float g = entity.yaw;
- 		serverWorld.profiler.push("moving");
- 		if (entity.dimension == -1) {
--			d = MathHelper.clamp(d / f, serverWorld2.getWorldBorder().getBoundWest() + 16.0, serverWorld2.getWorldBorder().getBoundEast() - 16.0);
--			e = MathHelper.clamp(e / f, serverWorld2.getWorldBorder().getBoundNorth() + 16.0, serverWorld2.getWorldBorder().getBoundSouth() - 16.0);
-+			d = Mth.clamp(d / f, serverWorld2.getWorldBorder().getBoundWest() + 16.0, serverWorld2.getWorldBorder().getBoundEast() - 16.0);
-+			e = Mth.clamp(e / f, serverWorld2.getWorldBorder().getBoundNorth() + 16.0, serverWorld2.getWorldBorder().getBoundSouth() - 16.0);
- 			entity.refreshPositionAndAngles(d, entity.y, e, entity.yaw, entity.pitch);
- 			if (entity.isAlive()) {
- 				serverWorld.checkChunk(entity, false);
- 			}
- 		} else if (entity.dimension == 0) {
--			d = MathHelper.clamp(d * f, serverWorld2.getWorldBorder().getBoundWest() + 16.0, serverWorld2.getWorldBorder().getBoundEast() - 16.0);
--			e = MathHelper.clamp(e * f, serverWorld2.getWorldBorder().getBoundNorth() + 16.0, serverWorld2.getWorldBorder().getBoundSouth() - 16.0);
-+			d = Mth.clamp(d * f, serverWorld2.getWorldBorder().getBoundWest() + 16.0, serverWorld2.getWorldBorder().getBoundEast() - 16.0);
-+			e = Mth.clamp(e * f, serverWorld2.getWorldBorder().getBoundNorth() + 16.0, serverWorld2.getWorldBorder().getBoundSouth() - 16.0);
- 			entity.refreshPositionAndAngles(d, entity.y, e, entity.yaw, entity.pitch);
- 			if (entity.isAlive()) {
- 				serverWorld.checkChunk(entity, false);
- 			}
- 		} else {
 @@ -503,12 +503,12 @@
  		}
  
@@ -45,8 +8,8 @@
  			serverWorld.profiler.push("placing");
 -			d = (double)MathHelper.clamp((int)d, -29999872, 29999872);
 -			e = (double)MathHelper.clamp((int)e, -29999872, 29999872);
-+			d = (double) Mth.clamp((int)d, -29999872, 29999872);
-+			e = (double) Mth.clamp((int)e, -29999872, 29999872);
++			d = (double) MathHelper.clamp((int)d, -29999872, 29999872);
++			e = (double) MathHelper.clamp((int)e, -29999872, 29999872);
  			if (entity.isAlive()) {
  				entity.refreshPositionAndAngles(d, entity.y, e, entity.yaw, entity.pitch);
  				serverWorld2.getPortalTeleporter().method_8583(entity, g);

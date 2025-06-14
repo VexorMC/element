@@ -1,0 +1,183 @@
+--- GLX.java
++++ GLX.java
+@@ -3,25 +3,11 @@
+ import java.nio.ByteBuffer;
+ import java.nio.FloatBuffer;
+ import java.nio.IntBuffer;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.option.GameOptions;
+-import org.lwjgl.opengl.ARBFramebufferObject;
+-import org.lwjgl.opengl.ARBMultitexture;
+-import org.lwjgl.opengl.ARBShaderObjects;
+-import org.lwjgl.opengl.ARBVertexBufferObject;
+-import org.lwjgl.opengl.ARBVertexShader;
+-import org.lwjgl.opengl.ContextCapabilities;
+-import org.lwjgl.opengl.EXTBlendFuncSeparate;
+-import org.lwjgl.opengl.EXTFramebufferObject;
+-import org.lwjgl.opengl.GL11;
+-import org.lwjgl.opengl.GL13;
+-import org.lwjgl.opengl.GL14;
+-import org.lwjgl.opengl.GL15;
+-import org.lwjgl.opengl.GL20;
+-import org.lwjgl.opengl.GL30;
+-import org.lwjgl.opengl.GLContext;
++import org.lwjgl.opengl.*;
+ import oshi.SystemInfo;
+ import oshi.hardware.Processor;
+ 
+ public class GLX {
+ 	public static boolean nvidia;
+@@ -78,11 +64,11 @@
+ 	private static boolean vboShadersSupported;
+ 	public static int arrayBuffer;
+ 	public static int staticDraw;
+ 
+ 	public static void createContext() {
+-		ContextCapabilities contextCapabilities = GLContext.getCapabilities();
++		GLCapabilities contextCapabilities = GL.getCapabilities();
+ 		arbMultitexture = contextCapabilities.GL_ARB_multitexture && !contextCapabilities.OpenGL13;
+ 		arbTextureEnvCombine = contextCapabilities.GL_ARB_texture_env_combine && !contextCapabilities.OpenGL13;
+ 		if (arbMultitexture) {
+ 			contextDescription = contextDescription + "Using ARB_multitexture.\n";
+ 			textureUnit = 33984;
+@@ -281,15 +267,15 @@
+ 
+ 	public static int gl20CreateShader(int i) {
+ 		return arbShaderObjects ? ARBShaderObjects.glCreateShaderObjectARB(i) : GL20.glCreateShader(i);
+ 	}
+ 
+-	public static void gl20ShaderSource(int i, ByteBuffer byteBuffer) {
++	public static void gl20ShaderSource(int i, String bytes) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glShaderSourceARB(i, byteBuffer);
++			ARBShaderObjects.glShaderSourceARB(i, bytes);
+ 		} else {
+-			GL20.glShaderSource(i, byteBuffer);
++			GL20.glShaderSource(i, bytes);
+ 		}
+ 	}
+ 
+ 	public static void gl20CompileShader(int i) {
+ 		if (arbShaderObjects) {
+@@ -343,13 +329,13 @@
+ 		return arbShaderObjects ? ARBShaderObjects.glGetUniformLocationARB(i, charSequence) : GL20.glGetUniformLocation(i, charSequence);
+ 	}
+ 
+ 	public static void gl20Uniform1(int i, IntBuffer intBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform1ARB(i, intBuffer);
++			ARBShaderObjects.glUniform1ivARB(i, intBuffer);
+ 		} else {
+-			GL20.glUniform1(i, intBuffer);
++			GL20.glUniform1iv(i, intBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform1(int i, int j) {
+ 		if (arbShaderObjects) {
+@@ -359,85 +345,85 @@
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform(int i, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform1ARB(i, floatBuffer);
++			ARBShaderObjects.glUniform1fvARB(i, floatBuffer);
+ 		} else {
+-			GL20.glUniform1(i, floatBuffer);
++			GL20.glUniform1fv(i, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform2(int i, IntBuffer intBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform2ARB(i, intBuffer);
++			ARBShaderObjects.glUniform2ivARB(i, intBuffer);
+ 		} else {
+-			GL20.glUniform2(i, intBuffer);
++			GL20.glUniform2iv(i, intBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform2(int i, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform2ARB(i, floatBuffer);
++			ARBShaderObjects.glUniform2fvARB(i, floatBuffer);
+ 		} else {
+-			GL20.glUniform2(i, floatBuffer);
++			GL20.glUniform2fv(i, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform3(int i, IntBuffer intBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform3ARB(i, intBuffer);
++			ARBShaderObjects.glUniform3ivARB(i, intBuffer);
+ 		} else {
+-			GL20.glUniform3(i, intBuffer);
++			GL20.glUniform3iv(i, intBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform3(int i, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform3ARB(i, floatBuffer);
++			ARBShaderObjects.glUniform3fvARB(i, floatBuffer);
+ 		} else {
+-			GL20.glUniform3(i, floatBuffer);
++			GL20.glUniform3fv(i, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform4(int i, IntBuffer intBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform4ARB(i, intBuffer);
++			ARBShaderObjects.glUniform4ivARB(i, intBuffer);
+ 		} else {
+-			GL20.glUniform4(i, intBuffer);
++			GL20.glUniform4iv(i, intBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20Uniform4(int i, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniform4ARB(i, floatBuffer);
++			ARBShaderObjects.glUniform4fvARB(i, floatBuffer);
+ 		} else {
+-			GL20.glUniform4(i, floatBuffer);
++			GL20.glUniform4fv(i, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20UniformMatrix2(int i, boolean bl, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniformMatrix2ARB(i, bl, floatBuffer);
++			ARBShaderObjects.glUniformMatrix2fvARB(i, bl, floatBuffer);
+ 		} else {
+-			GL20.glUniformMatrix2(i, bl, floatBuffer);
++			GL20.glUniformMatrix2fv(i, bl, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20UniformMatrix3(int i, boolean bl, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniformMatrix3ARB(i, bl, floatBuffer);
++			ARBShaderObjects.glUniformMatrix3fvARB(i, bl, floatBuffer);
+ 		} else {
+-			GL20.glUniformMatrix3(i, bl, floatBuffer);
++			GL20.glUniformMatrix3fv(i, bl, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static void gl20UniformMatrix4(int i, boolean bl, FloatBuffer floatBuffer) {
+ 		if (arbShaderObjects) {
+-			ARBShaderObjects.glUniformMatrix4ARB(i, bl, floatBuffer);
++			ARBShaderObjects.glUniformMatrix4fvARB(i, bl, floatBuffer);
+ 		} else {
+-			GL20.glUniformMatrix4(i, bl, floatBuffer);
++			GL20.glUniformMatrix4fv(i, bl, floatBuffer);
+ 		}
+ 	}
+ 
+ 	public static int gl20GetAttribLocation(int i, CharSequence charSequence) {
+ 		return arbShaderObjects ? ARBVertexShader.glGetAttribLocationARB(i, charSequence) : GL20.glGetAttribLocation(i, charSequence);

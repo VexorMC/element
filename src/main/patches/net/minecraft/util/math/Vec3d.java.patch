@@ -3,7 +3,7 @@
 @@ -1,7 +1,9 @@
  package net.minecraft.util.math;
  
-+import net.minecraft.util.Mth;
++import net.minecraft.util.math.MathHelper;
 +
  public class Vec3d {
  	public final double x;
@@ -17,7 +17,7 @@
  
  	public Vec3d normalize() {
 -		double d = (double)MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-+		double d = (double) Mth.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
++		double d = (double) MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
  		return d < 1.0E-4 ? new Vec3d(0.0, 0.0, 0.0) : new Vec3d(this.x / d, this.y / d, this.z / d);
  	}
  
@@ -30,7 +30,7 @@
  		double e = vec3d.y - this.y;
  		double f = vec3d.z - this.z;
 -		return (double)MathHelper.sqrt(d * d + e * e + f * f);
-+		return (double) Mth.sqrt(d * d + e * e + f * f);
++		return (double) MathHelper.sqrt(d * d + e * e + f * f);
  	}
  
  	public double squaredDistanceTo(Vec3d vec3d) {
@@ -42,35 +42,9 @@
  
  	public double length() {
 -		return (double)MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-+		return (double) Mth.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
++		return (double) MathHelper.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
  	}
  
  	public Vec3d lerpForX(Vec3d vec3d, double d) {
  		double e = vec3d.x - this.x;
  		double f = vec3d.y - this.y;
-@@ -117,21 +119,21 @@
- 	public String toString() {
- 		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
- 	}
- 
- 	public Vec3d rotateX(float f) {
--		float g = MathHelper.cos(f);
--		float h = MathHelper.sin(f);
-+		float g = Mth.cos(f);
-+		float h = Mth.sin(f);
- 		double d = this.x;
- 		double e = this.y * (double)g + this.z * (double)h;
- 		double i = this.z * (double)g - this.y * (double)h;
- 		return new Vec3d(d, e, i);
- 	}
- 
- 	public Vec3d rotateY(float f) {
--		float g = MathHelper.cos(f);
--		float h = MathHelper.sin(f);
-+		float g = Mth.cos(f);
-+		float h = Mth.sin(f);
- 		double d = this.x * (double)g + this.z * (double)h;
- 		double e = this.y;
- 		double i = this.z * (double)g - this.x * (double)h;
- 		return new Vec3d(d, e, i);
- 	}

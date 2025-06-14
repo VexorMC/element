@@ -1,23 +1,5 @@
 --- BeaconBlockEntityRenderer.java
 +++ BeaconBlockEntityRenderer.java
-@@ -1,15 +1,15 @@
- package net.minecraft.client.render.block.entity;
- 
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
- import java.util.List;
- import net.minecraft.block.entity.BeaconBlockEntity;
- import net.minecraft.client.render.BufferBuilder;
- import net.minecraft.client.render.Tessellator;
- import net.minecraft.client.render.VertexFormats;
- import net.minecraft.util.Identifier;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import org.lwjgl.opengl.GL11;
- 
- public class BeaconBlockEntityRenderer extends BlockEntityRenderer<BeaconBlockEntity> {
- 	private static final Identifier BEAM_TEXTURE = new Identifier("textures/entity/beacon_beam.png");
- 
 @@ -33,11 +33,11 @@
  				GlStateManager.disableCull();
  				GlStateManager.disableBlend();
@@ -25,7 +7,7 @@
  				GlStateManager.blendFuncSeparate(770, 1, 1, 0);
  				double m = (double)beaconBlockEntity.getEntityWorld().getLastUpdateTime() + (double)g;
 -				double n = MathHelper.fractionalPart(-m * 0.2 - (double)MathHelper.floor(-m * 0.1));
-+				double n = Mth.fractionalPart(-m * 0.2 - (double) Mth.floor(-m * 0.1));
++				double n = MathHelper.fractionalPart(-m * 0.2 - (double) MathHelper.floor(-m * 0.1));
  				float o = beamSegment.getColor()[0];
  				float p = beamSegment.getColor()[1];
  				float q = beamSegment.getColor()[2];

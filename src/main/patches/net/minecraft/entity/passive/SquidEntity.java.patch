@@ -1,66 +1,19 @@
 --- SquidEntity.java
 +++ SquidEntity.java
-@@ -6,11 +6,11 @@
- import net.minecraft.entity.mob.WaterCreatureEntity;
- import net.minecraft.item.Item;
- import net.minecraft.item.ItemStack;
- import net.minecraft.item.Items;
- import net.minecraft.util.DyeColor;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.World;
- 
- public class SquidEntity extends WaterCreatureEntity {
- 	public float tiltAngle;
- 	public float prevTiltAngle;
-@@ -112,11 +112,11 @@
- 		}
- 
- 		if (this.touchingWater) {
- 			if (this.thrustTimer < (float) Math.PI) {
- 				float f = this.thrustTimer / (float) Math.PI;
--				this.tentacleAngle = MathHelper.sin(f * f * (float) Math.PI) * (float) Math.PI * 0.25F;
-+				this.tentacleAngle = Mth.sin(f * f * (float) Math.PI) * (float) Math.PI * 0.25F;
- 				if ((double)f > 0.75) {
- 					this.constantVelocityRate = 1.0F;
- 					this.turningSpeed = 1.0F;
- 				} else {
- 					this.turningSpeed *= 0.8F;
-@@ -131,17 +131,17 @@
- 				this.velocityX = (double)(this.constantVelocityX * this.constantVelocityRate);
+@@ -132,14 +132,14 @@
  				this.velocityY = (double)(this.constantVelocityY * this.constantVelocityRate);
  				this.velocityZ = (double)(this.constantVelocityZ * this.constantVelocityRate);
  			}
  
--			float f = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+ 			float f = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
 -			this.bodyYaw = this.bodyYaw + (-((float)MathHelper.atan2(this.velocityX, this.velocityZ)) * 180.0F / (float) Math.PI - this.bodyYaw) * 0.1F;
-+			float f = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
-+			this.bodyYaw = this.bodyYaw + (-((float) Mth.atan2(this.velocityX, this.velocityZ)) * 180.0F / (float) Math.PI - this.bodyYaw) * 0.1F;
++			this.bodyYaw = this.bodyYaw + (-((float) MathHelper.atan2(this.velocityX, this.velocityZ)) * 180.0F / (float) Math.PI - this.bodyYaw) * 0.1F;
  			this.yaw = this.bodyYaw;
  			this.rollAngle = (float)((double)this.rollAngle + Math.PI * (double)this.turningSpeed * 1.5);
 -			this.tiltAngle = this.tiltAngle + (-((float)MathHelper.atan2((double)f, this.velocityY)) * 180.0F / (float) Math.PI - this.tiltAngle) * 0.1F;
-+			this.tiltAngle = this.tiltAngle + (-((float) Mth.atan2((double)f, this.velocityY)) * 180.0F / (float) Math.PI - this.tiltAngle) * 0.1F;
++			this.tiltAngle = this.tiltAngle + (-((float) MathHelper.atan2((double)f, this.velocityY)) * 180.0F / (float) Math.PI - this.tiltAngle) * 0.1F;
  		} else {
--			this.tentacleAngle = MathHelper.abs(MathHelper.sin(this.thrustTimer)) * (float) Math.PI * 0.25F;
-+			this.tentacleAngle = Mth.abs(Mth.sin(this.thrustTimer)) * (float) Math.PI * 0.25F;
+ 			this.tentacleAngle = MathHelper.abs(MathHelper.sin(this.thrustTimer)) * (float) Math.PI * 0.25F;
  			if (!this.world.isClient) {
  				this.velocityX = 0.0;
  				this.velocityY -= 0.08;
- 				this.velocityY *= 0.98F;
- 				this.velocityZ = 0.0;
-@@ -197,13 +197,13 @@
- 			int i = this.squid.method_6117();
- 			if (i > 100) {
- 				this.squid.setConstantVelocity(0.0F, 0.0F, 0.0F);
- 			} else if (this.squid.getRandom().nextInt(50) == 0 || !this.squid.touchingWater || !this.squid.hasConstantVelocity()) {
- 				float f = this.squid.getRandom().nextFloat() * (float) Math.PI * 2.0F;
--				float g = MathHelper.cos(f) * 0.2F;
-+				float g = Mth.cos(f) * 0.2F;
- 				float h = -0.1F + this.squid.getRandom().nextFloat() * 0.2F;
--				float j = MathHelper.sin(f) * 0.2F;
-+				float j = Mth.sin(f) * 0.2F;
- 				this.squid.setConstantVelocity(g, h, j);
- 			}
- 		}
- 	}
- }

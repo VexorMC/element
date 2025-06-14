@@ -1,17 +1,5 @@
 --- ServerEntry.java
 +++ ServerEntry.java
-@@ -1,10 +1,10 @@
- package net.minecraft.client.gui.widget;
- 
- import com.google.common.base.Charsets;
- import com.google.common.util.concurrent.ThreadFactoryBuilder;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
- import io.netty.buffer.ByteBuf;
- import io.netty.buffer.ByteBufInputStream;
- import io.netty.buffer.Unpooled;
- import io.netty.handler.codec.base64.Base64;
- import java.awt.image.BufferedImage;
 @@ -38,11 +38,11 @@
  	private final Identifier iconTextureId;
  	private String iconUri;

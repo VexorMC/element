@@ -1,22 +1,6 @@
 --- Identifier.java
 +++ Identifier.java
-@@ -1,11 +1,15 @@
- package net.minecraft.util;
- 
-+import com.mojang.serialization.Codec;
-+import com.mojang.serialization.DataResult;
- import org.apache.commons.lang3.StringUtils;
- import org.apache.commons.lang3.Validate;
- 
- public class Identifier {
-+	public static final Codec<Identifier> CODEC = Codec.STRING.<Identifier>comapFlatMap(Identifier::read, Identifier::toString).stable();
-+
- 	protected final String namespace;
- 	protected final String path;
- 
- 	protected Identifier(int i, String... strings) {
- 		this.namespace = StringUtils.isEmpty(strings[0]) ? "minecraft" : strings[0].toLowerCase();
-@@ -19,10 +23,65 @@
+@@ -19,10 +19,56 @@
  
  	public Identifier(String string, String string2) {
  		this(0, string, string2);
@@ -61,15 +45,6 @@
 +			}
 +		} else {
 +			return withDefaultNamespace(string);
-+		}
-+	}
-+
-+
-+	public static DataResult<Identifier> read(String string) {
-+		try {
-+			return DataResult.success(parse(string));
-+		} catch (Exception var2) {
-+			return DataResult.error(() -> "Not a valid resource location: " + string + " " + var2.getMessage());
 +		}
 +	}
 +

@@ -1,36 +1,5 @@
 --- FishingBobberEntityRenderer.java
 +++ FishingBobberEntityRenderer.java
-@@ -1,15 +1,15 @@
- package net.minecraft.client.render.entity;
- 
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
- import net.minecraft.client.MinecraftClient;
- import net.minecraft.client.render.BufferBuilder;
- import net.minecraft.client.render.Tessellator;
- import net.minecraft.client.render.VertexFormats;
- import net.minecraft.entity.projectile.FishingBobberEntity;
- import net.minecraft.util.Identifier;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- 
- public class FishingBobberEntityRenderer extends EntityRenderer<FishingBobberEntity> {
- 	private static final Identifier PARTICLES = new Identifier("textures/particle/particles.png");
- 
-@@ -44,11 +44,11 @@
- 		tessellator.draw();
- 		GlStateManager.disableRescaleNormal();
- 		GlStateManager.popMatrix();
- 		if (fishingBobberEntity.thrower != null) {
- 			float r = fishingBobberEntity.thrower.getHandSwingProgress(h);
--			float s = MathHelper.sin(MathHelper.sqrt(r) * (float) Math.PI);
-+			float s = Mth.sin(Mth.sqrt(r) * (float) Math.PI);
- 			Vec3d vec3d = new Vec3d(-0.36, 0.03, 0.35);
- 			vec3d = vec3d.rotateX(
- 				-(fishingBobberEntity.thrower.prevPitch + (fishingBobberEntity.thrower.pitch - fishingBobberEntity.thrower.prevPitch) * h) * (float) Math.PI / 180.0F
- 			);
- 			vec3d = vec3d.rotateY(
 @@ -62,12 +62,12 @@
  			double w = (double)fishingBobberEntity.thrower.getEyeHeight();
  			if (this.dispatcher.options != null && this.dispatcher.options.perspective > 0 || fishingBobberEntity.thrower != MinecraftClient.getInstance().player) {
@@ -39,8 +8,8 @@
  					/ 180.0F;
 -				double y = (double)MathHelper.sin(x);
 -				double z = (double)MathHelper.cos(x);
-+				double y = (double) Mth.sin(x);
-+				double z = (double) Mth.cos(x);
++				double y = (double) MathHelper.sin(x);
++				double z = (double) MathHelper.cos(x);
  				double aa = 0.35;
  				double ab = 0.8;
  				t = fishingBobberEntity.thrower.prevX + (fishingBobberEntity.thrower.x - fishingBobberEntity.thrower.prevX) * (double)h - z * 0.35 - y * 0.8;

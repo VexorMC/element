@@ -1,18 +1,5 @@
 --- ExplosiveProjectileEntity.java
 +++ ExplosiveProjectileEntity.java
-@@ -10,11 +10,11 @@
- import net.minecraft.nbt.NbtList;
- import net.minecraft.util.Identifier;
- import net.minecraft.util.hit.BlockHitResult;
- import net.minecraft.util.math.BlockPos;
- import net.minecraft.util.math.Box;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.World;
- 
- public abstract class ExplosiveProjectileEntity extends Entity {
- 	private int blockX = -1;
 @@ -52,11 +52,11 @@
  	public ExplosiveProjectileEntity(World world, double d, double e, double f, double g, double h, double i) {
  		super(world);
@@ -20,7 +7,7 @@
  		this.refreshPositionAndAngles(d, e, f, this.yaw, this.pitch);
  		this.updatePosition(d, e, f);
 -		double j = (double)MathHelper.sqrt(g * g + h * h + i * i);
-+		double j = (double) Mth.sqrt(g * g + h * h + i * i);
++		double j = (double) MathHelper.sqrt(g * g + h * h + i * i);
  		this.powerX = g / j * 0.1;
  		this.powerY = h / j * 0.1;
  		this.powerZ = i / j * 0.1;
@@ -33,26 +20,9 @@
  		e += this.random.nextGaussian() * 0.4;
  		f += this.random.nextGaussian() * 0.4;
 -		double g = (double)MathHelper.sqrt(d * d + e * e + f * f);
-+		double g = (double) Mth.sqrt(d * d + e * e + f * f);
++		double g = (double) MathHelper.sqrt(d * d + e * e + f * f);
  		this.powerX = d / g * 0.1;
  		this.powerY = e / g * 0.1;
  		this.powerZ = f / g * 0.1;
  	}
- 
-@@ -139,13 +139,13 @@
- 			}
- 
- 			this.x = this.x + this.velocityX;
- 			this.y = this.y + this.velocityY;
- 			this.z = this.z + this.velocityZ;
--			float g = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
--			this.yaw = (float)(MathHelper.atan2(this.velocityZ, this.velocityX) * 180.0 / (float) Math.PI) + 90.0F;
--			this.pitch = (float)(MathHelper.atan2((double)g, this.velocityY) * 180.0 / (float) Math.PI) - 90.0F;
-+			float g = Mth.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
-+			this.yaw = (float)(Mth.atan2(this.velocityZ, this.velocityX) * 180.0 / (float) Math.PI) + 90.0F;
-+			this.pitch = (float)(Mth.atan2((double)g, this.velocityY) * 180.0 / (float) Math.PI) - 90.0F;
- 
- 			while (this.pitch - this.prevPitch < -180.0F) {
- 				this.prevPitch -= 360.0F;
- 			}
  

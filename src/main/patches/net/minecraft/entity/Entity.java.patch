@@ -1,62 +1,6 @@
 --- Entity.java
 +++ Entity.java
-@@ -39,11 +39,11 @@
- import net.minecraft.util.crash.CrashReportSection;
- import net.minecraft.util.hit.BlockHitResult;
- import net.minecraft.util.math.BlockPos;
- import net.minecraft.util.math.Box;
- import net.minecraft.util.math.Direction;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.World;
- import net.minecraft.world.explosion.Explosion;
- 
- public abstract class Entity implements CommandSource {
-@@ -142,11 +142,11 @@
- 		this.height = 1.8F;
- 		this.field_3233 = 1;
- 		this.random = new Random();
- 		this.fireResistance = 1;
- 		this.firstUpdate = true;
--		this.playerUuid = MathHelper.randomUuid(this.random);
-+		this.playerUuid = Mth.randomUuid(this.random);
- 		this.commandStats = new CommandStats();
- 		this.world = world;
- 		this.updatePosition(0.0, 0.0, 0.0);
- 		if (world != null) {
- 			this.dimension = world.dimension.getType();
-@@ -233,11 +233,11 @@
- 	public void increaseTransforms(float f, float g) {
- 		float h = this.pitch;
- 		float i = this.yaw;
- 		this.yaw = (float)((double)this.yaw + (double)f * 0.15);
- 		this.pitch = (float)((double)this.pitch - (double)g * 0.15);
--		this.pitch = MathHelper.clamp(this.pitch, -90.0F, 90.0F);
-+		this.pitch = Mth.clamp(this.pitch, -90.0F, 90.0F);
- 		this.prevPitch = this.prevPitch + (this.pitch - h);
- 		this.prevYaw = this.prevYaw + (this.yaw - i);
- 	}
- 
- 	public void tick() {
-@@ -537,13 +537,13 @@
- 			this.updateSubmergedInWaterState();
- 			this.horizontalCollision = j != d || l != f;
- 			this.verticalCollision = k != e;
- 			this.onGround = this.verticalCollision && k < 0.0;
- 			this.colliding = this.horizontalCollision || this.verticalCollision;
--			int y = MathHelper.floor(this.x);
--			int z = MathHelper.floor(this.y - 0.2F);
--			int aa = MathHelper.floor(this.z);
-+			int y = Mth.floor(this.x);
-+			int z = Mth.floor(this.y - 0.2F);
-+			int aa = Mth.floor(this.z);
- 			BlockPos blockPos = new BlockPos(y, z, aa);
- 			Block block = this.world.getBlockState(blockPos).getBlock();
- 			if (block.getMaterial() == Material.AIR) {
- 				Block block2 = this.world.getBlockState(blockPos.down()).getBlock();
- 				if (block2 instanceof FenceBlock || block2 instanceof WallBlock || block2 instanceof FenceGateBlock) {
-@@ -575,16 +575,16 @@
+@@ -575,12 +575,12 @@
  
  				if (block != null && this.onGround) {
  					block.onSteppedOn(this.world, blockPos, this);
@@ -64,92 +8,26 @@
  
 -				this.horizontalSpeed = (float)((double)this.horizontalSpeed + (double)MathHelper.sqrt(ab * ab + ad * ad) * 0.6);
 -				this.distanceTraveled = (float)((double)this.distanceTraveled + (double)MathHelper.sqrt(ab * ab + ac * ac + ad * ad) * 0.6);
-+				this.horizontalSpeed = (float)((double)this.horizontalSpeed + (double) Mth.sqrt(ab * ab + ad * ad) * 0.6);
-+				this.distanceTraveled = (float)((double)this.distanceTraveled + (double) Mth.sqrt(ab * ab + ac * ac + ad * ad) * 0.6);
++				this.horizontalSpeed = (float)((double)this.horizontalSpeed + (double) MathHelper.sqrt(ab * ab + ad * ad) * 0.6);
++				this.distanceTraveled = (float)((double)this.distanceTraveled + (double) MathHelper.sqrt(ab * ab + ac * ac + ad * ad) * 0.6);
  				if (this.distanceTraveled > (float)this.field_3233 && block.getMaterial() != Material.AIR) {
  					this.field_3233 = (int)this.distanceTraveled + 1;
  					if (this.isTouchingWater()) {
--						float ae = MathHelper.sqrt(this.velocityX * this.velocityX * 0.2F + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ * 0.2F) * 0.35F;
-+						float ae = Mth.sqrt(this.velocityX * this.velocityX * 0.2F + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ * 0.2F) * 0.35F;
+ 						float ae = MathHelper.sqrt(this.velocityX * this.velocityX * 0.2F + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ * 0.2F) * 0.35F;
  						if (ae > 1.0F) {
- 							ae = 1.0F;
- 						}
- 
- 						this.playSound(this.getSwimSound(), ae, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
-@@ -748,17 +748,17 @@
- 
- 		return this.touchingWater;
- 	}
- 
- 	protected void onSwimmingStart() {
--		float f = MathHelper.sqrt(this.velocityX * this.velocityX * 0.2F + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ * 0.2F) * 0.2F;
-+		float f = Mth.sqrt(this.velocityX * this.velocityX * 0.2F + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ * 0.2F) * 0.2F;
+@@ -754,11 +754,11 @@
  		if (f > 1.0F) {
  			f = 1.0F;
  		}
  
  		this.playSound(this.getSplashSound(), f, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
 -		float g = (float)MathHelper.floor(this.getBoundingBox().minY);
-+		float g = (float) Mth.floor(this.getBoundingBox().minY);
++		float g = (float) MathHelper.floor(this.getBoundingBox().minY);
  
  		for (int i = 0; (float)i < 1.0F + this.width * 20.0F; i++) {
  			float h = (this.random.nextFloat() * 2.0F - 1.0F) * this.width;
  			float j = (this.random.nextFloat() * 2.0F - 1.0F) * this.width;
  			this.world
-@@ -785,13 +785,13 @@
- 			this.spawnSprintingParticles();
- 		}
- 	}
- 
- 	protected void spawnSprintingParticles() {
--		int i = MathHelper.floor(this.x);
--		int j = MathHelper.floor(this.y - 0.2F);
--		int k = MathHelper.floor(this.z);
-+		int i = Mth.floor(this.x);
-+		int j = Mth.floor(this.y - 0.2F);
-+		int k = Mth.floor(this.z);
- 		BlockPos blockPos = new BlockPos(i, j, k);
- 		BlockState blockState = this.world.getBlockState(blockPos);
- 		Block block = blockState.getBlock();
- 		if (block.getBlockType() != -1) {
- 			this.world
-@@ -832,20 +832,20 @@
- 	}
- 
- 	public void updateVelocity(float f, float g, float h) {
- 		float i = f * f + g * g;
- 		if (!(i < 1.0E-4F)) {
--			i = MathHelper.sqrt(i);
-+			i = Mth.sqrt(i);
- 			if (i < 1.0F) {
- 				i = 1.0F;
- 			}
- 
- 			i = h / i;
- 			f *= i;
- 			g *= i;
--			float j = MathHelper.sin(this.yaw * (float) Math.PI / 180.0F);
--			float k = MathHelper.cos(this.yaw * (float) Math.PI / 180.0F);
-+			float j = Mth.sin(this.yaw * (float) Math.PI / 180.0F);
-+			float k = Mth.cos(this.yaw * (float) Math.PI / 180.0F);
- 			this.velocityX += (double)(f * k - g * j);
- 			this.velocityZ += (double)(g * k + f * j);
- 		}
- 	}
- 
-@@ -897,11 +897,11 @@
- 
- 	public float distanceTo(Entity entity) {
- 		float f = (float)(this.x - entity.x);
- 		float g = (float)(this.y - entity.y);
- 		float h = (float)(this.z - entity.z);
--		return MathHelper.sqrt(f * f + g * g + h * h);
-+		return Mth.sqrt(f * f + g * g + h * h);
- 	}
- 
- 	public double squaredDistanceTo(double d, double e, double f) {
- 		double g = this.x - d;
- 		double h = this.y - e;
 @@ -919,11 +919,11 @@
  
  	public double distanceTo(double d, double e, double f) {
@@ -157,82 +35,25 @@
  		double h = this.y - e;
  		double i = this.z - f;
 -		return (double)MathHelper.sqrt(g * g + h * h + i * i);
-+		return (double) Mth.sqrt(g * g + h * h + i * i);
++		return (double) MathHelper.sqrt(g * g + h * h + i * i);
  	}
  
  	public double squaredDistanceTo(Entity entity) {
  		double d = this.x - entity.x;
  		double e = this.y - entity.y;
-@@ -937,13 +937,13 @@
- 	public void pushAwayFrom(Entity entity) {
- 		if (entity.rider != this && entity.vehicle != this) {
+@@ -939,11 +939,11 @@
  			if (!entity.noClip && !this.noClip) {
  				double d = entity.x - this.x;
  				double e = entity.z - this.z;
--				double f = MathHelper.absMax(d, e);
-+				double f = Mth.absMax(d, e);
+ 				double f = MathHelper.absMax(d, e);
  				if (f >= 0.01F) {
 -					f = (double)MathHelper.sqrt(f);
-+					f = (double) Mth.sqrt(f);
++					f = (double) MathHelper.sqrt(f);
  					d /= f;
  					e /= f;
  					double g = 1.0 / f;
  					if (g > 1.0) {
  						g = 1.0;
-@@ -996,14 +996,14 @@
- 			return this.getRotationVector(g, h);
- 		}
- 	}
- 
- 	protected final Vec3d getRotationVector(float f, float g) {
--		float h = MathHelper.cos(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
--		float i = MathHelper.sin(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
--		float j = -MathHelper.cos(-f * (float) (Math.PI / 180.0));
--		float k = MathHelper.sin(-f * (float) (Math.PI / 180.0));
-+		float h = Mth.cos(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
-+		float i = Mth.sin(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
-+		float j = -Mth.cos(-f * (float) (Math.PI / 180.0));
-+		float k = Mth.sin(-f * (float) (Math.PI / 180.0));
- 		return new Vec3d((double)(i * j), (double)k, (double)(h * j));
- 	}
- 
- 	public Vec3d getCameraPosVec(float f) {
- 		if (f == 1.0F) {
-@@ -1237,13 +1237,13 @@
- 			return false;
- 		} else {
- 			BlockPos.Mutable mutable = new BlockPos.Mutable(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
- 
- 			for (int i = 0; i < 8; i++) {
--				int j = MathHelper.floor(this.y + (double)(((float)((i >> 0) % 2) - 0.5F) * 0.1F) + (double)this.getEyeHeight());
--				int k = MathHelper.floor(this.x + (double)(((float)((i >> 1) % 2) - 0.5F) * this.width * 0.8F));
--				int l = MathHelper.floor(this.z + (double)(((float)((i >> 2) % 2) - 0.5F) * this.width * 0.8F));
-+				int j = Mth.floor(this.y + (double)(((float)((i >> 0) % 2) - 0.5F) * 0.1F) + (double)this.getEyeHeight());
-+				int k = Mth.floor(this.x + (double)(((float)((i >> 1) % 2) - 0.5F) * this.width * 0.8F));
-+				int l = Mth.floor(this.z + (double)(((float)((i >> 2) % 2) - 0.5F) * this.width * 0.8F));
- 				if (mutable.getX() != k || mutable.getY() != j || mutable.getZ() != l) {
- 					mutable.setPosition(k, j, l);
- 					if (this.world.getBlockState(mutable).getBlock().isLeafBlock()) {
- 						return true;
- 					}
-@@ -1392,15 +1392,15 @@
- 				this.lastPortalBlockPos = blockPos;
- 				BlockPattern.Result result = Blocks.NETHER_PORTAL.findPortal(this.world, blockPos);
- 				double d = result.getForwards().getAxis() == Direction.Axis.X ? (double)result.getFrontTopLeft().getZ() : (double)result.getFrontTopLeft().getX();
- 				double e = result.getForwards().getAxis() == Direction.Axis.X ? this.z : this.x;
- 				e = Math.abs(
--					MathHelper.minusDiv(
-+					Mth.minusDiv(
- 						e - (double)(result.getForwards().rotateYClockwise().getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 1 : 0), d, d - (double)result.getWidth()
- 					)
- 				);
--				double f = MathHelper.minusDiv(this.y - 1.0, (double)result.getFrontTopLeft().getY(), (double)(result.getFrontTopLeft().getY() - result.getHeight()));
-+				double f = Mth.minusDiv(this.y - 1.0, (double)result.getFrontTopLeft().getY(), (double)(result.getFrontTopLeft().getY() - result.getHeight()));
- 				this.lastPortalVec3d = new Vec3d(e, f, 0.0);
- 				this.teleportDirection = result.getForwards();
- 			}
- 
- 			this.changingDimension = true;
 @@ -1718,11 +1718,11 @@
  			}
  		});
@@ -240,22 +61,9 @@
  		crashReportSection.add(
  			"Entity's Block location",
 -			CrashReportSection.createPositionString((double)MathHelper.floor(this.x), (double)MathHelper.floor(this.y), (double)MathHelper.floor(this.z))
-+			CrashReportSection.createPositionString((double) Mth.floor(this.x), (double) Mth.floor(this.y), (double) Mth.floor(this.z))
++			CrashReportSection.createPositionString((double) MathHelper.floor(this.x), (double) MathHelper.floor(this.y), (double) MathHelper.floor(this.z))
  		);
  		crashReportSection.add("Entity's Momentum", String.format("%.2f, %.2f, %.2f", this.velocityX, this.velocityY, this.velocityZ));
  		crashReportSection.add("Entity's Rider", new Callable<String>() {
  			public String call() throws Exception {
  				return Entity.this.rider.toString();
-@@ -1785,11 +1785,11 @@
- 
- 	public void method_8364(int i) {
- 	}
- 
- 	public Direction getHorizontalDirection() {
--		return Direction.fromHorizontal(MathHelper.floor((double)(this.yaw * 4.0F / 360.0F) + 0.5) & 3);
-+		return Direction.fromHorizontal(Mth.floor((double)(this.yaw * 4.0F / 360.0F) + 0.5) & 3);
- 	}
- 
- 	protected HoverEvent getHoverEvent() {
- 		NbtCompound nbtCompound = new NbtCompound();
- 		String string = EntityType.getEntityName(this);

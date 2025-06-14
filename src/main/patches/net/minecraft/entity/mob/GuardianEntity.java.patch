@@ -1,18 +1,5 @@
 --- GuardianEntity.java
 +++ GuardianEntity.java
-@@ -30,11 +30,11 @@
- import net.minecraft.nbt.NbtCompound;
- import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
- import net.minecraft.util.WeightedRandomFishingLoot;
- import net.minecraft.util.collection.Weighting;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.Difficulty;
- import net.minecraft.world.World;
- 
- public class GuardianEntity extends HostileEntity {
 @@ -349,11 +349,11 @@
  			int k = 6000;
  			int l = 2;
@@ -26,19 +13,16 @@
  					}
  				})) {
  					if (!serverPlayerEntity.hasStatusEffect(statusEffect)
-@@ -542,13 +542,13 @@
+@@ -542,11 +542,11 @@
  			if (this.moving && !this.guardian.getNavigation().isIdle()) {
  				double d = this.targetX - this.guardian.x;
  				double e = this.targetY - this.guardian.y;
  				double f = this.targetZ - this.guardian.z;
  				double g = d * d + e * e + f * f;
 -				g = (double)MathHelper.sqrt(g);
-+				g = (double) Mth.sqrt(g);
++				g = (double) MathHelper.sqrt(g);
  				e /= g;
--				float h = (float)(MathHelper.atan2(f, d) * 180.0 / (float) Math.PI) - 90.0F;
-+				float h = (float)(Mth.atan2(f, d) * 180.0 / (float) Math.PI) - 90.0F;
+ 				float h = (float)(MathHelper.atan2(f, d) * 180.0 / (float) Math.PI) - 90.0F;
  				this.guardian.yaw = this.wrapDegrees(this.guardian.yaw, h, 30.0F);
  				this.guardian.bodyYaw = this.guardian.yaw;
  				float i = (float)(this.speed * this.guardian.initializeAttribute(EntityAttributes.GENERIC_MOVEMENT_SPEED).getValue());
- 				this.guardian.setMovementSpeed(this.guardian.getMovementSpeed() + (i - this.guardian.getMovementSpeed()) * 0.125F);
- 				double j = Math.sin((double)(this.guardian.ticksAlive + this.guardian.getEntityId()) * 0.5) * 0.05;

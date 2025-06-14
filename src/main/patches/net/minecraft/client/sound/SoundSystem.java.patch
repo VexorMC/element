@@ -1,31 +1,5 @@
 --- SoundSystem.java
 +++ SoundSystem.java
-@@ -19,11 +19,11 @@
- import java.util.Map.Entry;
- import net.minecraft.client.MinecraftClient;
- import net.minecraft.client.option.GameOptions;
- import net.minecraft.entity.player.PlayerEntity;
- import net.minecraft.util.Identifier;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
- import org.apache.logging.log4j.Marker;
- import org.apache.logging.log4j.MarkerManager;
- import paulscode.sound.SoundSystemConfig;
-@@ -262,11 +262,11 @@
- 						Identifier identifier = sound.getIdentifier();
- 						if (h == 0.0F) {
- 							LOGGER.debug(MARKER, "Skipped playing sound {}, volume was zero.", new Object[]{identifier});
- 						} else {
- 							boolean bl = soundInstance.isRepeatable() && soundInstance.getRepeatDelay() == 0;
--							String string = MathHelper.randomUuid(ThreadLocalRandom.current()).toString();
-+							String string = Mth.randomUuid(ThreadLocalRandom.current()).toString();
- 							if (sound.method_7094()) {
- 								this.field_8193
- 									.newStreamingSource(
- 										false,
- 										string,
 @@ -315,15 +315,15 @@
  			}
  		}
@@ -33,37 +7,14 @@
  
  	private float method_7099(SoundInstance soundInstance, Sound sound) {
 -		return (float)MathHelper.clamp((double)soundInstance.getPitch() * sound.getVolume(), 0.5, 2.0);
-+		return (float) Mth.clamp((double)soundInstance.getPitch() * sound.getVolume(), 0.5, 2.0);
++		return (float) MathHelper.clamp((double)soundInstance.getPitch() * sound.getVolume(), 0.5, 2.0);
  	}
  
  	private float method_7100(SoundInstance soundInstance, Sound sound, SoundCategory soundCategory) {
 -		return (float)MathHelper.clamp((double)soundInstance.getVolume() * sound.getPitch(), 0.0, 1.0) * this.getSoundVolume(soundCategory);
-+		return (float) Mth.clamp((double)soundInstance.getVolume() * sound.getPitch(), 0.0, 1.0) * this.getSoundVolume(soundCategory);
++		return (float) MathHelper.clamp((double)soundInstance.getVolume() * sound.getPitch(), 0.0, 1.0) * this.getSoundVolume(soundCategory);
  	}
  
  	public void pauseAll() {
  		for (String string : this.field_8195.keySet()) {
  			LOGGER.debug(MARKER, "Pausing channel {}", new Object[]{string});
-@@ -369,16 +369,16 @@
- 			float g = playerEntity.prevPitch + (playerEntity.pitch - playerEntity.prevPitch) * f;
- 			float h = playerEntity.prevYaw + (playerEntity.yaw - playerEntity.prevYaw) * f;
- 			double d = playerEntity.prevX + (playerEntity.x - playerEntity.prevX) * (double)f;
- 			double e = playerEntity.prevY + (playerEntity.y - playerEntity.prevY) * (double)f + (double)playerEntity.getEyeHeight();
- 			double i = playerEntity.prevZ + (playerEntity.z - playerEntity.prevZ) * (double)f;
--			float j = MathHelper.cos((h + 90.0F) * (float) (Math.PI / 180.0));
--			float k = MathHelper.sin((h + 90.0F) * (float) (Math.PI / 180.0));
--			float l = MathHelper.cos(-g * (float) (Math.PI / 180.0));
--			float m = MathHelper.sin(-g * (float) (Math.PI / 180.0));
--			float n = MathHelper.cos((-g + 90.0F) * (float) (Math.PI / 180.0));
--			float o = MathHelper.sin((-g + 90.0F) * (float) (Math.PI / 180.0));
-+			float j = Mth.cos((h + 90.0F) * (float) (Math.PI / 180.0));
-+			float k = Mth.sin((h + 90.0F) * (float) (Math.PI / 180.0));
-+			float l = Mth.cos(-g * (float) (Math.PI / 180.0));
-+			float m = Mth.sin(-g * (float) (Math.PI / 180.0));
-+			float n = Mth.cos((-g + 90.0F) * (float) (Math.PI / 180.0));
-+			float o = Mth.sin((-g + 90.0F) * (float) (Math.PI / 180.0));
- 			float p = j * l;
- 			float r = k * l;
- 			float s = j * n;
- 			float u = k * n;
- 			this.field_8193.setListenerPosition((float)d, (float)e, (float)i);

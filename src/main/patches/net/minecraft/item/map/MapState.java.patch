@@ -1,40 +1,13 @@
 --- MapState.java
 +++ MapState.java
-@@ -10,11 +10,11 @@
- import net.minecraft.nbt.NbtCompound;
- import net.minecraft.nbt.NbtList;
- import net.minecraft.network.Packet;
- import net.minecraft.network.packet.s2c.play.MapUpdateS2CPacket;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.PersistentState;
- import net.minecraft.world.World;
- 
- public class MapState extends PersistentState {
- 	public int xCenter;
-@@ -30,23 +30,23 @@
- 		super(string);
- 	}
- 
- 	public void method_9308(double d, double e, int i) {
- 		int j = 128 * (1 << i);
--		int k = MathHelper.floor((d + 64.0) / (double)j);
--		int l = MathHelper.floor((e + 64.0) / (double)j);
-+		int k = Mth.floor((d + 64.0) / (double)j);
-+		int l = Mth.floor((e + 64.0) / (double)j);
- 		this.xCenter = k * j + j / 2 - 64;
- 		this.zCenter = l * j + j / 2 - 64;
- 	}
- 
- 	@Override
+@@ -42,11 +42,11 @@
  	public void fromNbt(NbtCompound nbtCompound) {
  		this.dimensionId = nbtCompound.getByte("dimension");
  		this.xCenter = nbtCompound.getInt("xCenter");
  		this.zCenter = nbtCompound.getInt("zCenter");
  		this.scale = nbtCompound.getByte("scale");
 -		this.scale = (byte)MathHelper.clamp(this.scale, 0, 4);
-+		this.scale = (byte) Mth.clamp(this.scale, 0, 4);
++		this.scale = (byte) MathHelper.clamp(this.scale, 0, 4);
  		int i = nbtCompound.getShort("width");
  		int j = nbtCompound.getShort("height");
  		if (i == 128 && j == 128) {

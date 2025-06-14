@@ -1,41 +1,5 @@
 --- Explosion.java
 +++ Explosion.java
-@@ -18,11 +18,11 @@
- import net.minecraft.entity.TntEntity;
- import net.minecraft.entity.damage.DamageSource;
- import net.minecraft.entity.player.PlayerEntity;
- import net.minecraft.util.math.BlockPos;
- import net.minecraft.util.math.Box;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.World;
- 
- public class Explosion {
- 	private final boolean createFire;
-@@ -100,16 +100,16 @@
- 			}
- 		}
- 
- 		this.affectedBlocks.addAll(set);
- 		float r = this.power * 2.0F;
--		int k = MathHelper.floor(this.x - (double)r - 1.0);
--		int lx = MathHelper.floor(this.x + (double)r + 1.0);
--		int s = MathHelper.floor(this.y - (double)r - 1.0);
--		int t = MathHelper.floor(this.y + (double)r + 1.0);
--		int u = MathHelper.floor(this.z - (double)r - 1.0);
--		int v = MathHelper.floor(this.z + (double)r + 1.0);
-+		int k = Mth.floor(this.x - (double)r - 1.0);
-+		int lx = Mth.floor(this.x + (double)r + 1.0);
-+		int s = Mth.floor(this.y - (double)r - 1.0);
-+		int t = Mth.floor(this.y + (double)r + 1.0);
-+		int u = Mth.floor(this.z - (double)r - 1.0);
-+		int v = Mth.floor(this.z + (double)r + 1.0);
- 		List<Entity> list = this.world.getEntitiesIn(this.causingEntity, new Box((double)k, (double)s, (double)u, (double)lx, (double)t, (double)v));
- 		Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
- 
- 		for (int w = 0; w < list.size(); w++) {
- 			Entity entity = (Entity)list.get(w);
 @@ -117,11 +117,11 @@
  				double x = entity.distanceTo(this.x, this.y, this.z) / (double)r;
  				if (x <= 1.0) {
@@ -43,7 +7,7 @@
  					double z = entity.y + (double)entity.getEyeHeight() - this.y;
  					double aa = entity.z - this.z;
 -					double ab = (double)MathHelper.sqrt(y * y + z * z + aa * aa);
-+					double ab = (double) Mth.sqrt(y * y + z * z + aa * aa);
++					double ab = (double) MathHelper.sqrt(y * y + z * z + aa * aa);
  					if (ab != 0.0) {
  						y /= ab;
  						z /= ab;
@@ -56,7 +20,7 @@
  					double h = e - this.y;
  					double i = f - this.z;
 -					double j = (double)MathHelper.sqrt(g * g + h * h + i * i);
-+					double j = (double) Mth.sqrt(g * g + h * h + i * i);
++					double j = (double) MathHelper.sqrt(g * g + h * h + i * i);
  					g /= j;
  					h /= j;
  					i /= j;

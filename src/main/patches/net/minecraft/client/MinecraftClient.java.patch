@@ -1,6 +1,6 @@
 --- MinecraftClient.java
 +++ MinecraftClient.java
-@@ -1,22 +1,24 @@
+@@ -1,18 +1,18 @@
  package net.minecraft.client;
  
 +import com.element.utility.Utility;
@@ -17,18 +17,10 @@
 -import com.mojang.authlib.properties.Property;
  import com.mojang.authlib.properties.PropertyMap;
  import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.pipeline.MainTarget;
-+import com.mojang.blaze3d.pipeline.RenderTarget;
-+import com.mojang.blaze3d.platform.legacy.GLX;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
+ import com.mojang.blaze3d.platform.GLX;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import java.awt.image.BufferedImage;
- import java.io.File;
- import java.io.IOException;
- import java.io.InputStream;
- import java.net.Proxy;
-@@ -55,11 +57,10 @@
+@@ -55,11 +55,10 @@
  import net.minecraft.client.gui.screen.SleepingChatScreen;
  import net.minecraft.client.gui.screen.TitleScreen;
  import net.minecraft.client.gui.screen.TwitchErrorScreen;
@@ -40,7 +32,7 @@
  import net.minecraft.client.network.ClientPlayNetworkHandler;
  import net.minecraft.client.network.ClientPlayerInteractionManager;
  import net.minecraft.client.network.ServerInfo;
-@@ -138,11 +139,10 @@
+@@ -138,11 +137,10 @@
  import net.minecraft.resource.ReloadableResourceManagerImpl;
  import net.minecraft.resource.ResourceManager;
  import net.minecraft.resource.ResourcePack;
@@ -52,20 +44,7 @@
  import net.minecraft.util.Identifier;
  import net.minecraft.util.MetadataSerializer;
  import net.minecraft.util.MetricsData;
-@@ -151,11 +151,11 @@
- import net.minecraft.util.crash.CrashException;
- import net.minecraft.util.crash.CrashReport;
- import net.minecraft.util.crash.CrashReportSection;
- import net.minecraft.util.hit.BlockHitResult;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.profiler.Profiler;
- import net.minecraft.util.snooper.Snoopable;
- import net.minecraft.util.snooper.Snooper;
- import net.minecraft.world.Difficulty;
- import net.minecraft.world.SaveHandler;
-@@ -171,41 +171,41 @@
+@@ -171,41 +169,41 @@
  import org.apache.logging.log4j.Logger;
  import org.lwjgl.LWJGLException;
  import org.lwjgl.Sys;
@@ -116,7 +95,7 @@
  	private EntityRenderDispatcher entityRenderDispatcher;
  	private ItemRenderer itemRenderer;
  	private HeldItemRenderer heldItemRenderer;
-@@ -219,12 +219,12 @@
+@@ -219,12 +217,12 @@
  	public TextRenderer shadowTextRenderer;
  	public Screen currentScreen;
  	public LoadingScreenRenderer loadingScreenRenderer;
@@ -131,15 +110,7 @@
  	public InGameHud inGameHud;
  	public boolean skipGameRender;
  	public BlockHitResult result;
-@@ -256,26 +256,22 @@
- 	private final DefaultResourcePack defaultResourcePack;
- 	private ResourcePackLoader loader;
- 	private LanguageManager languageManager;
- 	private TwitchStreamProvider twitchStreamProvider;
- 	private Framebuffer fbo;
-+	private RenderTarget mainRenderTarget;
- 	private SpriteAtlasTexture texture;
- 	private SoundManager soundManager;
+@@ -263,19 +261,14 @@
  	private MusicTracker musicTracker;
  	private Identifier mojang;
  	private final MinecraftSessionService sessionService;
@@ -161,7 +132,7 @@
  	int fpsCounter;
  	long debugTime = -1L;
  	private String openProfilerSection = "root";
-@@ -288,12 +284,15 @@
+@@ -288,12 +281,15 @@
  		this.gameVersion = runArgs.game.version;
  		this.twitchPropertyMap = runArgs.args.userProperties;
  		this.sessionPropertyMap = runArgs.args.profileProperties;
@@ -178,7 +149,7 @@
  		this.isDemo = runArgs.game.demo;
  		this.width = runArgs.windowInformation.width > 0 ? runArgs.windowInformation.width : 1;
  		this.height = runArgs.windowInformation.height > 0 ? runArgs.windowInformation.height : 1;
-@@ -337,13 +336,11 @@
+@@ -337,13 +333,11 @@
  							this.setScreen(new OutOfMemoryScreen());
  							System.gc();
  						}
@@ -193,7 +164,7 @@
  				this.cleanUpAfterCrash();
  				LOGGER.fatal("Reported exception thrown!", var13);
  				this.printCrashReport(var13.getReport());
-@@ -356,30 +353,31 @@
+@@ -356,20 +350,20 @@
  		} finally {
  			this.stop();
  		}
@@ -216,18 +187,7 @@
  		this.setPixelFormat();
  		GLX.createContext();
  		this.fbo = new Framebuffer(this.width, this.height, true);
- 		this.fbo.setClearColor(0.0F, 0.0F, 0.0F, 0.0F);
- 		this.registerMetadataSerializers();
- 		this.loader = new ResourcePackLoader(
- 			this.resourcePackDir, new File(this.runDirectory, "server-resource-packs"), this.defaultResourcePack, this.metadataSerializer, this.options
- 		);
-+		this.mainRenderTarget = new MainTarget(this.width, this.height);
- 		this.resourceManager = new ReloadableResourceManagerImpl(this.metadataSerializer);
- 		this.languageManager = new LanguageManager(this.metadataSerializer, this.options.language);
- 		this.resourceManager.registerListener(this.languageManager);
- 		this.reloadResources();
- 		this.textureManager = new TextureManager(this.resourceManager);
-@@ -400,20 +398,17 @@
+@@ -400,20 +394,17 @@
  		this.shadowTextRenderer = new TextRenderer(this.options, new Identifier("textures/font/ascii_sga.png"), this.textureManager, false);
  		this.resourceManager.registerListener(this.textRenderer);
  		this.resourceManager.registerListener(this.shadowTextRenderer);
@@ -255,7 +215,7 @@
  		GlStateManager.enableTexture();
  		GlStateManager.shadeModel(7425);
  		GlStateManager.clearDepth(1.0);
-@@ -429,19 +424,19 @@
+@@ -429,19 +420,19 @@
  		this.texture = new SpriteAtlasTexture("textures");
  		this.texture.setMaxTextureSize(this.options.mipmapLevels);
  		this.textureManager.loadTickableTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX, this.texture);
@@ -279,7 +239,7 @@
  		this.resourceManager.registerListener(this.worldRenderer);
  		this.notification = new AchievementNotification(this);
  		GlStateManager.viewport(0, 0, this.width, this.height);
-@@ -461,11 +456,11 @@
+@@ -461,11 +452,11 @@
  			this.toggleFullscreen();
  		}
  
@@ -292,7 +252,7 @@
  		}
  
  		this.worldRenderer.setupEntityOutlineShader();
-@@ -479,29 +474,29 @@
+@@ -479,29 +470,29 @@
  		this.metadataSerializer.register(new LanguageMetadataSerializer(), LanguageResourceMetadata.class);
  	}
  
@@ -328,7 +288,7 @@
  			if (this.fullscreen) {
  				this.updateDisplayMode();
  			}
-@@ -567,11 +562,11 @@
+@@ -567,11 +558,11 @@
  		Thread thread = new Thread("Timer hack thread") {
  			public void run() {
  				while (MinecraftClient.this.running) {
@@ -341,7 +301,7 @@
  			}
  		};
  		thread.setDaemon(true);
-@@ -677,18 +672,18 @@
+@@ -677,18 +668,18 @@
  		Display.setDisplayMode(displayMode);
  		this.width = displayMode.getWidth();
  		this.height = displayMode.getHeight();
@@ -362,7 +322,7 @@
  		GlStateManager.translate(0.0F, 0.0F, -2000.0F);
  		GlStateManager.disableLighting();
  		GlStateManager.disableFog();
-@@ -707,13 +702,13 @@
+@@ -707,13 +698,13 @@
  		}
  
  		Tessellator tessellator = Tessellator.getInstance();
@@ -379,7 +339,7 @@
  		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
  		int j = 256;
  		int k = 256;
-@@ -730,14 +725,14 @@
+@@ -730,14 +721,14 @@
  	public void drawLogo(int i, int j, int k, int l, int m, int n, int o, int p, int q, int r) {
  		float f = 0.00390625F;
  		float g = 0.00390625F;
@@ -398,7 +358,7 @@
  
  	public LevelStorageAccess getCurrentSave() {
  		return this.currentSave;
-@@ -772,29 +767,29 @@
+@@ -772,29 +763,29 @@
  			this.closeScreen();
  		}
  	}
@@ -433,7 +393,7 @@
  			this.soundManager.close();
  		} finally {
  			Display.destroy();
-@@ -822,24 +817,22 @@
+@@ -822,24 +813,22 @@
  		}
  
  		this.profiler.push("scheduledExecutables");
@@ -459,7 +419,7 @@
  		this.soundManager.updateListenerPosition(this.player, this.ticker.tickDelta);
  		this.profiler.pop();
  		this.profiler.push("render");
-@@ -864,11 +857,11 @@
+@@ -864,11 +853,11 @@
  			if (!this.profiler.enabled) {
  				this.profiler.reset();
  			}
@@ -472,7 +432,7 @@
  			this.debugTime = System.nanoTime();
  		}
  
-@@ -966,55 +959,55 @@
+@@ -966,55 +955,55 @@
  
  	public void cleanUpAfterCrash() {
  		try {
@@ -538,7 +498,7 @@
  			GlStateManager.translate(0.0F, 0.0F, -2000.0F);
  			GL11.glLineWidth(1.0F);
  			GlStateManager.disableTexture();
-@@ -1023,58 +1016,57 @@
+@@ -1023,58 +1012,57 @@
  			int i = 160;
  			int j = this.width - i - 10;
  			int k = this.height - i * 2;
@@ -566,7 +526,7 @@
 -				int r = o & 0xFF;
 -				bufferBuilder.vertex((double)j, (double)k, 0.0).color(p, q, r, 255).next();
 +            for (Profiler.Section value : list) {
-+                int n = Mth.floor(value.relativePercentage / 4.0) + 1;
++                int n = MathHelper.floor(value.relativePercentage / 4.0) + 1;
 +                bufferBuilder.begin(6, VertexFormats.POSITION_COLOR);
 +                int o = value.getColor();
 +                int p = o >> 16 & 0xFF;
@@ -582,8 +542,8 @@
 -				}
 +                for (int s = n; s >= 0; s--) {
 +                    float f = (float) ((d + value.relativePercentage * (double) s / (double) n) * (float) Math.PI * 2.0 / 100.0);
-+                    float g = Mth.sin(f) * (float) i;
-+                    float h = Mth.cos(f) * (float) i * 0.5F;
++                    float g = MathHelper.sin(f) * (float) i;
++                    float h = MathHelper.cos(f) * (float) i * 0.5F;
 +                    bufferBuilder.vertex(((float) j + g), ((float) k - h), 0.0).color(p, q, r, 255).next();
 +                }
  
@@ -601,8 +561,8 @@
 -				}
 +                for (int s = n; s >= 0; s--) {
 +                    float f = (float) ((d + value.relativePercentage * (double) s / (double) n) * (float) Math.PI * 2.0 / 100.0);
-+                    float g = Mth.sin(f) * (float) i;
-+                    float h = Mth.cos(f) * (float) i * 0.5F;
++                    float g = MathHelper.sin(f) * (float) i;
++                    float h = MathHelper.cos(f) * (float) i * 0.5F;
 +                    bufferBuilder.vertex(((float) j + g), ((float) k - h), 0.0).color(p >> 1, q >> 1, r >> 1, 255).next();
 +                    bufferBuilder.vertex(((float) j + g), ((float) k - h + 10.0F), 0.0).color(p >> 1, q >> 1, r >> 1, 255).next();
 +                }
@@ -628,7 +588,7 @@
  				string = string + section.name + " ";
  			}
  
-@@ -1084,11 +1076,11 @@
+@@ -1084,11 +1072,11 @@
  				.drawWithShadow(
  					string = decimalFormat.format(section.absolutePercentage) + "%", (float)(j + i - this.textRenderer.getStringWidth(string)), (float)(k - i / 2 - 16), n
  				);
@@ -641,7 +601,7 @@
  					string2 = string2 + "[?] ";
  				} else {
  					string2 = string2 + "[" + (t + 1) + "] ";
-@@ -1346,29 +1338,21 @@
+@@ -1346,29 +1334,21 @@
  			try {
  				this.currentScreen.handleInput();
  			} catch (Throwable var7) {
@@ -673,20 +633,7 @@
  			}
  		}
  
-@@ -1393,11 +1377,11 @@
- 						if (this.player.isSpectator()) {
- 							j = j < 0 ? -1 : 1;
- 							if (this.inGameHud.getSpectatorHud().isOpen()) {
- 								this.inGameHud.getSpectatorHud().cycleSlot(-j);
- 							} else {
--								float f = MathHelper.clamp(this.player.abilities.getFlySpeed() + (float)j * 0.005F, 0.0F, 0.2F);
-+								float f = Mth.clamp(this.player.abilities.getFlySpeed() + (float)j * 0.005F, 0.0F, 0.2F);
- 								this.player.abilities.setFlySpeed(f);
- 							}
- 						} else {
- 							this.player.inventory.scrollInHotbar(j);
- 						}
-@@ -1405,11 +1389,11 @@
+@@ -1405,11 +1385,11 @@
  
  					if (this.currentScreen == null) {
  						if (!this.focused && Mouse.getEventButtonState()) {
@@ -699,7 +646,7 @@
  				}
  			}
  
-@@ -1457,25 +1441,10 @@
+@@ -1457,25 +1437,10 @@
  
  						if (ix == 31 && Keyboard.isKeyDown(61)) {
  							this.reloadResources();
@@ -725,7 +672,7 @@
  						}
  
  						if (ix == 33 && Keyboard.isKeyDown(61)) {
-@@ -1581,19 +1550,10 @@
+@@ -1581,19 +1546,10 @@
  
  			if (this.player.isUsingItem()) {
  				if (!this.options.useKey.isPressed()) {
@@ -745,20 +692,7 @@
  					this.doAttack();
  				}
  
-@@ -1668,11 +1628,11 @@
- 				}
- 			}
- 
- 			this.profiler.swap("animateTick");
- 			if (!this.paused && this.world != null) {
--				this.world.spawnRandomParticles(MathHelper.floor(this.player.x), MathHelper.floor(this.player.y), MathHelper.floor(this.player.z));
-+				this.world.spawnRandomParticles(Mth.floor(this.player.x), Mth.floor(this.player.y), Mth.floor(this.player.z));
- 			}
- 
- 			this.profiler.swap("particles");
- 			if (!this.paused) {
- 				this.particleManager.tick();
-@@ -1695,11 +1655,12 @@
+@@ -1695,11 +1651,12 @@
  			levelProperties = new LevelProperties(levelInfo, string);
  			saveHandler.saveWorld(levelProperties);
  		}
@@ -772,7 +706,7 @@
  		try {
  			this.server = new IntegratedServer(this, string, string2, levelInfo);
  			this.server.startServerThread();
-@@ -1722,11 +1683,11 @@
+@@ -1722,11 +1679,11 @@
  				this.loadingScreenRenderer.setTask("");
  			}
  
@@ -785,7 +719,7 @@
  
  		this.setScreen(null);
  		SocketAddress socketAddress = this.server.getNetworkIo().bindLocal();
-@@ -1885,41 +1846,28 @@
+@@ -1885,41 +1842,28 @@
  
  				if (this.result.entity instanceof PaintingEntity) {
  					item = Items.PAINTING;
@@ -838,7 +772,7 @@
  				} else if (this.result.entity instanceof ArmorStandEntity) {
  					item = Items.ARMOR_STAND;
  				} else {
-@@ -1967,89 +1915,49 @@
+@@ -1967,89 +1911,49 @@
  			return itemStack;
  		}
  	}
@@ -961,7 +895,7 @@
  		}
  
  		return crashReport;
-@@ -2058,15 +1966,11 @@
+@@ -2058,15 +1962,11 @@
  	public static MinecraftClient getInstance() {
  		return instance;
  	}
@@ -978,7 +912,7 @@
  	@Override
  	public void addSnooperInfo(Snooper snooper) {
  		snooper.addGameInfo("fps", currentFps);
-@@ -2103,11 +2007,11 @@
+@@ -2103,11 +2003,11 @@
  	public void addSnooper(Snooper snooper) {
  		snooper.addSystemInfo("opengl_version", GL11.glGetString(7938));
  		snooper.addSystemInfo("opengl_vendor", GL11.glGetString(7936));
@@ -991,7 +925,7 @@
  		snooper.addSystemInfo("gl_caps[ARB_blend_func_extended]", contextCapabilities.GL_ARB_blend_func_extended);
  		snooper.addSystemInfo("gl_caps[ARB_clear_buffer_object]", contextCapabilities.GL_ARB_clear_buffer_object);
  		snooper.addSystemInfo("gl_caps[ARB_color_buffer_float]", contextCapabilities.GL_ARB_color_buffer_float);
-@@ -2176,29 +2080,24 @@
+@@ -2176,29 +2076,24 @@
  		snooper.addSystemInfo("gl_caps[EXT_framebuffer_object]", contextCapabilities.GL_EXT_framebuffer_object);
  		snooper.addSystemInfo("gl_caps[EXT_framebuffer_sRGB]", contextCapabilities.GL_EXT_framebuffer_sRGB);
  		snooper.addSystemInfo("gl_caps[EXT_geometry_shader4]", contextCapabilities.GL_EXT_geometry_shader4);
@@ -1023,7 +957,7 @@
  		snooper.addSystemInfo("gl_caps[gl_max_fragment_uniforms]", GL11.glGetInteger(35657));
  		GL11.glGetError();
  		snooper.addSystemInfo("gl_caps[gl_max_vertex_attribs]", GL11.glGetInteger(34921));
-@@ -2341,27 +2240,24 @@
+@@ -2341,27 +2236,24 @@
  		return this.twitchStreamProvider;
  	}
  
@@ -1058,7 +992,7 @@
  						} else if (this.world != null) {
  							this.inGameHud.getChatHud().addMessage(new LiteralText("Not ready to start streaming yet!"));
  						}
-@@ -2418,15 +2314,19 @@
+@@ -2418,11 +2310,11 @@
  			}
  		} else {
  			try {
@@ -1070,12 +1004,4 @@
  		}
  	}
  
-+	public RenderTarget getMainRenderTarget() {
-+		return this.mainRenderTarget;
-+	}
-+
  	@Override
- 	public ListenableFuture<Object> submit(Runnable runnable) {
- 		Validate.notNull(runnable);
- 		return this.execute(Executors.callable(runnable));
- 	}

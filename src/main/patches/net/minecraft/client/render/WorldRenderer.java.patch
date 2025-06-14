@@ -1,159 +1,5 @@
 --- WorldRenderer.java
 +++ WorldRenderer.java
-@@ -2,12 +2,12 @@
- 
- import com.google.common.collect.Lists;
- import com.google.common.collect.Maps;
- import com.google.common.collect.Sets;
- import com.google.gson.JsonSyntaxException;
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.legacy.GLX;
-+import com.mojang.blaze3d.platform.legacy.GlStateManager;
- import java.io.IOException;
- import java.util.Collection;
- import java.util.EnumSet;
- import java.util.Iterator;
- import java.util.List;
-@@ -71,11 +71,11 @@
- import net.minecraft.util.crash.CrashReportSection;
- import net.minecraft.util.hit.BlockHitResult;
- import net.minecraft.util.math.BlockPos;
- import net.minecraft.util.math.Box;
- import net.minecraft.util.math.Direction;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.WorldEventListener;
- import net.minecraft.world.border.WorldBorder;
- import net.minecraft.world.chunk.Chunk;
- import org.apache.logging.log4j.LogManager;
-@@ -648,11 +648,11 @@
- 		}
- 
- 		this.client.profiler.swap("culling");
- 		BlockPos blockPos = new BlockPos(h, j + (double)entity.getEyeHeight(), k);
- 		BuiltChunk builtChunk = this.chunks.getRenderedChunk(blockPos);
--		BlockPos blockPos2 = new BlockPos(MathHelper.floor(h / 16.0) * 16, MathHelper.floor(j / 16.0) * 16, MathHelper.floor(k / 16.0) * 16);
-+		BlockPos blockPos2 = new BlockPos(Mth.floor(h / 16.0) * 16, Mth.floor(j / 16.0) * 16, Mth.floor(k / 16.0) * 16);
- 		this.needsTerrainUpdate = this.needsTerrainUpdate
- 			|| !this.chunksToRebuild.isEmpty()
- 			|| entity.x != this.lastCameraX
- 			|| entity.y != this.lastCameraY
- 			|| entity.z != this.lastCameraZ
-@@ -758,14 +758,14 @@
- 		this.client.profiler.pop();
- 	}
- 
- 	private boolean isInChunk(BlockPos blockPos, BuiltChunk builtChunk) {
- 		BlockPos blockPos2 = builtChunk.getPos();
--		if (MathHelper.abs(blockPos.getX() - blockPos2.getX()) > 16) {
-+		if (Mth.abs(blockPos.getX() - blockPos2.getX()) > 16) {
- 			return false;
- 		} else {
--			return MathHelper.abs(blockPos.getY() - blockPos2.getY()) > 16 ? false : MathHelper.abs(blockPos.getZ() - blockPos2.getZ()) <= 16;
-+			return Mth.abs(blockPos.getY() - blockPos2.getY()) > 16 ? false : Mth.abs(blockPos.getZ() - blockPos2.getZ()) <= 16;
- 		}
- 	}
- 
- 	private Set<Direction> getOpenChunkFaces(BlockPos blockPos) {
- 		ChunkOcclusionDataBuilder chunkOcclusionDataBuilder = new ChunkOcclusionDataBuilder();
-@@ -781,16 +781,16 @@
- 		return chunkOcclusionDataBuilder.getOpenFaces(blockPos);
- 	}
- 
- 	private BuiltChunk getAdjacentChunk(BlockPos blockPos, BuiltChunk builtChunk, Direction direction) {
- 		BlockPos blockPos2 = builtChunk.method_10161(direction);
--		if (MathHelper.abs(blockPos.getX() - blockPos2.getX()) > this.renderDistance * 16) {
-+		if (Mth.abs(blockPos.getX() - blockPos2.getX()) > this.renderDistance * 16) {
- 			return null;
- 		} else if (blockPos2.getY() < 0 || blockPos2.getY() >= 256) {
- 			return null;
- 		} else {
--			return MathHelper.abs(blockPos.getZ() - blockPos2.getZ()) > this.renderDistance * 16 ? null : this.chunks.getRenderedChunk(blockPos2);
-+			return Mth.abs(blockPos.getZ() - blockPos2.getZ()) > this.renderDistance * 16 ? null : this.chunks.getRenderedChunk(blockPos2);
- 		}
- 	}
- 
- 	private void captureFrustum(double d, double e, double f) {
- 		this.capturedFrustum = new Frustum();
-@@ -828,14 +828,14 @@
- 		float g = (float)((double)entity.prevYaw + (double)(entity.yaw - entity.prevYaw) * d);
- 		if (MinecraftClient.getInstance().options.perspective == 2) {
- 			f += 180.0F;
- 		}
- 
--		float h = MathHelper.cos(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
--		float i = MathHelper.sin(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
--		float j = -MathHelper.cos(-f * (float) (Math.PI / 180.0));
--		float k = MathHelper.sin(-f * (float) (Math.PI / 180.0));
-+		float h = Mth.cos(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
-+		float i = Mth.sin(-g * (float) (Math.PI / 180.0) - (float) Math.PI);
-+		float j = -Mth.cos(-f * (float) (Math.PI / 180.0));
-+		float k = Mth.sin(-f * (float) (Math.PI / 180.0));
- 		return new Vector3f(i * j, k, h * j);
- 	}
- 
- 	public int renderLayer(RenderLayer renderLayer, double d, int i, Entity entity) {
- 		DiffuseLighting.disable();
-@@ -1025,11 +1025,11 @@
- 			if (fs != null) {
- 				GlStateManager.disableTexture();
- 				GlStateManager.shadeModel(7425);
- 				GlStateManager.pushMatrix();
- 				GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
--				GlStateManager.rotate(MathHelper.sin(this.world.getSkyAngleRadians(f)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
-+				GlStateManager.rotate(Mth.sin(this.world.getSkyAngleRadians(f)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
- 				GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
- 				float n = fs[0];
- 				float o = fs[1];
- 				float p = fs[2];
- 				if (i != 2) {
-@@ -1045,12 +1045,12 @@
- 				bufferBuilder.vertex(0.0, 100.0, 0.0).color(n, o, p, fs[3]).next();
- 				int t = 16;
- 
- 				for (int u = 0; u <= 16; u++) {
- 					float s = (float)u * (float) Math.PI * 2.0F / 16.0F;
--					float v = MathHelper.sin(s);
--					float w = MathHelper.cos(s);
-+					float v = Mth.sin(s);
-+					float w = Mth.cos(s);
- 					bufferBuilder.vertex((double)(v * 120.0F), (double)(w * 120.0F), (double)(-w * 40.0F * fs[3])).color(fs[0], fs[1], fs[2], 0.0F).next();
- 				}
- 
- 				tessellator.draw();
- 				GlStateManager.popMatrix();
-@@ -1197,12 +1197,12 @@
- 
- 				float n = 4.8828125E-4F;
- 				double d = (double)((float)this.ticks + f);
- 				double e = this.client.getCameraEntity().prevX + (this.client.getCameraEntity().x - this.client.getCameraEntity().prevX) * (double)f + d * 0.03F;
- 				double q = this.client.getCameraEntity().prevZ + (this.client.getCameraEntity().z - this.client.getCameraEntity().prevZ) * (double)f;
--				int r = MathHelper.floor(e / 2048.0);
--				int s = MathHelper.floor(q / 2048.0);
-+				int r = Mth.floor(e / 2048.0);
-+				int s = Mth.floor(q / 2048.0);
- 				e -= (double)(r * 2048);
- 				q -= (double)(s * 2048);
- 				float t = this.world.dimension.getCloudHeight() - g + 0.33F;
- 				float u = (float)(e * 4.8828125E-4);
- 				float v = (float)(q * 4.8828125E-4);
-@@ -1250,12 +1250,12 @@
- 		float j = 4.0F;
- 		double d = (double)((float)this.ticks + f);
- 		double e = (this.client.getCameraEntity().prevX + (this.client.getCameraEntity().x - this.client.getCameraEntity().prevX) * (double)f + d * 0.03F) / 12.0;
- 		double k = (this.client.getCameraEntity().prevZ + (this.client.getCameraEntity().z - this.client.getCameraEntity().prevZ) * (double)f) / 12.0 + 0.33F;
- 		float l = this.world.dimension.getCloudHeight() - g + 0.33F;
--		int m = MathHelper.floor(e / 2048.0);
--		int n = MathHelper.floor(k / 2048.0);
-+		int m = Mth.floor(e / 2048.0);
-+		int n = Mth.floor(k / 2048.0);
- 		e -= (double)(m * 2048);
- 		k -= (double)(n * 2048);
- 		this.textureManager.bindTexture(CLOUDS);
- 		GlStateManager.enableBlend();
- 		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 @@ -1280,14 +1280,14 @@
  		float w = q * 0.7F;
  		float x = o * 0.8F;
@@ -164,10 +10,10 @@
 -		float ac = (float)MathHelper.floor(k) * 0.00390625F;
 -		float ad = (float)(e - (double)MathHelper.floor(e));
 -		float ae = (float)(k - (double)MathHelper.floor(k));
-+		float ab = (float) Mth.floor(e) * 0.00390625F;
-+		float ac = (float) Mth.floor(k) * 0.00390625F;
-+		float ad = (float)(e - (double) Mth.floor(e));
-+		float ae = (float)(k - (double) Mth.floor(k));
++		float ab = (float) MathHelper.floor(e) * 0.00390625F;
++		float ac = (float) MathHelper.floor(k) * 0.00390625F;
++		float ad = (float)(e - (double) MathHelper.floor(e));
++		float ae = (float)(k - (double) MathHelper.floor(k));
  		int af = 8;
  		int ag = 4;
  		float ah = 9.765625E-4F;
@@ -181,8 +27,8 @@
  			bufferBuilder.offset(-g, -h, -i);
 -			double r = Math.max((double)MathHelper.floor(i - d), worldBorder.getBoundNorth());
 -			double s = Math.min((double)MathHelper.ceil(i + d), worldBorder.getBoundSouth());
-+			double r = Math.max((double) Mth.floor(i - d), worldBorder.getBoundNorth());
-+			double s = Math.min((double) Mth.ceil(i + d), worldBorder.getBoundSouth());
++			double r = Math.max((double) MathHelper.floor(i - d), worldBorder.getBoundNorth());
++			double s = Math.min((double) MathHelper.ceil(i + d), worldBorder.getBoundSouth());
  			if (g > worldBorder.getBoundEast() - d) {
  				float t = 0.0F;
  
@@ -196,8 +42,8 @@
  
 -			r = Math.max((double)MathHelper.floor(g - d), worldBorder.getBoundWest());
 -			s = Math.min((double)MathHelper.ceil(g + d), worldBorder.getBoundEast());
-+			r = Math.max((double) Mth.floor(g - d), worldBorder.getBoundWest());
-+			s = Math.min((double) Mth.ceil(g + d), worldBorder.getBoundEast());
++			r = Math.max((double) MathHelper.floor(g - d), worldBorder.getBoundWest());
++			s = Math.min((double) MathHelper.ceil(g + d), worldBorder.getBoundEast());
  			if (i > worldBorder.getBoundSouth() - d) {
  				float t = 0.0F;
  

@@ -18,19 +18,6 @@
  import net.minecraft.block.Blocks;
  import net.minecraft.block.material.Material;
  import net.minecraft.client.particle.ParticleType;
-@@ -32,11 +29,11 @@
- import net.minecraft.item.Item;
- import net.minecraft.item.ItemStack;
- import net.minecraft.item.Items;
- import net.minecraft.nbt.NbtCompound;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.World;
- 
- public class EndermanEntity extends HostileEntity {
- 	private static final UUID ATTACKING_SPEED_BOOST_UUID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
 @@ -56,15 +53,11 @@
  		this.goals.add(8, new LookAroundGoal(this));
  		this.goals.add(10, new EndermanEntity.PlaceBlockGoal(this));
@@ -104,7 +91,7 @@
  			this.world.playSound(g, h, i, "mob.endermen.portal", 1.0F, 1.0F);
  			this.playSound("mob.endermen.portal", 1.0F, 1.0F);
  			return true;
-@@ -358,21 +351,21 @@
+@@ -358,11 +351,11 @@
  		@Override
  		public boolean canStart() {
  			if (!this.enderman.world.getGameRules().getBoolean("mobGriefing")) {
@@ -117,20 +104,7 @@
  
  		@Override
  		public void tick() {
- 			Random random = this.enderman.getRandom();
- 			World world = this.enderman.world;
--			int i = MathHelper.floor(this.enderman.x - 2.0 + random.nextDouble() * 4.0);
--			int j = MathHelper.floor(this.enderman.y + random.nextDouble() * 3.0);
--			int k = MathHelper.floor(this.enderman.z - 2.0 + random.nextDouble() * 4.0);
-+			int i = Mth.floor(this.enderman.x - 2.0 + random.nextDouble() * 4.0);
-+			int j = Mth.floor(this.enderman.y + random.nextDouble() * 3.0);
-+			int k = Mth.floor(this.enderman.z - 2.0 + random.nextDouble() * 4.0);
- 			BlockPos blockPos = new BlockPos(i, j, k);
- 			BlockState blockState = world.getBlockState(blockPos);
- 			Block block = blockState.getBlock();
- 			if (EndermanEntity.HOLDABLES.contains(block)) {
- 				this.enderman.setCarriedBlock(blockState);
-@@ -391,21 +384,21 @@
+@@ -391,11 +384,11 @@
  		@Override
  		public boolean canStart() {
  			if (!this.entity.world.getGameRules().getBoolean("mobGriefing")) {
@@ -143,19 +117,6 @@
  
  		@Override
  		public void tick() {
- 			Random random = this.entity.getRandom();
- 			World world = this.entity.world;
--			int i = MathHelper.floor(this.entity.x - 1.0 + random.nextDouble() * 2.0);
--			int j = MathHelper.floor(this.entity.y + random.nextDouble() * 2.0);
--			int k = MathHelper.floor(this.entity.z - 1.0 + random.nextDouble() * 2.0);
-+			int i = Mth.floor(this.entity.x - 1.0 + random.nextDouble() * 2.0);
-+			int j = Mth.floor(this.entity.y + random.nextDouble() * 2.0);
-+			int k = Mth.floor(this.entity.z - 1.0 + random.nextDouble() * 2.0);
- 			BlockPos blockPos = new BlockPos(i, j, k);
- 			Block block = world.getBlockState(blockPos).getBlock();
- 			Block block2 = world.getBlockState(blockPos.down()).getBlock();
- 			if (this.canPlaceOn(world, blockPos, this.entity.getCarriedBlock().getBlock(), block, block2)) {
- 				world.setBlockState(blockPos, this.entity.getCarriedBlock(), 3);
 @@ -417,35 +410,36 @@
  			if (!block.canBePlacedAtPos(world, blockPos)) {
  				return false;

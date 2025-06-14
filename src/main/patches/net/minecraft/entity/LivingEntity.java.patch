@@ -1,18 +1,5 @@
 --- LivingEntity.java
 +++ LivingEntity.java
-@@ -44,11 +44,11 @@
- import net.minecraft.network.packet.s2c.play.EntityEquipmentUpdateS2CPacket;
- import net.minecraft.scoreboard.AbstractTeam;
- import net.minecraft.server.world.ServerWorld;
- import net.minecraft.util.math.BlockPos;
- import net.minecraft.util.math.Box;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.util.math.Vec3d;
- import net.minecraft.world.World;
- 
- public abstract class LivingEntity extends Entity {
- 	private static final UUID SPRINTING_SPEED_BOOST_ID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
 @@ -149,11 +149,11 @@
  		}
  
@@ -20,168 +7,12 @@
  			BlockState blockState = this.world.getBlockState(blockPos);
  			Block block2 = blockState.getBlock();
 -			float f = (float)MathHelper.ceil(this.fallDistance - 3.0F);
-+			float f = (float) Mth.ceil(this.fallDistance - 3.0F);
++			float f = (float) MathHelper.ceil(this.fallDistance - 3.0F);
  			if (block2.getMaterial() != Material.AIR) {
  				double e = (double)Math.min(0.2F + f / 15.0F, 10.0F);
  				if (e > 2.5) {
  					e = 2.5;
  				}
-@@ -180,11 +180,11 @@
- 			if (this.isInsideWall()) {
- 				this.damage(DamageSource.IN_WALL, 1.0F);
- 			} else if (bl && !this.world.getWorldBorder().contains(this.getBoundingBox())) {
- 				double d = this.world.getWorldBorder().getDistanceInsideBorder(this) + this.world.getWorldBorder().getSafeZone();
- 				if (d < 0.0) {
--					this.damage(DamageSource.IN_WALL, (float)Math.max(1, MathHelper.floor(-d * this.world.getWorldBorder().getBorderDamagePerBlock())));
-+					this.damage(DamageSource.IN_WALL, (float)Math.max(1, Mth.floor(-d * this.world.getWorldBorder().getBorderDamagePerBlock())));
- 				}
- 			}
- 		}
- 
- 		if (this.isFireImmune() || this.world.isClient) {
-@@ -601,11 +601,11 @@
- 	public final float getHealth() {
- 		return this.dataTracker.getFloat(6);
- 	}
- 
- 	public void setHealth(float f) {
--		this.dataTracker.setProperty(6, MathHelper.clamp(f, 0.0F, this.getMaxHealth()));
-+		this.dataTracker.setProperty(6, Mth.clamp(f, 0.0F, this.getMaxHealth()));
- 	}
- 
- 	@Override
- 	public boolean damage(DamageSource damageSource, float f) {
- 		if (this.isInvulnerableTo(damageSource)) {
-@@ -672,11 +672,11 @@
- 						double e;
- 						for (e = entity.z - this.z; d * d + e * e < 1.0E-4; e = (Math.random() - Math.random()) * 0.01) {
- 							d = (Math.random() - Math.random()) * 0.01;
- 						}
- 
--						this.knockbackVelocity = (float)(MathHelper.atan2(e, d) * 180.0 / (float) Math.PI - (double)this.yaw);
-+						this.knockbackVelocity = (float)(Mth.atan2(e, d) * 180.0 / (float) Math.PI - (double)this.yaw);
- 						this.method_6109(entity, f, d, e);
- 					} else {
- 						this.knockbackVelocity = (float)((int)(Math.random() * 2.0) * 180);
- 					}
- 				}
-@@ -751,11 +751,11 @@
- 	}
- 
- 	public void method_6109(Entity entity, float f, double d, double e) {
- 		if (!(this.random.nextDouble() < this.initializeAttribute(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE).getValue())) {
- 			this.velocityDirty = true;
--			float g = MathHelper.sqrt(d * d + e * e);
-+			float g = Mth.sqrt(d * d + e * e);
- 			float h = 0.4F;
- 			this.velocityX /= 2.0;
- 			this.velocityY /= 2.0;
- 			this.velocityZ /= 2.0;
- 			this.velocityX -= d / (double)g * (double)h;
-@@ -780,13 +780,13 @@
- 
- 	protected void dropLoot(boolean bl, int i) {
- 	}
- 
- 	public boolean isClimbing() {
--		int i = MathHelper.floor(this.x);
--		int j = MathHelper.floor(this.getBoundingBox().minY);
--		int k = MathHelper.floor(this.z);
-+		int i = Mth.floor(this.x);
-+		int j = Mth.floor(this.getBoundingBox().minY);
-+		int k = Mth.floor(this.z);
- 		Block block = this.world.getBlockState(new BlockPos(i, j, k)).getBlock();
- 		return (block == Blocks.LADDER || block == Blocks.VINE) && (!(this instanceof PlayerEntity) || !((PlayerEntity)this).isSpectator());
- 	}
- 
- 	@Override
-@@ -797,17 +797,17 @@
- 	@Override
- 	public void handleFallDamage(float f, float g) {
- 		super.handleFallDamage(f, g);
- 		StatusEffectInstance statusEffectInstance = this.getEffectInstance(StatusEffect.JUMP_BOOST);
- 		float h = statusEffectInstance != null ? (float)(statusEffectInstance.getAmplifier() + 1) : 0.0F;
--		int i = MathHelper.ceil((f - 3.0F - h) * g);
-+		int i = Mth.ceil((f - 3.0F - h) * g);
- 		if (i > 0) {
- 			this.playSound(this.getFallSound(i), 1.0F, 1.0F);
- 			this.damage(DamageSource.FALL, (float)i);
--			int j = MathHelper.floor(this.x);
--			int k = MathHelper.floor(this.y - 0.2F);
--			int l = MathHelper.floor(this.z);
-+			int j = Mth.floor(this.x);
-+			int k = Mth.floor(this.y - 0.2F);
-+			int l = Mth.floor(this.z);
- 			Block block = this.world.getBlockState(new BlockPos(j, k, l)).getBlock();
- 			if (block.getMaterial() != Material.AIR) {
- 				Block.Sound sound = block.sound;
- 				this.playSound(sound.getStepSound(), sound.getVolume() * 0.5F, sound.getPitch() * 0.75F);
- 			}
-@@ -1086,12 +1086,12 @@
- 			this.velocityY = this.velocityY + (double)((float)(this.getEffectInstance(StatusEffect.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
- 		}
- 
- 		if (this.isSprinting()) {
- 			float f = this.yaw * (float) (Math.PI / 180.0);
--			this.velocityX = this.velocityX - (double)(MathHelper.sin(f) * 0.2F);
--			this.velocityZ = this.velocityZ + (double)(MathHelper.cos(f) * 0.2F);
-+			this.velocityX = this.velocityX - (double)(Mth.sin(f) * 0.2F);
-+			this.velocityZ = this.velocityZ + (double)(Mth.cos(f) * 0.2F);
- 		}
- 
- 		this.velocityDirty = true;
- 	}
- 
-@@ -1108,11 +1108,11 @@
- 			if (!this.isTouchingWater() || this instanceof PlayerEntity && ((PlayerEntity)this).abilities.flying) {
- 				if (!this.isTouchingLava() || this instanceof PlayerEntity && ((PlayerEntity)this).abilities.flying) {
- 					float k = 0.91F;
- 					if (this.onGround) {
- 						k = this.world
--								.getBlockState(new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().minY) - 1, MathHelper.floor(this.z)))
-+								.getBlockState(new BlockPos(Mth.floor(this.x), Mth.floor(this.getBoundingBox().minY) - 1, Mth.floor(this.z)))
- 								.getBlock()
- 								.slipperiness
- 							* 0.91F;
- 					}
- 
-@@ -1126,20 +1126,20 @@
- 
- 					this.updateVelocity(f, g, h);
- 					k = 0.91F;
- 					if (this.onGround) {
- 						k = this.world
--								.getBlockState(new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().minY) - 1, MathHelper.floor(this.z)))
-+								.getBlockState(new BlockPos(Mth.floor(this.x), Mth.floor(this.getBoundingBox().minY) - 1, Mth.floor(this.z)))
- 								.getBlock()
- 								.slipperiness
- 							* 0.91F;
- 					}
- 
- 					if (this.isClimbing()) {
- 						float i = 0.15F;
--						this.velocityX = MathHelper.clamp(this.velocityX, (double)(-i), (double)i);
--						this.velocityZ = MathHelper.clamp(this.velocityZ, (double)(-i), (double)i);
-+						this.velocityX = Mth.clamp(this.velocityX, (double)(-i), (double)i);
-+						this.velocityZ = Mth.clamp(this.velocityZ, (double)(-i), (double)i);
- 						this.fallDistance = 0.0F;
- 						if (this.velocityY < -0.15) {
- 							this.velocityY = -0.15;
- 						}
- 
-@@ -1211,11 +1211,11 @@
- 		}
- 
- 		this.field_6748 = this.field_6749;
- 		double dx = this.x - this.prevX;
- 		double e = this.z - this.prevZ;
--		float jx = MathHelper.sqrt(dx * dx + e * e) * 4.0F;
-+		float jx = Mth.sqrt(dx * dx + e * e) * 4.0F;
- 		if (jx > 1.0F) {
- 			jx = 1.0F;
- 		}
- 
- 		this.field_6749 = this.field_6749 + (jx - this.field_6749) * 0.4F;
 @@ -1286,11 +1286,11 @@
  		this.prevStepBobbingAmount = this.stepBobbingAmount;
  		float k = 0.0F;
@@ -189,38 +20,9 @@
  			k = 1.0F;
  			h = (float)Math.sqrt((double)f) * 3.0F;
 -			g = (float)MathHelper.atan2(e, d) * 180.0F / (float) Math.PI - 90.0F;
-+			g = (float) Mth.atan2(e, d) * 180.0F / (float) Math.PI - 90.0F;
++			g = (float) MathHelper.atan2(e, d) * 180.0F / (float) Math.PI - 90.0F;
  		}
  
  		if (this.handSwingProgress > 0.0F) {
  			g = this.yaw;
  		}
-@@ -1340,13 +1340,13 @@
- 		this.world.profiler.pop();
- 		this.distanceTraveled += h;
- 	}
- 
- 	protected float turnHead(float f, float g) {
--		float h = MathHelper.wrapDegrees(f - this.bodyYaw);
-+		float h = Mth.wrapDegrees(f - this.bodyYaw);
- 		this.bodyYaw += h * 0.3F;
--		float i = MathHelper.wrapDegrees(this.yaw - this.bodyYaw);
-+		float i = Mth.wrapDegrees(this.yaw - this.bodyYaw);
- 		boolean bl = i < -90.0F || i >= 90.0F;
- 		if (i < -75.0F) {
- 			i = -75.0F;
- 		}
- 
-@@ -1373,11 +1373,11 @@
- 
- 		if (this.bodyTrackingIncrements > 0) {
- 			double d = this.x + (this.serverX - this.x) / (double)this.bodyTrackingIncrements;
- 			double e = this.y + (this.serverY - this.y) / (double)this.bodyTrackingIncrements;
- 			double f = this.z + (this.serverZ - this.z) / (double)this.bodyTrackingIncrements;
--			double g = MathHelper.wrapDegrees(this.serverYaw - (double)this.yaw);
-+			double g = Mth.wrapDegrees(this.serverYaw - (double)this.yaw);
- 			this.yaw = (float)((double)this.yaw + g / (double)this.bodyTrackingIncrements);
- 			this.pitch = (float)((double)this.pitch + (this.serverPitch - (double)this.pitch) / (double)this.bodyTrackingIncrements);
- 			this.bodyTrackingIncrements--;
- 			this.updatePosition(d, e, f);
- 			this.setRotation(this.yaw, this.pitch);

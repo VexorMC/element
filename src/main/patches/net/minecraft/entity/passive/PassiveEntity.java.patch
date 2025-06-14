@@ -1,18 +1,5 @@
 --- PassiveEntity.java
 +++ PassiveEntity.java
-@@ -6,11 +6,11 @@
- import net.minecraft.entity.PathAwareEntity;
- import net.minecraft.entity.player.PlayerEntity;
- import net.minecraft.item.ItemStack;
- import net.minecraft.item.Items;
- import net.minecraft.nbt.NbtCompound;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.World;
- 
- public abstract class PassiveEntity extends PathAwareEntity {
- 	protected int field_11896;
- 	protected int forcedAge;
 @@ -93,11 +93,11 @@
  	public void method_6095(int i) {
  		this.method_10925(i, false);
@@ -20,7 +7,7 @@
  
  	public void setAge(int i) {
 -		this.dataTracker.setProperty(12, (byte)MathHelper.clamp(i, -1, 1));
-+		this.dataTracker.setProperty(12, (byte) Mth.clamp(i, -1, 1));
++		this.dataTracker.setProperty(12, (byte) MathHelper.clamp(i, -1, 1));
  		this.field_11896 = i;
  		this.method_5377(this.isBaby());
  	}

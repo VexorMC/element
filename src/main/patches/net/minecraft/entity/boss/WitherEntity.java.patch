@@ -1,13 +1,7 @@
 --- WitherEntity.java
 +++ WitherEntity.java
-@@ -31,21 +31,21 @@
- import net.minecraft.entity.projectile.AbstractArrowEntity;
- import net.minecraft.entity.projectile.WitherSkullEntity;
- import net.minecraft.item.Items;
- import net.minecraft.nbt.NbtCompound;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
+@@ -36,16 +36,16 @@
+ import net.minecraft.util.math.MathHelper;
  import net.minecraft.world.Difficulty;
  import net.minecraft.world.World;
  
@@ -63,7 +57,7 @@
  				double f = d * d + e * e;
  				if (f > 9.0) {
 -					double g = (double)MathHelper.sqrt(f);
-+					double g = (double) Mth.sqrt(f);
++					double g = (double) MathHelper.sqrt(f);
  					this.velocityX = this.velocityX + (d / g * 0.5 - this.velocityX) * 0.6F;
  					this.velocityZ = this.velocityZ + (e / g * 0.5 - this.velocityZ) * 0.6F;
  				}
@@ -72,29 +66,25 @@
  
  		if (this.velocityX * this.velocityX + this.velocityZ * this.velocityZ > 0.05F) {
 -			this.yaw = (float)MathHelper.atan2(this.velocityZ, this.velocityX) * (180.0F / (float)Math.PI) - 90.0F;
-+			this.yaw = (float) Mth.atan2(this.velocityZ, this.velocityX) * (180.0F / (float)Math.PI) - 90.0F;
++			this.yaw = (float) MathHelper.atan2(this.velocityZ, this.velocityX) * (180.0F / (float)Math.PI) - 90.0F;
  		}
  
  		super.tickMovement();
  
  		for (int i = 0; i < 2; i++) {
-@@ -151,13 +151,13 @@
+@@ -151,11 +151,11 @@
  				double f = this.getHeadY(i + 1);
  				double g = this.getHeadZ(i + 1);
  				double h = entity2.x - e;
  				double k = entity2.y + (double)entity2.getEyeHeight() - f;
  				double l = entity2.z - g;
 -				double m = (double)MathHelper.sqrt(h * h + l * l);
--				float n = (float)(MathHelper.atan2(l, h) * 180.0 / (float) Math.PI) - 90.0F;
--				float o = (float)(-(MathHelper.atan2(k, m) * 180.0 / (float) Math.PI));
-+				double m = Mth.sqrt(h * h + l * l);
-+				float n = (float)(Mth.atan2(l, h) * 180.0 / (float) Math.PI) - 90.0F;
-+				float o = (float)(-(Mth.atan2(k, m) * 180.0 / (float) Math.PI));
++				double m = MathHelper.sqrt(h * h + l * l);
+ 				float n = (float)(MathHelper.atan2(l, h) * 180.0 / (float) Math.PI) - 90.0F;
+ 				float o = (float)(-(MathHelper.atan2(k, m) * 180.0 / (float) Math.PI));
  				this.sideHeadPitches[i] = this.getNextAngle(this.sideHeadPitches[i], o, 40.0F);
  				this.sideHeadYaws[i] = this.getNextAngle(this.sideHeadYaws[i], n, 10.0F);
  			} else {
- 				this.sideHeadYaws[i] = this.getNextAngle(this.sideHeadYaws[i], this.bodyYaw, 10.0F);
- 			}
 @@ -190,13 +190,13 @@
  		if (this.getInvulnerabilityTime() > 0) {
  			for (int jxx = 0; jxx < 3; jxx++) {
@@ -111,73 +101,6 @@
  						0.9F
  					);
  			}
-@@ -223,13 +223,13 @@
- 				if (this.ticksAlive >= this.field_5376[ix - 1]) {
- 					this.field_5376[ix - 1] = this.ticksAlive + 10 + this.random.nextInt(10);
- 					if ((this.world.getGlobalDifficulty() == Difficulty.NORMAL || this.world.getGlobalDifficulty() == Difficulty.HARD) && this.field_5377[ix - 1]++ > 15) {
- 						float f = 10.0F;
- 						float g = 5.0F;
--						double d = MathHelper.nextDouble(this.random, this.x - (double)f, this.x + (double)f);
--						double e = MathHelper.nextDouble(this.random, this.y - (double)g, this.y + (double)g);
--						double h = MathHelper.nextDouble(this.random, this.z - (double)f, this.z + (double)f);
-+						double d = Mth.nextDouble(this.random, this.x - (double)f, this.x + (double)f);
-+						double e = Mth.nextDouble(this.random, this.y - (double)g, this.y + (double)g);
-+						double h = Mth.nextDouble(this.random, this.z - (double)f, this.z + (double)f);
- 						this.shootSkullAt(ix + 1, d, e, h, true);
- 						this.field_5377[ix - 1] = 0;
- 					}
- 
- 					int j = this.getTrackedEntityId(ix);
-@@ -276,13 +276,13 @@
- 			}
- 
- 			if (this.field_5378 > 0) {
- 				this.field_5378--;
- 				if (this.field_5378 == 0 && this.world.getGameRules().getBoolean("mobGriefing")) {
--					int ixx = MathHelper.floor(this.y);
--					int j = MathHelper.floor(this.x);
--					int l = MathHelper.floor(this.z);
-+					int ixx = Mth.floor(this.y);
-+					int j = Mth.floor(this.x);
-+					int l = Mth.floor(this.z);
- 					boolean bl = false;
- 
- 					for (int m = -1; m <= 1; m++) {
- 						for (int n = -1; n <= 1; n++) {
- 							for (int o = 0; o <= 3; o++) {
-@@ -331,11 +331,11 @@
- 	private double getHeadX(int i) {
- 		if (i <= 0) {
- 			return this.x;
- 		} else {
- 			float f = (this.bodyYaw + (float)(180 * (i - 1))) / 180.0F * (float) Math.PI;
--			float g = MathHelper.cos(f);
-+			float g = Mth.cos(f);
- 			return this.x + (double)g * 1.3;
- 		}
- 	}
- 
- 	private double getHeadY(int i) {
-@@ -345,17 +345,17 @@
- 	private double getHeadZ(int i) {
- 		if (i <= 0) {
- 			return this.z;
- 		} else {
- 			float f = (this.bodyYaw + (float)(180 * (i - 1))) / 180.0F * (float) Math.PI;
--			float g = MathHelper.sin(f);
-+			float g = Mth.sin(f);
- 			return this.z + (double)g * 1.3;
- 		}
- 	}
- 
- 	private float getNextAngle(float f, float g, float h) {
--		float i = MathHelper.wrapDegrees(g - f);
-+		float i = Mth.wrapDegrees(g - f);
- 		if (i > h) {
- 			i = h;
- 		}
- 
- 		if (i < -h) {
 @@ -408,11 +408,11 @@
  					return false;
  				}

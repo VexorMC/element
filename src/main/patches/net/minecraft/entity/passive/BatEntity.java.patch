@@ -1,18 +1,5 @@
 --- BatEntity.java
 +++ BatEntity.java
-@@ -6,11 +6,11 @@
- import net.minecraft.entity.attribute.EntityAttributes;
- import net.minecraft.entity.damage.DamageSource;
- import net.minecraft.entity.mob.AmbientEntity;
- import net.minecraft.nbt.NbtCompound;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- import net.minecraft.world.World;
- 
- public class BatEntity extends AmbientEntity {
- 	private BlockPos field_5365;
- 
 @@ -21,11 +21,11 @@
  	}
  
@@ -33,7 +20,7 @@
  		if (this.isRoosting()) {
  			this.velocityX = this.velocityY = this.velocityZ = 0.0;
 -			this.y = (double)MathHelper.floor(this.y) + 1.0 - (double)this.height;
-+			this.y = (double) Mth.floor(this.y) + 1.0 - (double)this.height;
++			this.y = (double) MathHelper.floor(this.y) + 1.0 - (double)this.height;
  		} else {
  			this.velocityY *= 0.6F;
  		}
@@ -52,21 +39,6 @@
  					(int)this.y + this.random.nextInt(6) - 2,
  					(int)this.z + this.random.nextInt(7) - this.random.nextInt(7)
  				);
-@@ -132,12 +132,12 @@
- 			double e = (double)this.field_5365.getY() + 0.1 - this.y;
- 			double f = (double)this.field_5365.getZ() + 0.5 - this.z;
- 			this.velocityX = this.velocityX + (Math.signum(d) * 0.5 - this.velocityX) * 0.1F;
- 			this.velocityY = this.velocityY + (Math.signum(e) * 0.7F - this.velocityY) * 0.1F;
- 			this.velocityZ = this.velocityZ + (Math.signum(f) * 0.5 - this.velocityZ) * 0.1F;
--			float g = (float)(MathHelper.atan2(this.velocityZ, this.velocityX) * 180.0 / (float) Math.PI) - 90.0F;
--			float h = MathHelper.wrapDegrees(g - this.yaw);
-+			float g = (float)(Mth.atan2(this.velocityZ, this.velocityX) * 180.0 / (float) Math.PI) - 90.0F;
-+			float h = Mth.wrapDegrees(g - this.yaw);
- 			this.forwardSpeed = 0.5F;
- 			this.yaw += h;
- 			if (this.random.nextInt(100) == 0 && this.world.getBlockState(blockPos2).getBlock().isFullCube()) {
- 				this.setRoosting(true);
- 			}
 @@ -199,16 +199,17 @@
  				j = 7;
  			} else if (this.random.nextBoolean()) {

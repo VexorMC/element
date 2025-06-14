@@ -1,40 +1,6 @@
 --- TeleportCommand.java
 +++ TeleportCommand.java
-@@ -10,11 +10,11 @@
- import net.minecraft.entity.Entity;
- import net.minecraft.entity.player.ServerPlayerEntity;
- import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
- import net.minecraft.server.MinecraftServer;
- import net.minecraft.util.math.BlockPos;
--import net.minecraft.util.math.MathHelper;
-+import net.minecraft.util.Mth;
- 
- public class TeleportCommand extends AbstractCommand {
- 	@Override
- 	public String getCommandName() {
- 		return "tp";
-@@ -89,32 +89,32 @@
- 						set.add(PlayerPositionLookS2CPacket.Flag.Y_ROT);
- 					}
- 
- 					float f = (float)coordinate4.getAmount();
- 					if (!coordinate4.isRelative()) {
--						f = MathHelper.wrapDegrees(f);
-+						f = Mth.wrapDegrees(f);
- 					}
- 
- 					float g = (float)coordinate5.getAmount();
- 					if (!coordinate5.isRelative()) {
--						g = MathHelper.wrapDegrees(g);
-+						g = Mth.wrapDegrees(g);
- 					}
- 
- 					if (g > 90.0F || g < -90.0F) {
--						g = MathHelper.wrapDegrees(180.0F - g);
--						f = MathHelper.wrapDegrees(f + 180.0F);
-+						g = Mth.wrapDegrees(180.0F - g);
-+						f = Mth.wrapDegrees(f + 180.0F);
- 					}
+@@ -106,12 +106,12 @@
  
  					entity.startRiding(null);
  					((ServerPlayerEntity)entity).networkHandler.teleportRequest(coordinate.getAmount(), coordinate2.getAmount(), coordinate3.getAmount(), f, g, set);
@@ -42,15 +8,10 @@
  				} else {
 -					float h = (float)MathHelper.wrapDegrees(coordinate4.getResult());
 -					float fx = (float)MathHelper.wrapDegrees(coordinate5.getResult());
-+					float h = (float) Mth.wrapDegrees(coordinate4.getResult());
-+					float fx = (float) Mth.wrapDegrees(coordinate5.getResult());
++					float h = (float) MathHelper.wrapDegrees(coordinate4.getResult());
++					float fx = (float) MathHelper.wrapDegrees(coordinate5.getResult());
  					if (fx > 90.0F || fx < -90.0F) {
--						fx = MathHelper.wrapDegrees(180.0F - fx);
--						h = MathHelper.wrapDegrees(h + 180.0F);
-+						fx = Mth.wrapDegrees(180.0F - fx);
-+						h = Mth.wrapDegrees(h + 180.0F);
+ 						fx = MathHelper.wrapDegrees(180.0F - fx);
+ 						h = MathHelper.wrapDegrees(h + 180.0F);
  					}
  
- 					entity.refreshPositionAndAngles(coordinate.getResult(), coordinate2.getResult(), coordinate3.getResult(), h, fx);
- 					entity.setHeadYaw(h);
- 				}

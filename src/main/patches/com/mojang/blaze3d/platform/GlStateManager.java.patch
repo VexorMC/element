@@ -48,3 +48,42 @@
  		GL11.glPushAttrib(8256);
  	}
  
+@@ -226,11 +226,11 @@
+ 			GL11.glTexGeni(texGenCoordState.coord, 9472, i);
+ 		}
+ 	}
+ 
+ 	public static void genTex(GlStateManager.TexCoord texCoord, int i, FloatBuffer floatBuffer) {
+-		GL11.glTexGen(getGenCoordState(texCoord).coord, i, floatBuffer);
++		GL11.glTexGenfv(getGenCoordState(texCoord).coord, i, floatBuffer);
+ 	}
+ 
+ 	private static GlStateManager.TexGenCoordState getGenCoordState(GlStateManager.TexCoord texCoord) {
+ 		switch (texCoord) {
+ 			case S:
+@@ -355,11 +355,11 @@
+ 	public static void popMatrix() {
+ 		GL11.glPopMatrix();
+ 	}
+ 
+ 	public static void getFloat(int i, FloatBuffer floatBuffer) {
+-		GL11.glGetFloat(i, floatBuffer);
++		GL11.glGetFloatv(i, floatBuffer);
+ 	}
+ 
+ 	public static void ortho(double d, double e, double f, double g, double h, double i) {
+ 		GL11.glOrtho(d, e, f, g, h, i);
+ 	}
+@@ -383,11 +383,11 @@
+ 	public static void translate(double d, double e, double f) {
+ 		GL11.glTranslated(d, e, f);
+ 	}
+ 
+ 	public static void multiMatrix(FloatBuffer floatBuffer) {
+-		GL11.glMultMatrix(floatBuffer);
++		GL11.glMultMatrixf(floatBuffer);
+ 	}
+ 
+ 	public static void color(float f, float g, float h, float i) {
+ 		if (f != COLOR.red || g != COLOR.green || h != COLOR.blue || i != COLOR.alpha) {
+ 			COLOR.red = f;
