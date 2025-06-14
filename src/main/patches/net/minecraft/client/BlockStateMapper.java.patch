@@ -1,0 +1,25 @@
+--- BlockStateMapper.java
++++ BlockStateMapper.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.collect.Maps;
+ import com.google.common.collect.Sets;
+ import java.util.Collections;
+ import java.util.Map;
+ import java.util.Set;
+@@ -26,11 +26,11 @@
+ 	public Map<BlockState, ModelIdentifier> getBlockStateMap() {
+ 		Map<BlockState, ModelIdentifier> map = Maps.newIdentityHashMap();
+ 
+ 		for (Block block : Block.REGISTRY) {
+ 			if (!this.blocks.contains(block)) {
+-				map.putAll(((BlockStateIdentifierMapAccess)Objects.firstNonNull(this.blockMap.get(block), new DefaultBlockStateMap())).addBlock(block));
++				map.putAll(((BlockStateIdentifierMapAccess)MoreObjects.firstNonNull(this.blockMap.get(block), new DefaultBlockStateMap())).addBlock(block));
+ 			}
+ 		}
+ 
+ 		return map;
+ 	}

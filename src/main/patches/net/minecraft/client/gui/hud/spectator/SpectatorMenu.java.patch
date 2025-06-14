@@ -1,0 +1,25 @@
+--- SpectatorMenu.java
++++ SpectatorMenu.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.hud.spectator;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.collect.Lists;
+ import java.util.List;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.DrawableHelper;
+ import net.minecraft.client.gui.hud.SpectatorHud;
+@@ -52,11 +52,11 @@
+ 			return j < this.currentGroup.getCommands().size() ? NEXT_PAGE_COMMAND : DISABLED_NEXT_PAGE_COMMAND;
+ 		} else if (i == 8) {
+ 			return CLOSE_COMMAND;
+ 		} else {
+ 			return j >= 0 && j < this.currentGroup.getCommands().size()
+-				? (SpectatorMenuCommand)Objects.firstNonNull(this.currentGroup.getCommands().get(j), BLANK_COMMAND)
++				? (SpectatorMenuCommand)MoreObjects.firstNonNull(this.currentGroup.getCommands().get(j), BLANK_COMMAND)
+ 				: BLANK_COMMAND;
+ 		}
+ 	}
+ 
+ 	public List<SpectatorMenuCommand> getCommands() {

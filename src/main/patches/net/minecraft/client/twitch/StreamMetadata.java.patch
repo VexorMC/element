@@ -1,0 +1,22 @@
+--- StreamMetadata.java
++++ StreamMetadata.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.twitch;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.collect.Maps;
+ import com.google.gson.Gson;
+ import java.util.Map;
+ 
+ public class StreamMetadata {
+@@ -55,8 +55,8 @@
+ 	public String getName() {
+ 		return this.name;
+ 	}
+ 
+ 	public String toString() {
+-		return Objects.toStringHelper(this).add("name", this.name).add("description", this.desc).add("data", this.toJson()).toString();
++		return MoreObjects.toStringHelper(this).add("name", this.name).add("description", this.desc).add("data", this.toJson()).toString();
+ 	}
+ }

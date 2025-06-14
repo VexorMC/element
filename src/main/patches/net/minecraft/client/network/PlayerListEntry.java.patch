@@ -1,5 +1,15 @@
 --- PlayerListEntry.java
 +++ PlayerListEntry.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.network;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.mojang.authlib.GameProfile;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.texture.PlayerSkinProvider;
 @@ -70,11 +70,11 @@
  	public Identifier getSkinTexture() {
  		if (this.getSkinTexture == null) {

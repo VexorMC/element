@@ -1,0 +1,25 @@
+--- PagedEntryListWidget.java
++++ PagedEntryListWidget.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.widget;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.base.Predicate;
+ import com.google.common.base.Predicates;
+ import com.google.common.collect.Lists;
+ import java.util.List;
+ import net.minecraft.client.MinecraftClient;
+@@ -490,11 +490,11 @@
+ 	public static class TextFieldEntry extends PagedEntryListWidget.ListEntry {
+ 		private final Predicate<String> predicate;
+ 
+ 		public TextFieldEntry(int i, String string, boolean bl, Predicate<String> predicate) {
+ 			super(i, string, bl);
+-			this.predicate = (Predicate<String>)Objects.firstNonNull(predicate, Predicates.alwaysTrue());
++			this.predicate = (Predicate<String>)MoreObjects.firstNonNull(predicate, Predicates.alwaysTrue());
+ 		}
+ 
+ 		public Predicate<String> getPredicate() {
+ 			return this.predicate;
+ 		}

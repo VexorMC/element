@@ -1,0 +1,15 @@
+--- MinecraftServer.java
++++ MinecraftServer.java
+@@ -1099,11 +1099,11 @@
+ 			}
+ 		} else {
+ 			try {
+ 				return Futures.immediateFuture(callable.call());
+ 			} catch (Exception var6) {
+-				return Futures.immediateFailedCheckedFuture(var6);
++				return Futures.immediateFailedFuture(var6);
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override

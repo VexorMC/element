@@ -60,6 +60,7 @@ dependencies {
     implementation("org.joml:joml:1.10.8")
     implementation("org.ow2.asm:asm:9.8")
     implementation("org.ow2.asm:asm-tree:9.8")
+    implementation("com.mojang:datafixerupper:8.0.16")
 }
 
 patcher {
@@ -76,6 +77,15 @@ tasks.runClient {
     jvmArgs(
         "-Delement.environment=dev",
     )
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("src/main/modern")
+            srcDir("src/main/stub")
+        }
+    }
 }
 
 kotlin {

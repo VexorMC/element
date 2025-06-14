@@ -1,0 +1,23 @@
+--- BlockPattern.java
++++ BlockPattern.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.block.pattern;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.base.Predicate;
+ import com.google.common.cache.CacheBuilder;
+ import com.google.common.cache.CacheLoader;
+ import com.google.common.cache.LoadingCache;
+ import net.minecraft.util.math.BlockPos;
+@@ -151,9 +151,9 @@
+ 		public CachedBlockPosition translate(int i, int j, int k) {
+ 			return (CachedBlockPosition)this.cache.getUnchecked(BlockPattern.translate(this.frontTopLeft, this.getForwards(), this.getUp(), i, j, k));
+ 		}
+ 
+ 		public String toString() {
+-			return Objects.toStringHelper(this).add("up", this.up).add("forwards", this.forward).add("frontTopLeft", this.frontTopLeft).toString();
++			return MoreObjects.toStringHelper(this).add("up", this.up).add("forwards", this.forward).add("frontTopLeft", this.frontTopLeft).toString();
+ 		}
+ 	}
+ }

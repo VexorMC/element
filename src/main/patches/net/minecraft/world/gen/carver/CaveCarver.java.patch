@@ -1,0 +1,25 @@
+--- CaveCarver.java
++++ CaveCarver.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.world.gen.carver;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import java.util.Random;
+ import net.minecraft.block.BlockState;
+ import net.minecraft.block.Blocks;
+ import net.minecraft.block.SandBlock;
+ import net.minecraft.block.material.Material;
+@@ -134,11 +134,11 @@
+ 								if (am * am + ao * ao < 1.0) {
+ 									for (int ap = ag; ap > af; ap--) {
+ 										double aq = ((double)(ap - 1) + 0.5 - e) / w;
+ 										if (aq > -0.7 && am * am + aq * aq + ao * ao < 1.0) {
+ 											BlockState blockState2 = chunkBlockStateStorage.get(ak, ap, an);
+-											BlockState blockState3 = (BlockState)Objects.firstNonNull(chunkBlockStateStorage.get(ak, ap + 1, an), Blocks.AIR.getDefaultState());
++											BlockState blockState3 = (BlockState)MoreObjects.firstNonNull(chunkBlockStateStorage.get(ak, ap + 1, an), Blocks.AIR.getDefaultState());
+ 											if (blockState2.getBlock() == Blocks.GRASS || blockState2.getBlock() == Blocks.MYCELIUM) {
+ 												bl4 = true;
+ 											}
+ 
+ 											if (this.canCarveBlock(blockState2, blockState3)) {

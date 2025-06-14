@@ -1,0 +1,25 @@
+--- BlockBox.java
++++ BlockBox.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.util.math;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import net.minecraft.nbt.NbtIntArray;
+ 
+ public class BlockBox {
+ 	public int minX;
+ 	public int minY;
+@@ -143,11 +143,11 @@
+ 	public Vec3i getCenter() {
+ 		return new BlockPos(this.minX + (this.maxX - this.minX + 1) / 2, this.minY + (this.maxY - this.minY + 1) / 2, this.minZ + (this.maxZ - this.minZ + 1) / 2);
+ 	}
+ 
+ 	public String toString() {
+-		return Objects.toStringHelper(this)
++		return MoreObjects.toStringHelper(this)
+ 			.add("x0", this.minX)
+ 			.add("y0", this.minY)
+ 			.add("z0", this.minZ)
+ 			.add("x1", this.maxX)
+ 			.add("y1", this.maxY)

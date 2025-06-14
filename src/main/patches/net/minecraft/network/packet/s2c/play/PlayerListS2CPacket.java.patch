@@ -1,0 +1,38 @@
+--- PlayerListS2CPacket.java
++++ PlayerListS2CPacket.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.network.packet.s2c.play;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.collect.Lists;
+ import com.mojang.authlib.GameProfile;
+ import com.mojang.authlib.properties.Property;
+ import java.io.IOException;
+ import java.util.List;
+@@ -166,11 +166,11 @@
+ 	public PlayerListS2CPacket.Action getAction() {
+ 		return this.action;
+ 	}
+ 
+ 	public String toString() {
+-		return Objects.toStringHelper(this).add("action", this.action).add("entries", this.entries).toString();
++		return MoreObjects.toStringHelper(this).add("action", this.action).add("entries", this.entries).toString();
+ 	}
+ 
+ 	public static enum Action {
+ 		ADD_PLAYER,
+ 		UPDATE_GAME_MODE,
+@@ -207,11 +207,11 @@
+ 		public Text getDisplayName() {
+ 			return this.displayName;
+ 		}
+ 
+ 		public String toString() {
+-			return Objects.toStringHelper(this)
++			return MoreObjects.toStringHelper(this)
+ 				.add("latency", this.latency)
+ 				.add("gameMode", this.gameMode)
+ 				.add("profile", this.profile)
+ 				.add("displayName", this.displayName == null ? null : Text.Serializer.serialize(this.displayName))
+ 				.toString();

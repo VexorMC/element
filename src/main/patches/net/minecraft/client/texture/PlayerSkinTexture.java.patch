@@ -1,6 +1,47 @@
 --- PlayerSkinTexture.java
 +++ PlayerSkinTexture.java
-@@ -86,11 +86,11 @@
+@@ -5,10 +5,15 @@
+ import java.io.IOException;
+ import java.net.HttpURLConnection;
+ import java.net.URL;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import javax.imageio.ImageIO;
++
++import com.mojang.blaze3d.platform.NativeImage;
++import com.mojang.blaze3d.systems.GpuDevice;
++import com.mojang.blaze3d.systems.RenderSystem;
++import com.mojang.blaze3d.textures.TextureFormat;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.BufferedImageSkinProvider;
+ import net.minecraft.resource.ResourceManager;
+ import net.minecraft.util.Identifier;
+ import org.apache.commons.io.FileUtils;
+@@ -37,11 +42,23 @@
+ 			if (this.field_6550 != null) {
+ 				if (this.field_6555 != null) {
+ 					this.clearGlId();
+ 				}
+ 
+-				TextureUtil.method_5858(super.getGlId(), this.field_6550);
++                NativeImage nativeImage = null;
++                try {
++                    nativeImage = NativeImage.read(NativeImage.Format.RGBA, this.field_6550.getWidth(), this.field_6550.getHeight(), this.field_6550.getRGB(0, 0, this.field_6550.getWidth(), this.field_6550.getHeight(), null, 0, this.field_6550.getWidth()));
++                } catch (IOException e) {
++                    throw new RuntimeException(e);
++                }
++                GpuDevice gpuDevice = RenderSystem.getDevice();
++				this.texture = gpuDevice.createTexture(this.field_6548::toString, 5, TextureFormat.RGBA8, nativeImage.getWidth(), nativeImage.getHeight(), 1, 1);
++				this.textureView = gpuDevice.createTextureView(this.texture);
++				this.setFilter(false, false);
++				gpuDevice.createCommandEncoder().writeToTexture(this.texture, nativeImage);
++
++//				TextureUtil.method_5858(super.getGlId(), this.field_6550);
+ 				this.field_6553 = true;
+ 			}
+ 		}
+ 	}
+ 
+@@ -86,11 +103,11 @@
  	protected void method_6993() {
  		this.field_6551 = new Thread("Texture Downloader #" + field_8080.incrementAndGet()) {
  			public void run() {

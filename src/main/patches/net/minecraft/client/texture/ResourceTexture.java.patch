@@ -1,0 +1,36 @@
+--- ResourceTexture.java
++++ ResourceTexture.java
+@@ -1,10 +1,15 @@
+ package net.minecraft.client.texture;
+ 
+ import java.awt.image.BufferedImage;
+ import java.io.IOException;
+ import java.io.InputStream;
++
++import com.mojang.blaze3d.platform.NativeImage;
++import com.mojang.blaze3d.systems.GpuDevice;
++import com.mojang.blaze3d.systems.RenderSystem;
++import com.mojang.blaze3d.textures.TextureFormat;
+ import net.minecraft.client.resource.metadata.TextureResourceMetadata;
+ import net.minecraft.resource.Resource;
+ import net.minecraft.resource.ResourceManager;
+ import net.minecraft.util.Identifier;
+ import org.apache.logging.log4j.LogManager;
+@@ -39,11 +44,16 @@
+ 				} catch (RuntimeException var11) {
+ 					LOGGER.warn("Failed reading metadata of: " + this.field_6555, var11);
+ 				}
+ 			}
+ 
+-			TextureUtil.method_5860(this.getGlId(), bufferedImage, bl, bl2);
++			NativeImage nativeImage = NativeImage.read(NativeImage.Format.BGRA, bufferedImage.getWidth(), bufferedImage.getHeight(), bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null, 0, bufferedImage.getWidth()));
++			GpuDevice gpuDevice = RenderSystem.getDevice();
++			this.texture = gpuDevice.createTexture(this.field_6555::toString, 5, TextureFormat.RGBA8, nativeImage.getWidth(), nativeImage.getHeight(), 1, 1);
++			this.setFilter(false, false);
++			this.textureView = gpuDevice.createTextureView(this.texture);
++			gpuDevice.createCommandEncoder().writeToTexture(this.texture, nativeImage);
+ 		} finally {
+ 			if (inputStream != null) {
+ 				inputStream.close();
+ 			}
+ 		}

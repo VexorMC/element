@@ -1,12 +1,24 @@
 --- Vec3i.java
 +++ Vec3i.java
-@@ -1,8 +1,9 @@
+@@ -1,8 +1,10 @@
  package net.minecraft.util.math;
  
- import com.google.common.base.Objects;
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
++import com.google.common.base.MoreObjects;
 +import net.minecraft.util.math.MathHelper;
  
  public class Vec3i implements Comparable<Vec3i> {
  	public static final Vec3i ZERO = new Vec3i(0, 0, 0);
  	private final int x;
  	private final int y;
+@@ -82,8 +84,8 @@
+ 	public double getSquaredDistance(Vec3i vec3i) {
+ 		return this.squaredDistanceTo((double)vec3i.getX(), (double)vec3i.getY(), (double)vec3i.getZ());
+ 	}
+ 
+ 	public String toString() {
+-		return Objects.toStringHelper(this).add("x", this.getX()).add("y", this.getY()).add("z", this.getZ()).toString();
++		return MoreObjects.toStringHelper(this).add("x", this.getX()).add("y", this.getY()).add("z", this.getZ()).toString();
+ 	}
+ }

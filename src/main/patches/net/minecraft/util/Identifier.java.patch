@@ -1,6 +1,24 @@
 --- Identifier.java
 +++ Identifier.java
-@@ -19,10 +19,56 @@
+@@ -1,11 +1,17 @@
+ package net.minecraft.util;
+ 
++import com.mojang.serialization.Codec;
++import com.mojang.serialization.DataResult;
+ import org.apache.commons.lang3.StringUtils;
+ import org.apache.commons.lang3.Validate;
+ 
++import java.util.function.UnaryOperator;
++
+ public class Identifier {
++	public static final Codec<Identifier> CODEC = Codec.STRING.<Identifier>comapFlatMap(Identifier::read, Identifier::toString).stable();
++
+ 	protected final String namespace;
+ 	protected final String path;
+ 
+ 	protected Identifier(int i, String... strings) {
+ 		this.namespace = StringUtils.isEmpty(strings[0]) ? "minecraft" : strings[0].toLowerCase();
+@@ -19,10 +25,68 @@
  
  	public Identifier(String string, String string2) {
  		this(0, string, string2);
@@ -10,6 +28,10 @@
 +		Validate.notNull(string, "Prefix cannot be null");
 +		Validate.isTrue(!string.contains(":"), "Prefix cannot contain namespace separator ':'");
 +		return new Identifier(string + this.path);
++	}
++
++	public Identifier withPath(UnaryOperator<String> unaryOperator) {
++		return this.withPath((String)unaryOperator.apply(this.path));
 +	}
 +
 +	public Identifier withPath(String string) {
@@ -48,6 +70,14 @@
 +		}
 +	}
 +
++	public static DataResult<Identifier> read(String string) {
++		try {
++			return DataResult.success(parse(string));
++		} catch (Exception var2) {
++			return DataResult.error(() -> "Not a valid resource location: " + string + " " + var2.getMessage());
++		}
++	}
++	
 +	public static Identifier withDefaultNamespace(String string) {
 +		return new Identifier(string);
 +	}

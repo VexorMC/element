@@ -1,0 +1,25 @@
+--- SpectatorMenuState.java
++++ SpectatorMenuState.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.hud.spectator;
+ 
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
+ import java.util.List;
+ 
+ public class SpectatorMenuState {
+ 	private final SpectatorMenuCommandGroup group;
+ 	private final List<SpectatorMenuCommand> commands;
+@@ -14,11 +14,11 @@
+ 		this.selectedSlot = i;
+ 	}
+ 
+ 	public SpectatorMenuCommand getCommand(int i) {
+ 		return i >= 0 && i < this.commands.size()
+-			? (SpectatorMenuCommand)Objects.firstNonNull(this.commands.get(i), SpectatorMenu.BLANK_COMMAND)
++			? (SpectatorMenuCommand)MoreObjects.firstNonNull(this.commands.get(i), SpectatorMenu.BLANK_COMMAND)
+ 			: SpectatorMenu.BLANK_COMMAND;
+ 	}
+ 
+ 	public int getSelectedSlot() {
+ 		return this.selectedSlot;

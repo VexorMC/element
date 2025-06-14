@@ -1,9 +1,10 @@
 --- EndermanEntity.java
 +++ EndermanEntity.java
-@@ -1,14 +1,11 @@
+@@ -1,14 +1,12 @@
  package net.minecraft.entity.mob;
  
 -import com.google.common.base.Predicate;
++import com.google.common.base.MoreObjects;
  import com.google.common.collect.Sets;
 -import java.util.Collections;
 -import java.util.List;
@@ -18,7 +19,7 @@
  import net.minecraft.block.Blocks;
  import net.minecraft.block.material.Material;
  import net.minecraft.client.particle.ParticleType;
-@@ -56,15 +53,11 @@
+@@ -56,15 +54,11 @@
  		this.goals.add(8, new LookAroundGoal(this));
  		this.goals.add(10, new EndermanEntity.PlaceBlockGoal(this));
  		this.goals.add(11, new EndermanEntity.PickUpBlockGoal(this));
@@ -35,7 +36,7 @@
  	@Override
  	protected void initializeAttributes() {
  		super.initializeAttributes();
-@@ -75,13 +68,13 @@
+@@ -75,13 +69,13 @@
  	}
  
  	@Override
@@ -52,7 +53,7 @@
  	@Override
  	public void writeCustomDataToNbt(NbtCompound nbtCompound) {
  		super.writeCustomDataToNbt(nbtCompound);
-@@ -93,11 +86,11 @@
+@@ -93,11 +87,11 @@
  	@Override
  	public void readCustomDataFromNbt(NbtCompound nbtCompound) {
  		super.readCustomDataFromNbt(nbtCompound);
@@ -65,7 +66,7 @@
  		}
  
  		this.setCarriedBlock(blockState);
-@@ -115,11 +108,11 @@
+@@ -115,11 +109,11 @@
  				this.z - playerEntity.z
  			);
  			double d = vec3d2.length();
@@ -78,7 +79,7 @@
  
  	@Override
  	public float getEyeHeight() {
-@@ -232,11 +225,11 @@
+@@ -232,11 +226,11 @@
  				float n = (this.random.nextFloat() - 0.5F) * 0.2F;
  				float o = (this.random.nextFloat() - 0.5F) * 0.2F;
  				double p = g + (this.x - g) * l + (this.random.nextDouble() - 0.5) * (double)this.width * 2.0;
@@ -91,7 +92,7 @@
  			this.world.playSound(g, h, i, "mob.endermen.portal", 1.0F, 1.0F);
  			this.playSound("mob.endermen.portal", 1.0F, 1.0F);
  			return true;
-@@ -358,11 +351,11 @@
+@@ -358,11 +352,11 @@
  		@Override
  		public boolean canStart() {
  			if (!this.enderman.world.getGameRules().getBoolean("mobGriefing")) {
@@ -104,7 +105,7 @@
  
  		@Override
  		public void tick() {
-@@ -391,11 +384,11 @@
+@@ -391,11 +385,11 @@
  		@Override
  		public boolean canStart() {
  			if (!this.entity.world.getGameRules().getBoolean("mobGriefing")) {
@@ -117,7 +118,7 @@
  
  		@Override
  		public void tick() {
-@@ -417,35 +410,36 @@
+@@ -417,35 +411,36 @@
  			if (!block.canBePlacedAtPos(world, blockPos)) {
  				return false;
  			} else if (block2.getMaterial() != Material.AIR) {

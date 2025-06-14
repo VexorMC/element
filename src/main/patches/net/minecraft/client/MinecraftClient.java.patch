@@ -20,7 +20,20 @@
  import com.mojang.blaze3d.platform.GLX;
  import com.mojang.blaze3d.platform.GlStateManager;
  import java.awt.image.BufferedImage;
-@@ -55,11 +55,10 @@
+@@ -34,10 +34,12 @@
+ import java.util.UUID;
+ import java.util.concurrent.Callable;
+ import java.util.concurrent.Executors;
+ import java.util.concurrent.FutureTask;
+ import javax.imageio.ImageIO;
++
++import com.mojang.blaze3d.systems.RenderSystem;
+ import net.minecraft.Bootstrap;
+ import net.minecraft.advancement.AchievementsAndCriterions;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.entity.BlockEntity;
+ import net.minecraft.block.material.Material;
+@@ -55,11 +57,10 @@
  import net.minecraft.client.gui.screen.SleepingChatScreen;
  import net.minecraft.client.gui.screen.TitleScreen;
  import net.minecraft.client.gui.screen.TwitchErrorScreen;
@@ -32,7 +45,19 @@
  import net.minecraft.client.network.ClientPlayNetworkHandler;
  import net.minecraft.client.network.ClientPlayerInteractionManager;
  import net.minecraft.client.network.ServerInfo;
-@@ -138,11 +137,10 @@
+@@ -76,10 +77,11 @@
+ import net.minecraft.client.render.block.BlockRenderManager;
+ import net.minecraft.client.render.entity.EntityRenderDispatcher;
+ import net.minecraft.client.render.item.HeldItemRenderer;
+ import net.minecraft.client.render.item.ItemRenderer;
+ import net.minecraft.client.render.model.BakedModelManager;
++import net.minecraft.client.renderer.ShaderManager;
+ import net.minecraft.client.resource.AnimationMetadata;
+ import net.minecraft.client.resource.AnimationMetadataSerializer;
+ import net.minecraft.client.resource.AssetsIndex;
+ import net.minecraft.client.resource.FontMetadata;
+ import net.minecraft.client.resource.FontMetadataSerializer;
+@@ -138,11 +140,10 @@
  import net.minecraft.resource.ReloadableResourceManagerImpl;
  import net.minecraft.resource.ResourceManager;
  import net.minecraft.resource.ResourcePack;
@@ -44,7 +69,7 @@
  import net.minecraft.util.Identifier;
  import net.minecraft.util.MetadataSerializer;
  import net.minecraft.util.MetricsData;
-@@ -171,41 +169,41 @@
+@@ -171,41 +172,41 @@
  import org.apache.logging.log4j.Logger;
  import org.lwjgl.LWJGLException;
  import org.lwjgl.Sys;
@@ -95,7 +120,7 @@
  	private EntityRenderDispatcher entityRenderDispatcher;
  	private ItemRenderer itemRenderer;
  	private HeldItemRenderer heldItemRenderer;
-@@ -219,12 +217,12 @@
+@@ -219,12 +220,12 @@
  	public TextRenderer shadowTextRenderer;
  	public Screen currentScreen;
  	public LoadingScreenRenderer loadingScreenRenderer;
@@ -110,7 +135,7 @@
  	public InGameHud inGameHud;
  	public boolean skipGameRender;
  	public BlockHitResult result;
-@@ -263,19 +261,14 @@
+@@ -263,37 +264,38 @@
  	private MusicTracker musicTracker;
  	private Identifier mojang;
  	private final MinecraftSessionService sessionService;
@@ -132,7 +157,15 @@
  	int fpsCounter;
  	long debugTime = -1L;
  	private String openProfilerSection = "root";
-@@ -288,12 +281,15 @@
+ 
++	/* -- Modern Renderer -- */
++	private ShaderManager shaderManager;
++
+ 	public MinecraftClient(RunArgs runArgs) {
+ 		instance = this;
+ 		this.runDirectory = runArgs.directories.runDir;
+ 		this.assetDirectory = runArgs.directories.assetDir;
+ 		this.resourcePackDir = runArgs.directories.resourcePackDir;
  		this.gameVersion = runArgs.game.version;
  		this.twitchPropertyMap = runArgs.args.userProperties;
  		this.sessionPropertyMap = runArgs.args.profileProperties;
@@ -149,7 +182,7 @@
  		this.isDemo = runArgs.game.demo;
  		this.width = runArgs.windowInformation.width > 0 ? runArgs.windowInformation.width : 1;
  		this.height = runArgs.windowInformation.height > 0 ? runArgs.windowInformation.height : 1;
-@@ -337,13 +333,11 @@
+@@ -337,13 +339,11 @@
  							this.setScreen(new OutOfMemoryScreen());
  							System.gc();
  						}
@@ -164,7 +197,7 @@
  				this.cleanUpAfterCrash();
  				LOGGER.fatal("Reported exception thrown!", var13);
  				this.printCrashReport(var13.getReport());
-@@ -356,20 +350,20 @@
+@@ -356,24 +356,32 @@
  		} finally {
  			this.stop();
  		}
@@ -186,8 +219,34 @@
  		this.setDisplayBounds();
  		this.setPixelFormat();
  		GLX.createContext();
++		RenderSystem.initRenderThread();
++		RenderSystem.initRenderer(
++				Display.getWindowHandle(),
++				1,
++				false,
++				(resourceLocation, shaderType) -> this.getShaderManager().getShader(resourceLocation, shaderType),
++				true
++		);
  		this.fbo = new Framebuffer(this.width, this.height, true);
-@@ -400,20 +394,17 @@
+ 		this.fbo.setClearColor(0.0F, 0.0F, 0.0F, 0.0F);
+ 		this.registerMetadataSerializers();
+ 		this.loader = new ResourcePackLoader(
+ 			this.resourcePackDir, new File(this.runDirectory, "server-resource-packs"), this.defaultResourcePack, this.metadataSerializer, this.options
+@@ -387,11 +395,13 @@
+ 		this.loadLogo(this.textureManager);
+ 		this.initializeStream();
+ 		this.skinProvider = new PlayerSkinProvider(this.textureManager, new File(this.assetDirectory, "skins"), this.sessionService);
+ 		this.currentSave = new AnvilLevelStorage(new File(this.runDirectory, "saves"));
+ 		this.soundManager = new SoundManager(this.resourceManager, this.options);
++		this.shaderManager = new ShaderManager(this.textureManager, e -> {});
+ 		this.resourceManager.registerListener(this.soundManager);
++		this.resourceManager.registerListener(this.shaderManager);
+ 		this.musicTracker = new MusicTracker(this);
+ 		this.textRenderer = new TextRenderer(this.options, new Identifier("textures/font/ascii.png"), this.textureManager, false);
+ 		if (this.options.language != null) {
+ 			this.textRenderer.setUnicode(this.forcesUnicodeFont());
+ 			this.textRenderer.setRightToLeft(this.languageManager.isRightToLeft());
+@@ -400,20 +410,17 @@
  		this.shadowTextRenderer = new TextRenderer(this.options, new Identifier("textures/font/ascii_sga.png"), this.textureManager, false);
  		this.resourceManager.registerListener(this.textRenderer);
  		this.resourceManager.registerListener(this.shadowTextRenderer);
@@ -215,7 +274,7 @@
  		GlStateManager.enableTexture();
  		GlStateManager.shadeModel(7425);
  		GlStateManager.clearDepth(1.0);
-@@ -429,19 +420,19 @@
+@@ -429,19 +436,19 @@
  		this.texture = new SpriteAtlasTexture("textures");
  		this.texture.setMaxTextureSize(this.options.mipmapLevels);
  		this.textureManager.loadTickableTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX, this.texture);
@@ -239,7 +298,7 @@
  		this.resourceManager.registerListener(this.worldRenderer);
  		this.notification = new AchievementNotification(this);
  		GlStateManager.viewport(0, 0, this.width, this.height);
-@@ -461,11 +452,11 @@
+@@ -461,11 +468,11 @@
  			this.toggleFullscreen();
  		}
  
@@ -252,7 +311,7 @@
  		}
  
  		this.worldRenderer.setupEntityOutlineShader();
-@@ -479,29 +470,29 @@
+@@ -479,29 +486,29 @@
  		this.metadataSerializer.register(new LanguageMetadataSerializer(), LanguageResourceMetadata.class);
  	}
  
@@ -288,7 +347,7 @@
  			if (this.fullscreen) {
  				this.updateDisplayMode();
  			}
-@@ -567,11 +558,11 @@
+@@ -567,11 +574,11 @@
  		Thread thread = new Thread("Timer hack thread") {
  			public void run() {
  				while (MinecraftClient.this.running) {
@@ -301,7 +360,7 @@
  			}
  		};
  		thread.setDaemon(true);
-@@ -677,18 +668,18 @@
+@@ -677,18 +684,18 @@
  		Display.setDisplayMode(displayMode);
  		this.width = displayMode.getWidth();
  		this.height = displayMode.getHeight();
@@ -322,7 +381,19 @@
  		GlStateManager.translate(0.0F, 0.0F, -2000.0F);
  		GlStateManager.disableLighting();
  		GlStateManager.disableFog();
-@@ -707,13 +698,13 @@
+@@ -697,23 +704,24 @@
+ 		InputStream inputStream = null;
+ 
+ 		try {
+ 			inputStream = this.defaultResourcePack.open(MOJANG_LOGO_TEXTURE);
+ 			this.mojang = textureManager.registerDynamicTexture("logo", new NativeImageBackedTexture(ImageIO.read(inputStream)));
++			textureManager.getTexture(mojang).pushFilter(false, false);
+ 			textureManager.bindTexture(this.mojang);
+ 		} catch (IOException var12) {
+-			LOGGER.error("Unable to load logo: " + MOJANG_LOGO_TEXTURE, var12);
++            LOGGER.error("Unable to load logo: {}", MOJANG_LOGO_TEXTURE, var12);
+ 		} finally {
+ 			IOUtils.closeQuietly(inputStream);
  		}
  
  		Tessellator tessellator = Tessellator.getInstance();
@@ -339,7 +410,7 @@
  		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
  		int j = 256;
  		int k = 256;
-@@ -730,14 +721,14 @@
+@@ -730,14 +738,14 @@
  	public void drawLogo(int i, int j, int k, int l, int m, int n, int o, int p, int q, int r) {
  		float f = 0.00390625F;
  		float g = 0.00390625F;
@@ -358,7 +429,7 @@
  
  	public LevelStorageAccess getCurrentSave() {
  		return this.currentSave;
-@@ -772,29 +763,29 @@
+@@ -772,29 +780,29 @@
  			this.closeScreen();
  		}
  	}
@@ -393,7 +464,7 @@
  			this.soundManager.close();
  		} finally {
  			Display.destroy();
-@@ -822,24 +813,22 @@
+@@ -822,24 +830,22 @@
  		}
  
  		this.profiler.push("scheduledExecutables");
@@ -419,7 +490,7 @@
  		this.soundManager.updateListenerPosition(this.player, this.ticker.tickDelta);
  		this.profiler.pop();
  		this.profiler.push("render");
-@@ -864,11 +853,11 @@
+@@ -864,11 +870,11 @@
  			if (!this.profiler.enabled) {
  				this.profiler.reset();
  			}
@@ -432,7 +503,7 @@
  			this.debugTime = System.nanoTime();
  		}
  
-@@ -966,55 +955,55 @@
+@@ -966,55 +972,55 @@
  
  	public void cleanUpAfterCrash() {
  		try {
@@ -498,7 +569,7 @@
  			GlStateManager.translate(0.0F, 0.0F, -2000.0F);
  			GL11.glLineWidth(1.0F);
  			GlStateManager.disableTexture();
-@@ -1023,58 +1012,57 @@
+@@ -1023,58 +1029,57 @@
  			int i = 160;
  			int j = this.width - i - 10;
  			int k = this.height - i * 2;
@@ -588,7 +659,7 @@
  				string = string + section.name + " ";
  			}
  
-@@ -1084,11 +1072,11 @@
+@@ -1084,11 +1089,11 @@
  				.drawWithShadow(
  					string = decimalFormat.format(section.absolutePercentage) + "%", (float)(j + i - this.textRenderer.getStringWidth(string)), (float)(k - i / 2 - 16), n
  				);
@@ -601,7 +672,7 @@
  					string2 = string2 + "[?] ";
  				} else {
  					string2 = string2 + "[" + (t + 1) + "] ";
-@@ -1346,29 +1334,21 @@
+@@ -1346,29 +1351,21 @@
  			try {
  				this.currentScreen.handleInput();
  			} catch (Throwable var7) {
@@ -633,7 +704,7 @@
  			}
  		}
  
-@@ -1405,11 +1385,11 @@
+@@ -1405,11 +1402,11 @@
  
  					if (this.currentScreen == null) {
  						if (!this.focused && Mouse.getEventButtonState()) {
@@ -646,7 +717,7 @@
  				}
  			}
  
-@@ -1457,25 +1437,10 @@
+@@ -1457,25 +1454,10 @@
  
  						if (ix == 31 && Keyboard.isKeyDown(61)) {
  							this.reloadResources();
@@ -672,7 +743,7 @@
  						}
  
  						if (ix == 33 && Keyboard.isKeyDown(61)) {
-@@ -1581,19 +1546,10 @@
+@@ -1581,19 +1563,10 @@
  
  			if (this.player.isUsingItem()) {
  				if (!this.options.useKey.isPressed()) {
@@ -692,7 +763,7 @@
  					this.doAttack();
  				}
  
-@@ -1695,11 +1651,12 @@
+@@ -1695,11 +1668,12 @@
  			levelProperties = new LevelProperties(levelInfo, string);
  			saveHandler.saveWorld(levelProperties);
  		}
@@ -706,7 +777,7 @@
  		try {
  			this.server = new IntegratedServer(this, string, string2, levelInfo);
  			this.server.startServerThread();
-@@ -1722,11 +1679,11 @@
+@@ -1722,11 +1696,11 @@
  				this.loadingScreenRenderer.setTask("");
  			}
  
@@ -719,7 +790,7 @@
  
  		this.setScreen(null);
  		SocketAddress socketAddress = this.server.getNetworkIo().bindLocal();
-@@ -1885,41 +1842,28 @@
+@@ -1885,41 +1859,28 @@
  
  				if (this.result.entity instanceof PaintingEntity) {
  					item = Items.PAINTING;
@@ -772,7 +843,7 @@
  				} else if (this.result.entity instanceof ArmorStandEntity) {
  					item = Items.ARMOR_STAND;
  				} else {
-@@ -1967,89 +1911,49 @@
+@@ -1967,89 +1928,49 @@
  			return itemStack;
  		}
  	}
@@ -895,7 +966,7 @@
  		}
  
  		return crashReport;
-@@ -2058,15 +1962,11 @@
+@@ -2058,15 +1979,11 @@
  	public static MinecraftClient getInstance() {
  		return instance;
  	}
@@ -912,7 +983,7 @@
  	@Override
  	public void addSnooperInfo(Snooper snooper) {
  		snooper.addGameInfo("fps", currentFps);
-@@ -2103,11 +2003,11 @@
+@@ -2103,11 +2020,11 @@
  	public void addSnooper(Snooper snooper) {
  		snooper.addSystemInfo("opengl_version", GL11.glGetString(7938));
  		snooper.addSystemInfo("opengl_vendor", GL11.glGetString(7936));
@@ -925,7 +996,7 @@
  		snooper.addSystemInfo("gl_caps[ARB_blend_func_extended]", contextCapabilities.GL_ARB_blend_func_extended);
  		snooper.addSystemInfo("gl_caps[ARB_clear_buffer_object]", contextCapabilities.GL_ARB_clear_buffer_object);
  		snooper.addSystemInfo("gl_caps[ARB_color_buffer_float]", contextCapabilities.GL_ARB_color_buffer_float);
-@@ -2176,29 +2076,24 @@
+@@ -2176,29 +2093,24 @@
  		snooper.addSystemInfo("gl_caps[EXT_framebuffer_object]", contextCapabilities.GL_EXT_framebuffer_object);
  		snooper.addSystemInfo("gl_caps[EXT_framebuffer_sRGB]", contextCapabilities.GL_EXT_framebuffer_sRGB);
  		snooper.addSystemInfo("gl_caps[EXT_geometry_shader4]", contextCapabilities.GL_EXT_geometry_shader4);
@@ -957,7 +1028,7 @@
  		snooper.addSystemInfo("gl_caps[gl_max_fragment_uniforms]", GL11.glGetInteger(35657));
  		GL11.glGetError();
  		snooper.addSystemInfo("gl_caps[gl_max_vertex_attribs]", GL11.glGetInteger(34921));
-@@ -2341,27 +2236,24 @@
+@@ -2341,27 +2253,24 @@
  		return this.twitchStreamProvider;
  	}
  
@@ -992,7 +1063,7 @@
  						} else if (this.world != null) {
  							this.inGameHud.getChatHud().addMessage(new LiteralText("Not ready to start streaming yet!"));
  						}
-@@ -2418,11 +2310,11 @@
+@@ -2418,11 +2327,11 @@
  			}
  		} else {
  			try {
@@ -1005,3 +1076,14 @@
  	}
  
  	@Override
+@@ -2473,6 +2382,10 @@
+ 	}
+ 
+ 	public void setConnectedToRealms(boolean bl) {
+ 		this.connectedToRealms = bl;
+ 	}
++
++	public ShaderManager getShaderManager() {
++		return this.shaderManager;
++	}
+ }

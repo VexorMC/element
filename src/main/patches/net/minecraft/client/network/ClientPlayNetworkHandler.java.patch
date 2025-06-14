@@ -1,0 +1,68 @@
+--- ClientPlayNetworkHandler.java
++++ ClientPlayNetworkHandler.java
+@@ -11,10 +11,13 @@
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Random;
+ import java.util.UUID;
+ import java.util.Map.Entry;
++import java.util.concurrent.Executor;
++import java.util.concurrent.Executors;
++
+ import net.minecraft.advancement.Achievement;
+ import net.minecraft.advancement.AchievementsAndCriterions;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.entity.BannerBlockEntity;
+ import net.minecraft.block.entity.BeaconBlockEntity;
+@@ -1391,10 +1394,12 @@
+ 				playSoundIdS2CPacket.getPitch(),
+ 				false
+ 			);
+ 	}
+ 
++	private Executor exec = Executors.newSingleThreadExecutor();
++
+ 	@Override
+ 	public void onResourcePackSend(ResourcePackSendS2CPacket resourcePackSendS2CPacket) {
+ 		final String string = resourcePackSendS2CPacket.getURL();
+ 		final String string2 = resourcePackSendS2CPacket.getHash();
+ 		if (string.startsWith("level://")) {
+@@ -1409,11 +1414,11 @@
+ 					}
+ 
+ 					public void onFailure(Throwable throwable) {
+ 						ClientPlayNetworkHandler.this.connection.send(new ResourcePackStatusC2SPacket(string2, ResourcePackStatusC2SPacket.Status.FAILED_DOWNLOAD));
+ 					}
+-				});
++				}, exec);
+ 			} else {
+ 				this.connection.send(new ResourcePackStatusC2SPacket(string2, ResourcePackStatusC2SPacket.Status.FAILED_DOWNLOAD));
+ 			}
+ 		} else {
+ 			if (this.client.getCurrentServerEntry() != null && this.client.getCurrentServerEntry().getResourcePack() == ServerInfo.ResourcePackState.ENABLED) {
+@@ -1424,11 +1429,11 @@
+ 					}
+ 
+ 					public void onFailure(Throwable throwable) {
+ 						ClientPlayNetworkHandler.this.connection.send(new ResourcePackStatusC2SPacket(string2, ResourcePackStatusC2SPacket.Status.FAILED_DOWNLOAD));
+ 					}
+-				});
++				}, exec);
+ 			} else if (this.client.getCurrentServerEntry() != null && this.client.getCurrentServerEntry().getResourcePack() != ServerInfo.ResourcePackState.PROMPT) {
+ 				this.connection.send(new ResourcePackStatusC2SPacket(string2, ResourcePackStatusC2SPacket.Status.DECLINED));
+ 			} else {
+ 				this.client.submit(new Runnable() {
+ 					public void run() {
+@@ -1448,11 +1453,11 @@
+ 										}
+ 
+ 										public void onFailure(Throwable throwable) {
+ 											ClientPlayNetworkHandler.this.connection.send(new ResourcePackStatusC2SPacket(string2, ResourcePackStatusC2SPacket.Status.FAILED_DOWNLOAD));
+ 										}
+-									});
++									}, exec);
+ 								} else {
+ 									if (ClientPlayNetworkHandler.this.client.getCurrentServerEntry() != null) {
+ 										ClientPlayNetworkHandler.this.client.getCurrentServerEntry().setResourcePackState(ServerInfo.ResourcePackState.DISABLED);
+ 									}
+ 

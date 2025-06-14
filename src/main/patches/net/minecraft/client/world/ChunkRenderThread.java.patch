@@ -1,10 +1,26 @@
 --- ChunkRenderThread.java
 +++ ChunkRenderThread.java
-@@ -42,11 +42,11 @@
+@@ -5,10 +5,13 @@
+ import com.google.common.util.concurrent.Futures;
+ import com.google.common.util.concurrent.ListenableFuture;
+ import java.util.ArrayList;
+ import java.util.List;
+ import java.util.concurrent.CancellationException;
++import java.util.concurrent.Executor;
++import java.util.concurrent.Executors;
++
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.BlockBufferBuilderStorage;
+ import net.minecraft.client.render.RenderLayer;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.crash.CrashReport;
+@@ -41,12 +44,13 @@
+ 				MinecraftClient.getInstance().crash(MinecraftClient.getInstance().addSystemDetailsToCrashReport(crashReport));
  				return;
  			}
  		}
  	}
++	private Executor exec = Executors.newSingleThreadExecutor();
  
 -	protected void method_10137(ChunkBuilder chunkBuilder) throws InterruptedException {
 +	public void method_10137(ChunkBuilder chunkBuilder) throws InterruptedException {
@@ -13,3 +29,16 @@
  		try {
  			if (chunkBuilder.getRenderStatus() != ChunkBuilder.RenderStatus.PENDING) {
  				if (!chunkBuilder.method_10121()) {
+@@ -143,11 +147,11 @@
+ 					ChunkRenderThread.this.method_10140(chunkBuilder);
+ 					if (!(throwable instanceof CancellationException) && !(throwable instanceof InterruptedException)) {
+ 						MinecraftClient.getInstance().crash(CrashReport.create(throwable, "Rendering chunk"));
+ 					}
+ 				}
+-			});
++			}, exec);
+ 		}
+ 	}
+ 
+ 	private BlockBufferBuilderStorage method_10139() throws InterruptedException {
+ 		return this.buffers != null ? this.buffers : this.chunkBuilder.takeBuffer();

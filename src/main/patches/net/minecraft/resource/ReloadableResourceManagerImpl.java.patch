@@ -1,0 +1,25 @@
+--- ReloadableResourceManagerImpl.java
++++ ReloadableResourceManagerImpl.java
+@@ -65,10 +65,22 @@
+ 		} else {
+ 			throw new FileNotFoundException(identifier.toString());
+ 		}
+ 	}
+ 
++	@Override
++	public List<ResourcePack> getAllResourcePacks() {
++		List<ResourcePack> resourcePacks = Lists.newArrayList();
++		getAllNamespaces().forEach(namespace -> {
++			ResourceManager resourceManager = (ResourceManager)this.fallbackManagers.get(namespace);
++			if (resourceManager != null) {
++				resourcePacks.addAll(resourceManager.getAllResourcePacks());
++			}
++		});
++		return resourcePacks;
++	}
++
+ 	private void clear() {
+ 		this.fallbackManagers.clear();
+ 		this.namespaces.clear();
+ 	}
+ 

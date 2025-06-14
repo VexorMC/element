@@ -13,3 +13,27 @@
  		}
  	}
  
+@@ -93,21 +93,21 @@
+ 	public <S> Iterable<S> method_10806(Class<S> class_) {
+ 		return new Iterable<S>() {
+ 			public Iterator<S> iterator() {
+ 				List<T> list = (List<T>)TypeFilterableList.this.elementsByType.get(TypeFilterableList.this.method_10805(class_));
+ 				if (list == null) {
+-					return Iterators.emptyIterator();
++					return Iterators.forArray();
+ 				} else {
+ 					Iterator<T> iterator = list.iterator();
+ 					return Iterators.filter(iterator, class_);
+ 				}
+ 			}
+ 		};
+ 	}
+ 
+ 	public Iterator<T> iterator() {
+-		return this.allElements.isEmpty() ? Iterators.emptyIterator() : Iterators.unmodifiableIterator(this.allElements.iterator());
++		return this.allElements.isEmpty() ? Iterators.forArray() : Iterators.unmodifiableIterator(this.allElements.iterator());
+ 	}
+ 
+ 	public int size() {
+ 		return this.allElements.size();
+ 	}

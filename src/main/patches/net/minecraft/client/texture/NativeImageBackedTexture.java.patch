@@ -1,0 +1,53 @@
+--- NativeImageBackedTexture.java
++++ NativeImageBackedTexture.java
+@@ -1,9 +1,14 @@
+ package net.minecraft.client.texture;
+ 
+ import java.awt.image.BufferedImage;
+ import java.io.IOException;
++
++import com.mojang.blaze3d.platform.NativeImage;
++import com.mojang.blaze3d.systems.GpuDevice;
++import com.mojang.blaze3d.systems.RenderSystem;
++import com.mojang.blaze3d.textures.TextureFormat;
+ import net.minecraft.resource.ResourceManager;
+ 
+ public class NativeImageBackedTexture extends AbstractTexture {
+ 	private final int[] pixels;
+ 	private final int width;
+@@ -17,19 +22,33 @@
+ 
+ 	public NativeImageBackedTexture(int i, int j) {
+ 		this.width = i;
+ 		this.height = j;
+ 		this.pixels = new int[i * j];
+-		TextureUtil.prepareImage(this.getGlId(), i, j);
++
++		GpuDevice gpuDevice = RenderSystem.getDevice();
++		this.texture = gpuDevice.createTexture(this.pixels::toString, 5, TextureFormat.RGBA8, width, height, 1, 1);
++		this.textureView = gpuDevice.createTextureView(this.texture);
+ 	}
+ 
+ 	@Override
+ 	public void load(ResourceManager resourceManager) throws IOException {
+ 	}
+ 
+ 	public void upload() {
+-		TextureUtil.method_5861(this.getGlId(), this.pixels, this.width, this.height);
++		assert this.texture != null;
++
++        NativeImage nativeImage;
++
++        try {
++            nativeImage = NativeImage.read(NativeImage.Format.BGRA, this.width, this.height, this.pixels);
++        } catch (IOException e) {
++            throw new RuntimeException(e);
++        }
++
++		GpuDevice gpuDevice = RenderSystem.getDevice();
++        gpuDevice.createCommandEncoder().writeToTexture(this.texture, nativeImage);
+ 	}
+ 
+ 	public int[] getPixels() {
+ 		return this.pixels;
+ 	}

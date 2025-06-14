@@ -1,8 +1,11 @@
 --- GlStateManager.java
 +++ GlStateManager.java
-@@ -2,30 +2,30 @@
+@@ -1,31 +1,33 @@
+ package com.mojang.blaze3d.platform;
  
  import java.nio.FloatBuffer;
++
++import com.mojang.blaze3d.platform.modern.GLX;
  import org.lwjgl.opengl.GL11;
  
  public class GlStateManager {
@@ -48,7 +51,20 @@
  		GL11.glPushAttrib(8256);
  	}
  
-@@ -226,11 +226,11 @@
+@@ -123,11 +125,11 @@
+ 		if (i != BLEND.srcFactorRGB || j != BLEND.dstFactorRGB || k != BLEND.srcFactorAlpha || l != BLEND.dstFactorAlpha) {
+ 			BLEND.srcFactorRGB = i;
+ 			BLEND.dstFactorRGB = j;
+ 			BLEND.srcFactorAlpha = k;
+ 			BLEND.dstFactorAlpha = l;
+-			GLX.glBlendFuncSeparate(i, j, k, l);
++			com.mojang.blaze3d.platform.GLX.glBlendFuncSeparate(i, j, k, l);
+ 		}
+ 	}
+ 
+ 	public static void enableFog() {
+ 		FOG.capState.enable();
+@@ -226,11 +228,11 @@
  			GL11.glTexGeni(texGenCoordState.coord, 9472, i);
  		}
  	}
@@ -61,7 +77,24 @@
  	private static GlStateManager.TexGenCoordState getGenCoordState(GlStateManager.TexCoord texCoord) {
  		switch (texCoord) {
  			case S:
-@@ -355,11 +355,11 @@
+@@ -245,13 +247,13 @@
+ 				return TEX_GEN.s;
+ 		}
+ 	}
+ 
+ 	public static void activeTexture(int i) {
+-		if (activeTexture != i - GLX.textureUnit) {
+-			activeTexture = i - GLX.textureUnit;
+-			GLX.gl13ActiveTexture(i);
++		if (activeTexture != i - com.mojang.blaze3d.platform.GLX.textureUnit) {
++			activeTexture = i - com.mojang.blaze3d.platform.GLX.textureUnit;
++			com.mojang.blaze3d.platform.GLX.gl13ActiveTexture(i);
+ 		}
+ 	}
+ 
+ 	public static void enableTexture() {
+ 		TEXTURES[activeTexture].capState.enable();
+@@ -355,11 +357,11 @@
  	public static void popMatrix() {
  		GL11.glPopMatrix();
  	}
@@ -74,7 +107,7 @@
  	public static void ortho(double d, double e, double f, double g, double h, double i) {
  		GL11.glOrtho(d, e, f, g, h, i);
  	}
-@@ -383,11 +383,11 @@
+@@ -383,11 +385,11 @@
  	public static void translate(double d, double e, double f) {
  		GL11.glTranslated(d, e, f);
  	}

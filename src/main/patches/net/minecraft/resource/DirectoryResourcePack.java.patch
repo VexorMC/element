@@ -1,6 +1,6 @@
 --- DirectoryResourcePack.java
 +++ DirectoryResourcePack.java
-@@ -1,13 +1,11 @@
+@@ -1,14 +1,17 @@
  package net.minecraft.resource;
  
  import com.google.common.collect.Sets;
@@ -11,14 +11,58 @@
 -import java.io.InputStream;
 +
 +import java.io.*;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
 +import java.util.Objects;
  import java.util.Set;
++
++import net.minecraft.util.Identifier;
  import org.apache.commons.io.filefilter.DirectoryFileFilter;
  
  public class DirectoryResourcePack extends AbstractFileResourcePack {
  	public DirectoryResourcePack(File file) {
-@@ -27,11 +25,11 @@
+ 		super(file);
+@@ -23,15 +26,49 @@
+ 	protected boolean containsFile(String string) {
+ 		return new File(this.base, string).isFile();
+ 	}
+ 
  	@Override
++	public List<Identifier> getAllResources() throws IOException {
++		List<Identifier> resources = new ArrayList<>();
++		File assetsDir = new File(this.base, "assets");
++
++		if (!assetsDir.exists() || !assetsDir.isDirectory()) {
++			return resources;
++		}
++
++		Files.walk(assetsDir.toPath())
++				.filter(Files::isRegularFile)
++				.forEach(path -> {
++					String relPath = assetsDir.toPath().relativize(path).toString().replace(File.separator, "/");
++					int firstSlash = relPath.indexOf('/');
++					if (firstSlash < 0) return; // must be at least namespace/path
++
++					String namespace = relPath.substring(0, firstSlash);
++					String resourcePath = relPath.substring(firstSlash + 1);
++
++					if (!namespace.equals(namespace.toLowerCase())) {
++						this.warnNonLowercaseNamespace(namespace);
++						return;
++					}
++
++					try {
++						resources.add(new Identifier(namespace, resourcePath));
++					} catch (IllegalArgumentException e) {
++						// skip invalid identifiers
++					}
++				});
++
++		return resources;
++	}
++
++	@Override
  	public Set<String> getNamespaces() {
  		Set<String> set = Sets.newHashSet();
  		File file = new File(this.base, "assets/");

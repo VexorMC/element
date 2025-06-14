@@ -1,0 +1,28 @@
+--- StateManager.java
++++ StateManager.java
+@@ -1,10 +1,11 @@
+ package net.minecraft.state;
+ 
+ import com.google.common.base.Function;
+ import com.google.common.base.Joiner;
+-import com.google.common.base.Objects;
++import com.google.common.base.MoreObjects;
++import com.google.common.base.MoreObjects;
+ import com.google.common.collect.HashBasedTable;
+ import com.google.common.collect.ImmutableList;
+ import com.google.common.collect.ImmutableMap;
+ import com.google.common.collect.ImmutableTable;
+ import com.google.common.collect.Iterables;
+@@ -85,11 +86,11 @@
+ 	public Collection<Property> getProperties() {
+ 		return this.properties;
+ 	}
+ 
+ 	public String toString() {
+-		return Objects.toStringHelper(this)
++		return MoreObjects.toStringHelper(this)
+ 			.add("block", Block.REGISTRY.getIdentifier(this.parentBlock))
+ 			.add("properties", Iterables.transform(this.properties, PROPERTY_STRING_FUNCTION))
+ 			.toString();
+ 	}
+ 
