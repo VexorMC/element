@@ -1,12 +1,26 @@
 --- VillagerTradingScreen.java
 +++ VillagerTradingScreen.java
-@@ -1,8 +1,8 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen.ingame;
  
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
++import com.element.render.MatrixStack;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import io.netty.buffer.Unpooled;
  import net.minecraft.client.MinecraftClient;
  import net.minecraft.client.gui.widget.ButtonWidget;
  import net.minecraft.client.render.DiffuseLighting;
- import net.minecraft.client.resource.language.I18n;
+@@ -115,12 +116,12 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
+-		super.render(i, j, f);
++	public void render(MatrixStack matrices, int j, float f, int i) {
++		super.render(matrices, j, f, i);
+ 		TraderOfferList traderOfferList = this.trader.getOffers(this.client.player);
+ 		if (traderOfferList != null && !traderOfferList.isEmpty()) {
+ 			int k = (this.width - this.backgroundWidth) / 2;
+ 			int l = (this.height - this.backgroundHeight) / 2;
+ 			int m = this.page;

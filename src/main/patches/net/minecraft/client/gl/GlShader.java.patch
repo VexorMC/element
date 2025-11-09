@@ -1,16 +1,5 @@
 --- GlShader.java
 +++ GlShader.java
-@@ -1,9 +1,9 @@
- package net.minecraft.client.gl;
- 
- import com.google.common.collect.Maps;
--import com.mojang.blaze3d.platform.GLX;
-+import com.mojang.blaze3d.platform.GLX;
- import java.io.BufferedInputStream;
- import java.io.IOException;
- import java.nio.ByteBuffer;
- import java.util.Map;
- import net.minecraft.resource.ResourceManager;
 @@ -44,16 +44,13 @@
  	public static GlShader createShader(ResourceManager resourceManager, GlShader.Type type, String string) throws IOException {
  		GlShader glShader = (GlShader)type.getLoadedShaders().get(string);

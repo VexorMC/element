@@ -1,13 +1,37 @@
 --- CreativeInventoryScreen.java
 +++ CreativeInventoryScreen.java
-@@ -1,9 +1,9 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen.ingame;
  
++import com.element.render.MatrixStack;
  import com.google.common.collect.Lists;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
- import net.minecraft.client.gui.CreativeInventoryListener;
- import net.minecraft.client.gui.screen.AchievementsScreen;
+@@ -411,11 +412,11 @@
+ 			((CreativeInventoryScreen.CreativeScreenHandler)this.screenHandler).scrollItems(this.scrollPosition);
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		boolean bl = Mouse.isButtonDown(0);
+ 		int k = this.x;
+ 		int l = this.y;
+ 		int m = k + 175;
+ 		int n = l + 18;
+@@ -434,11 +435,11 @@
+ 			this.scrollPosition = ((float)(j - n) - 7.5F) / ((float)(p - n) - 15.0F);
+ 			this.scrollPosition = MathHelper.clamp(this.scrollPosition, 0.0F, 1.0F);
+ 			((CreativeInventoryScreen.CreativeScreenHandler)this.screenHandler).scrollItems(this.scrollPosition);
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 
+ 		for (ItemGroup itemGroup : ItemGroup.itemGroups) {
+ 			if (this.renderTabTooltipIfHovered(itemGroup, i, j)) {
+ 				break;
+ 			}

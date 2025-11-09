@@ -1,12 +1,32 @@
 --- CustomizeFlatLevelScreen.java
 +++ CustomizeFlatLevelScreen.java
-@@ -1,8 +1,8 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen;
  
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
++import com.element.render.MatrixStack;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockState;
  import net.minecraft.block.Blocks;
  import net.minecraft.client.gui.DrawableHelper;
- import net.minecraft.client.gui.screen.world.CreateWorldScreen;
+@@ -100,18 +101,18 @@
+ 	private boolean hasLayerSelected() {
+ 		return this.layerList.focusedEntry > -1 && this.layerList.focusedEntry < this.helper.getLayers().size();
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.layerList.render(i, j, f);
+ 		this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 8, 16777215);
+ 		int k = this.width / 2 - 92 - 16;
+ 		this.drawWithShadow(this.textRenderer, this.tileText, k, 32, 16777215);
+ 		this.drawWithShadow(this.textRenderer, this.heightText, k + 2 + 213 - this.textRenderer.getStringWidth(this.heightText), 32, 16777215);
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	class CustomizeFlatLevelListWidget extends ListWidget {
+ 		public int focusedEntry = -1;
+ 

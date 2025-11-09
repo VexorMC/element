@@ -1,8 +1,9 @@
 --- ResourcePackScreen.java
 +++ ResourcePackScreen.java
-@@ -1,8 +1,10 @@
+@@ -1,8 +1,11 @@
  package net.minecraft.client.gui.screen;
  
++import com.element.render.MatrixStack;
  import com.google.common.collect.Lists;
 +
 +import java.awt.*;
@@ -11,6 +12,18 @@
  import java.net.URI;
  import java.util.Collections;
  import java.util.List;
+@@ -16,11 +19,10 @@
+ import net.minecraft.client.resource.ResourcePackLoader;
+ import net.minecraft.client.resource.language.I18n;
+ import net.minecraft.util.Util;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+-import org.lwjgl.Sys;
+ 
+ public class ResourcePackScreen extends Screen {
+ 	private static final Logger LOGGER = LogManager.getLogger();
+ 	private final Screen parent;
+ 	private List<ResourcePackWidget> availablePackList;
 @@ -123,11 +125,16 @@
  					bl = true;
  				}
@@ -29,3 +42,23 @@
  				if (this.dirty) {
  					List<ResourcePackLoader.Entry> list = Lists.newArrayList();
  
+@@ -169,17 +176,17 @@
+ 	protected void mouseReleased(int i, int j, int k) {
+ 		super.mouseReleased(i, j, k);
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderDirtBackground(0);
+ 		this.availablePacks.render(i, j, f);
+ 		this.selectedPacks.render(i, j, f);
+ 		this.drawCenteredString(this.textRenderer, I18n.translate("resourcePack.title"), this.width / 2, 16, 16777215);
+ 		this.drawCenteredString(this.textRenderer, I18n.translate("resourcePack.folderInfo"), this.width / 2 - 77, this.height - 26, 8421504);
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	public void markDirty() {
+ 		this.dirty = true;
+ 	}

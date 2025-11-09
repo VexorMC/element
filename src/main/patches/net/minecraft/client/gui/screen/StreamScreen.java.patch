@@ -1,0 +1,32 @@
+--- StreamScreen.java
++++ StreamScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen;
+ 
++import com.element.render.MatrixStack;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.OptionButtonWidget;
+ import net.minecraft.client.gui.widget.OptionSliderWidget;
+ import net.minecraft.client.option.GameOptions;
+ import net.minecraft.client.resource.language.I18n;
+@@ -114,18 +115,18 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 20, 16777215);
+ 		this.drawCenteredString(this.textRenderer, this.chatTitle, this.width / 2, this.chatTitleY, 16777215);
+ 		if (this.modified) {
+ 			this.drawCenteredString(
+ 				this.textRenderer, Formatting.RED + I18n.translate("options.stream.changes"), this.width / 2, 20 + this.textRenderer.fontHeight, 16777215
+ 			);
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ }

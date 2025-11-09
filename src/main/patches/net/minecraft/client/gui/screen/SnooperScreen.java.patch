@@ -1,6 +1,15 @@
 --- SnooperScreen.java
 +++ SnooperScreen.java
-@@ -42,19 +42,19 @@
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen;
+ 
++import com.element.render.MatrixStack;
+ import com.google.common.collect.Lists;
+ import java.util.List;
+ import java.util.TreeMap;
+ import java.util.Map.Entry;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+@@ -42,19 +43,19 @@
  				this.enableButton = new ButtonWidget(1, this.width / 2 - 152, this.height - 30, 150, 20, this.options.getValueMessage(GameOptions.Option.SNOOPER_ENABLED))
  			);
  		this.buttons.add(new ButtonWidget(2, this.width / 2 + 2, this.height - 30, 150, 20, I18n.translate("gui.done")));
@@ -26,3 +35,28 @@
  
  		this.entryList = new SnooperScreen.SnooperEntryListWidget();
  	}
+@@ -80,22 +81,22 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.entryList.render(i, j, f);
+ 		this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 8, 16777215);
+ 		int k = 22;
+ 
+ 		for (String string : this.description) {
+ 			this.drawCenteredString(this.textRenderer, string, this.width / 2, k, 8421504);
+ 			k += this.textRenderer.fontHeight;
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	class SnooperEntryListWidget extends ListWidget {
+ 		public SnooperEntryListWidget() {
+ 			super(

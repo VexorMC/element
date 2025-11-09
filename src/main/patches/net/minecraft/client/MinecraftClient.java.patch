@@ -1,6 +1,6 @@
 --- MinecraftClient.java
 +++ MinecraftClient.java
-@@ -1,22 +1,22 @@
+@@ -1,18 +1,18 @@
  package net.minecraft.client;
  
 +import com.element.utility.Utility;
@@ -17,15 +17,9 @@
 -import com.mojang.authlib.properties.Property;
  import com.mojang.authlib.properties.PropertyMap;
  import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GLX;
-+import com.mojang.blaze3d.platform.GlStateManager;
+ import com.mojang.blaze3d.platform.GLX;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import java.awt.image.BufferedImage;
- import java.io.File;
- import java.io.IOException;
- import java.io.InputStream;
- import java.net.Proxy;
 @@ -55,11 +55,10 @@
  import net.minecraft.client.gui.screen.SleepingChatScreen;
  import net.minecraft.client.gui.screen.TitleScreen;
@@ -436,7 +430,21 @@
  			this.debugTime = System.nanoTime();
  		}
  
-@@ -966,55 +953,55 @@
+@@ -876,13 +863,10 @@
+ 		this.fbo.unbind();
+ 		GlStateManager.popMatrix();
+ 		GlStateManager.pushMatrix();
+ 		this.fbo.draw(this.width, this.height);
+ 		GlStateManager.popMatrix();
+-		GlStateManager.pushMatrix();
+-		this.gameRenderer.renderStreamIndicator(this.ticker.tickDelta);
+-		GlStateManager.popMatrix();
+ 		this.profiler.push("root");
+ 		this.updateDisplay();
+ 		Thread.yield();
+ 		this.profiler.push("stream");
+ 		this.profiler.push("update");
+@@ -966,55 +950,55 @@
  
  	public void cleanUpAfterCrash() {
  		try {
@@ -502,7 +510,7 @@
  			GlStateManager.translate(0.0F, 0.0F, -2000.0F);
  			GL11.glLineWidth(1.0F);
  			GlStateManager.disableTexture();
-@@ -1023,58 +1010,57 @@
+@@ -1023,58 +1007,57 @@
  			int i = 160;
  			int j = this.width - i - 10;
  			int k = this.height - i * 2;
@@ -592,7 +600,7 @@
  				string = string + section.name + " ";
  			}
  
-@@ -1084,11 +1070,11 @@
+@@ -1084,11 +1067,11 @@
  				.drawWithShadow(
  					string = decimalFormat.format(section.absolutePercentage) + "%", (float)(j + i - this.textRenderer.getStringWidth(string)), (float)(k - i / 2 - 16), n
  				);
@@ -605,7 +613,7 @@
  					string2 = string2 + "[?] ";
  				} else {
  					string2 = string2 + "[" + (t + 1) + "] ";
-@@ -1346,29 +1332,21 @@
+@@ -1346,29 +1329,21 @@
  			try {
  				this.currentScreen.handleInput();
  			} catch (Throwable var7) {
@@ -637,7 +645,7 @@
  			}
  		}
  
-@@ -1405,11 +1383,11 @@
+@@ -1405,11 +1380,11 @@
  
  					if (this.currentScreen == null) {
  						if (!this.focused && Mouse.getEventButtonState()) {
@@ -650,7 +658,7 @@
  				}
  			}
  
-@@ -1457,25 +1435,10 @@
+@@ -1457,25 +1432,10 @@
  
  						if (ix == 31 && Keyboard.isKeyDown(61)) {
  							this.reloadResources();
@@ -676,7 +684,7 @@
  						}
  
  						if (ix == 33 && Keyboard.isKeyDown(61)) {
-@@ -1581,19 +1544,10 @@
+@@ -1581,19 +1541,10 @@
  
  			if (this.player.isUsingItem()) {
  				if (!this.options.useKey.isPressed()) {
@@ -696,7 +704,7 @@
  					this.doAttack();
  				}
  
-@@ -1695,11 +1649,12 @@
+@@ -1695,11 +1646,12 @@
  			levelProperties = new LevelProperties(levelInfo, string);
  			saveHandler.saveWorld(levelProperties);
  		}
@@ -710,7 +718,7 @@
  		try {
  			this.server = new IntegratedServer(this, string, string2, levelInfo);
  			this.server.startServerThread();
-@@ -1722,11 +1677,11 @@
+@@ -1722,11 +1674,11 @@
  				this.loadingScreenRenderer.setTask("");
  			}
  
@@ -723,7 +731,7 @@
  
  		this.setScreen(null);
  		SocketAddress socketAddress = this.server.getNetworkIo().bindLocal();
-@@ -1885,41 +1840,28 @@
+@@ -1885,41 +1837,28 @@
  
  				if (this.result.entity instanceof PaintingEntity) {
  					item = Items.PAINTING;
@@ -776,7 +784,7 @@
  				} else if (this.result.entity instanceof ArmorStandEntity) {
  					item = Items.ARMOR_STAND;
  				} else {
-@@ -1967,89 +1909,49 @@
+@@ -1967,89 +1906,49 @@
  			return itemStack;
  		}
  	}
@@ -899,7 +907,7 @@
  		}
  
  		return crashReport;
-@@ -2058,15 +1960,11 @@
+@@ -2058,15 +1957,11 @@
  	public static MinecraftClient getInstance() {
  		return instance;
  	}
@@ -916,7 +924,7 @@
  	@Override
  	public void addSnooperInfo(Snooper snooper) {
  		snooper.addGameInfo("fps", currentFps);
-@@ -2103,11 +2001,11 @@
+@@ -2103,11 +1998,11 @@
  	public void addSnooper(Snooper snooper) {
  		snooper.addSystemInfo("opengl_version", GL11.glGetString(7938));
  		snooper.addSystemInfo("opengl_vendor", GL11.glGetString(7936));
@@ -929,7 +937,7 @@
  		snooper.addSystemInfo("gl_caps[ARB_blend_func_extended]", contextCapabilities.GL_ARB_blend_func_extended);
  		snooper.addSystemInfo("gl_caps[ARB_clear_buffer_object]", contextCapabilities.GL_ARB_clear_buffer_object);
  		snooper.addSystemInfo("gl_caps[ARB_color_buffer_float]", contextCapabilities.GL_ARB_color_buffer_float);
-@@ -2176,29 +2074,24 @@
+@@ -2176,29 +2071,24 @@
  		snooper.addSystemInfo("gl_caps[EXT_framebuffer_object]", contextCapabilities.GL_EXT_framebuffer_object);
  		snooper.addSystemInfo("gl_caps[EXT_framebuffer_sRGB]", contextCapabilities.GL_EXT_framebuffer_sRGB);
  		snooper.addSystemInfo("gl_caps[EXT_geometry_shader4]", contextCapabilities.GL_EXT_geometry_shader4);
@@ -961,7 +969,7 @@
  		snooper.addSystemInfo("gl_caps[gl_max_fragment_uniforms]", GL11.glGetInteger(35657));
  		GL11.glGetError();
  		snooper.addSystemInfo("gl_caps[gl_max_vertex_attribs]", GL11.glGetInteger(34921));
-@@ -2341,27 +2234,24 @@
+@@ -2341,27 +2231,24 @@
  		return this.twitchStreamProvider;
  	}
  

@@ -1,12 +1,28 @@
 --- SoundsScreen.java
 +++ SoundsScreen.java
-@@ -1,8 +1,8 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen;
  
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
++import com.element.render.MatrixStack;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import net.minecraft.client.MinecraftClient;
  import net.minecraft.client.gui.widget.ButtonWidget;
  import net.minecraft.client.option.GameOptions;
  import net.minecraft.client.resource.language.I18n;
- import net.minecraft.client.sound.PositionedSoundInstance;
+@@ -57,14 +58,14 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, this.name, this.width / 2, 15, 16777215);
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	protected String getVolume(SoundCategory soundCategory) {
+ 		float f = this.options.getSoundVolume(soundCategory);
+ 		return f == 0.0F ? this.off : (int)(f * 100.0F) + "%";

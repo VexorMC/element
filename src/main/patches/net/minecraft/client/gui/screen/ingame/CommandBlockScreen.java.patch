@@ -1,0 +1,37 @@
+--- CommandBlockScreen.java
++++ CommandBlockScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
++import com.element.render.MatrixStack;
+ import io.netty.buffer.Unpooled;
+ import net.minecraft.client.gui.screen.Screen;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+ import net.minecraft.client.resource.language.I18n;
+@@ -99,11 +100,11 @@
+ 		this.input.mouseClicked(i, j, k);
+ 		this.output.mouseClicked(i, j, k);
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, I18n.translate("advMode.setCommand"), this.width / 2, 20, 16777215);
+ 		this.drawWithShadow(this.textRenderer, I18n.translate("advMode.command"), this.width / 2 - 150, 37, 10526880);
+ 		this.input.render();
+ 		int k = 75;
+@@ -117,11 +118,11 @@
+ 			k += l * this.textRenderer.fontHeight + 16;
+ 			this.drawWithShadow(this.textRenderer, I18n.translate("advMode.previousOutput"), this.width / 2 - 150, k, 10526880);
+ 			this.output.render();
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	private void updateButtonTexts() {
+ 		if (this.executor.isTrackingOutput()) {
+ 			this.trackingOutputToggleButton.message = "O";

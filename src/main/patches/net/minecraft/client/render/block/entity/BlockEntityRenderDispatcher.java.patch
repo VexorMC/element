@@ -1,18 +1,5 @@
 --- BlockEntityRenderDispatcher.java
 +++ BlockEntityRenderDispatcher.java
-@@ -1,10 +1,10 @@
- package net.minecraft.client.render.block.entity;
- 
- import com.google.common.collect.Maps;
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GLX;
-+import com.mojang.blaze3d.platform.GlStateManager;
- import java.util.Map;
- import net.minecraft.block.entity.BannerBlockEntity;
- import net.minecraft.block.entity.BeaconBlockEntity;
- import net.minecraft.block.entity.BlockEntity;
- import net.minecraft.block.entity.ChestBlockEntity;
 @@ -58,11 +58,11 @@
  	}
  

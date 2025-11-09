@@ -1,25 +1,165 @@
 --- Camera.java
 +++ Camera.java
-@@ -1,8 +1,8 @@
+@@ -1,102 +1,97 @@
  package net.minecraft.client.render;
  
 -import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
- import java.nio.FloatBuffer;
- import java.nio.IntBuffer;
+-import java.nio.FloatBuffer;
+-import java.nio.IntBuffer;
++import com.element.render.MatrixStack;
++import com.element.render.RenderSystem;
  import net.minecraft.block.AbstractFluidBlock;
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockState;
-@@ -29,11 +29,11 @@
+-import net.minecraft.client.util.GlAllocationUtils;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.MathHelper;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+-import org.lwjgl.opengl.GL11;
+-import org.lwjgl.util.glu.GLU;
++import org.joml.Matrix4f;
++import org.joml.Vector3f;
++import org.joml.Vector4f;
+ 
++/**
++ * Modernized Camera implementation using RenderSystem and MatrixStack.
++ * Replaces legacy GLU/GlStateManager logic with JOML-based transforms.
++ */
+ public class Camera {
+-	private static final IntBuffer VIEWPORT = GlAllocationUtils.allocateIntBuffer(16);
+-	private static final FloatBuffer MODEL_MATRIX = GlAllocationUtils.allocateFloatBuffer(16);
+-	private static final FloatBuffer PROJECTION_MATRIX = GlAllocationUtils.allocateFloatBuffer(16);
+-	private static final FloatBuffer OBJECT_POS = GlAllocationUtils.allocateFloatBuffer(3);
+-	private static Vec3d position = new Vec3d(0.0, 0.0, 0.0);
++	private static final Vector3f POSITION = new Vector3f();
+ 	private static float rotationX;
+ 	private static float rotationXZ;
+ 	private static float rotationZ;
+ 	private static float rotationYZ;
  	private static float rotationXY;
  
- 	public static void update(PlayerEntity playerEntity, boolean bl) {
- 		GlStateManager.getFloat(2982, MODEL_MATRIX);
- 		GlStateManager.getFloat(2983, PROJECTION_MATRIX);
+-	public static void update(PlayerEntity playerEntity, boolean bl) {
+-		GlStateManager.getFloat(2982, MODEL_MATRIX);
+-		GlStateManager.getFloat(2983, PROJECTION_MATRIX);
 -		GL11.glGetInteger(2978, VIEWPORT);
-+		GL11.glGetIntegerv(2978, VIEWPORT);
- 		float f = (float)((VIEWPORT.get(0) + VIEWPORT.get(2)) / 2);
- 		float g = (float)((VIEWPORT.get(1) + VIEWPORT.get(3)) / 2);
- 		GLU.gluUnProject(f, g, 0.0F, MODEL_MATRIX, PROJECTION_MATRIX, VIEWPORT, OBJECT_POS);
- 		position = new Vec3d((double)OBJECT_POS.get(0), (double)OBJECT_POS.get(1), (double)OBJECT_POS.get(2));
- 		int i = bl ? 1 : 0;
+-		float f = (float)((VIEWPORT.get(0) + VIEWPORT.get(2)) / 2);
+-		float g = (float)((VIEWPORT.get(1) + VIEWPORT.get(3)) / 2);
+-		GLU.gluUnProject(f, g, 0.0F, MODEL_MATRIX, PROJECTION_MATRIX, VIEWPORT, OBJECT_POS);
+-		position = new Vec3d((double)OBJECT_POS.get(0), (double)OBJECT_POS.get(1), (double)OBJECT_POS.get(2));
+-		int i = bl ? 1 : 0;
+-		float h = playerEntity.pitch;
+-		float j = playerEntity.yaw;
+-		rotationX = MathHelper.cos(j * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationZ = MathHelper.sin(j * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationYZ = -rotationZ * MathHelper.sin(h * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationXY = rotationX * MathHelper.sin(h * (float) Math.PI / 180.0F) * (float)(1 - i * 2);
+-		rotationXZ = MathHelper.cos(h * (float) Math.PI / 180.0F);
++	private static final Matrix4f MODEL_MATRIX = new Matrix4f();
++	private static final Matrix4f PROJECTION_MATRIX = new Matrix4f();
++
++	public static void update(MatrixStack matrices, PlayerEntity player, boolean inverse) {
++		Matrix4f model = matrices.model();
++		Matrix4f projection = RenderSystem.INSTANCE.projection();
++
++		MODEL_MATRIX.set(model);
++		PROJECTION_MATRIX.set(projection);
++
++		Matrix4f invVP = new Matrix4f(projection).mul(model).invert();
++		Vector4f origin = new Vector4f(0, 0, 0, 1).mul(invVP);
++		POSITION.set(origin.x / origin.w, origin.y / origin.w, origin.z / origin.w);
++
++		int flip = inverse ? -1 : 1;
++		float pitch = player.pitch;
++		float yaw = player.yaw;
++
++		rotationX = MathHelper.cos(yaw * ((float) Math.PI / 180.0F)) * flip;
++		rotationZ = MathHelper.sin(yaw * ((float) Math.PI / 180.0F)) * flip;
++		rotationYZ = -rotationZ * MathHelper.sin(pitch * ((float) Math.PI / 180.0F)) * flip;
++		rotationXY = rotationX * MathHelper.sin(pitch * ((float) Math.PI / 180.0F)) * flip;
++		rotationXZ = MathHelper.cos(pitch * ((float) Math.PI / 180.0F));
+ 	}
+ 
+-	public static Vec3d getEntityPos(Entity entity, double d) {
+-		double e = entity.prevX + (entity.x - entity.prevX) * d;
+-		double f = entity.prevY + (entity.y - entity.prevY) * d;
+-		double g = entity.prevZ + (entity.z - entity.prevZ) * d;
+-		double h = e + position.x;
+-		double i = f + position.y;
+-		double j = g + position.z;
+-		return new Vec3d(h, i, j);
++	public static Vec3d getEntityPos(Entity entity, double tickDelta) {
++		double x = entity.prevX + (entity.x - entity.prevX) * tickDelta;
++		double y = entity.prevY + (entity.y - entity.prevY) * tickDelta;
++		double z = entity.prevZ + (entity.z - entity.prevZ) * tickDelta;
++
++		return new Vec3d(
++				x + POSITION.x(),
++				y + POSITION.y(),
++				z + POSITION.z()
++		);
+ 	}
+ 
+-	public static Block getSubmergedBlock(World world, Entity entity, float f) {
+-		Vec3d vec3d = getEntityPos(entity, (double)f);
+-		BlockPos blockPos = new BlockPos(vec3d);
+-		BlockState blockState = world.getBlockState(blockPos);
+-		Block block = blockState.getBlock();
++	public static Block getSubmergedBlock(World world, Entity entity, float tickDelta) {
++		Vec3d pos = getEntityPos(entity, tickDelta);
++		BlockPos blockPos = new BlockPos(pos);
++		BlockState state = world.getBlockState(blockPos);
++		Block block = state.getBlock();
++
+ 		if (block.getMaterial().isFluid()) {
+-			float g = 0.0F;
+-			if (blockState.getBlock() instanceof AbstractFluidBlock) {
+-				g = AbstractFluidBlock.getHeightPercent((Integer)blockState.get(AbstractFluidBlock.LEVEL)) - 0.11111111F;
++			float fluidHeight = 0.0F;
++			if (block instanceof AbstractFluidBlock) {
++				fluidHeight = AbstractFluidBlock.getHeightPercent(state.get(AbstractFluidBlock.LEVEL)) - 0.11111111F;
+ 			}
+ 
+-			float h = (float)(blockPos.getY() + 1) - g;
+-			if (vec3d.y >= (double)h) {
++			float top = (float) (blockPos.getY() + 1) - fluidHeight;
++			if (pos.y >= top) {
+ 				block = world.getBlockState(blockPos.up()).getBlock();
+ 			}
+ 		}
+ 
+ 		return block;
+ 	}
+ 
+ 	public static Vec3d getPosition() {
+-		return position;
++		return new Vec3d(POSITION.x(), POSITION.y(), POSITION.z());
+ 	}
+ 
+-	public static float getRotationX() {
+-		return rotationX;
+-	}
+-
+-	public static float getRotationXZ() {
+-		return rotationXZ;
+-	}
+-
+-	public static float getRotationZ() {
+-		return rotationZ;
+-	}
+-
+-	public static float getRotationYZ() {
+-		return rotationYZ;
+-	}
+-
+-	public static float getRotationXY() {
+-		return rotationXY;
+-	}
++	public static float getRotationX() { return rotationX; }
++	public static float getRotationXZ() { return rotationXZ; }
++	public static float getRotationZ() { return rotationZ; }
++	public static float getRotationYZ() { return rotationYZ; }
++	public static float getRotationXY() { return rotationXY; }
+ }

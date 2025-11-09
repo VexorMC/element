@@ -1,0 +1,33 @@
+--- ChatScreen.java
++++ ChatScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen;
+ 
++import com.element.render.MatrixStack;
+ import com.google.common.collect.Lists;
+ import java.util.List;
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+ import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
+ import net.minecraft.text.LiteralText;
+@@ -198,19 +199,19 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		fill(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
+ 		this.chatField.render();
+ 		Text text = this.client.inGameHud.getChatHud().getTextAt(Mouse.getX(), Mouse.getY());
+ 		if (text != null && text.getStyle().getHoverEvent() != null) {
+ 			this.renderTextHoverEffect(text, i, j);
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	public void setSuggestions(String[] strings) {
+ 		if (this.waiting) {
+ 			this.foundNames = false;

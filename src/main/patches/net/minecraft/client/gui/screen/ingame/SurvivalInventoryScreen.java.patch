@@ -1,14 +1,26 @@
 --- SurvivalInventoryScreen.java
 +++ SurvivalInventoryScreen.java
-@@ -1,9 +1,9 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen.ingame;
  
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GLX;
-+import com.mojang.blaze3d.platform.GlStateManager;
++import com.element.render.MatrixStack;
+ import com.mojang.blaze3d.platform.GLX;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import net.minecraft.client.MinecraftClient;
  import net.minecraft.client.gui.screen.AchievementsScreen;
  import net.minecraft.client.gui.screen.StatsScreen;
- import net.minecraft.client.gui.widget.ButtonWidget;
- import net.minecraft.client.render.DiffuseLighting;
+@@ -44,12 +45,12 @@
+ 	protected void drawForeground(int i, int j) {
+ 		this.textRenderer.draw(I18n.translate("container.crafting"), 86, 16, 4210752);
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
+-		super.render(i, j, f);
++	public void render(MatrixStack matrices, int j, float f, int i) {
++		super.render(matrices, j, f, i);
+ 		this.mouseX = (float)i;
+ 		this.mouseY = (float)j;
+ 	}
+ 
+ 	@Override

@@ -24,14 +24,14 @@
 +import org.lwjgl.opengl.*;
  import oshi.SystemInfo;
  import oshi.hardware.Processor;
-
+ 
  public class GLX {
  	public static boolean nvidia;
 @@ -78,11 +64,11 @@
  	private static boolean vboShadersSupported;
  	public static int arrayBuffer;
  	public static int staticDraw;
-
+ 
  	public static void createContext() {
 -		ContextCapabilities contextCapabilities = GLContext.getCapabilities();
 +		GLCapabilities contextCapabilities = GL.getCapabilities();
@@ -41,11 +41,11 @@
  			contextDescription = contextDescription + "Using ARB_multitexture.\n";
  			textureUnit = 33984;
 @@ -281,15 +267,15 @@
-
+ 
  	public static int gl20CreateShader(int i) {
  		return arbShaderObjects ? ARBShaderObjects.glCreateShaderObjectARB(i) : GL20.glCreateShader(i);
  	}
-
+ 
 -	public static void gl20ShaderSource(int i, ByteBuffer byteBuffer) {
 +	public static void gl20ShaderSource(int i, String bytes) {
  		if (arbShaderObjects) {
@@ -56,13 +56,13 @@
 +			GL20.glShaderSource(i, bytes);
  		}
  	}
-
+ 
  	public static void gl20CompileShader(int i) {
  		if (arbShaderObjects) {
 @@ -343,13 +329,13 @@
  		return arbShaderObjects ? ARBShaderObjects.glGetUniformLocationARB(i, charSequence) : GL20.glGetUniformLocation(i, charSequence);
  	}
-
+ 
  	public static void gl20Uniform1(int i, IntBuffer intBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform1ARB(i, intBuffer);
@@ -72,13 +72,13 @@
 +			GL20.glUniform1iv(i, intBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform1(int i, int j) {
  		if (arbShaderObjects) {
 @@ -359,85 +345,85 @@
  		}
  	}
-
+ 
  	public static void gl20Uniform(int i, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform1ARB(i, floatBuffer);
@@ -88,7 +88,7 @@
 +			GL20.glUniform1fv(i, floatBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform2(int i, IntBuffer intBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform2ARB(i, intBuffer);
@@ -98,7 +98,7 @@
 +			GL20.glUniform2iv(i, intBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform2(int i, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform2ARB(i, floatBuffer);
@@ -108,7 +108,7 @@
 +			GL20.glUniform2fv(i, floatBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform3(int i, IntBuffer intBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform3ARB(i, intBuffer);
@@ -118,7 +118,7 @@
 +			GL20.glUniform3iv(i, intBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform3(int i, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform3ARB(i, floatBuffer);
@@ -128,7 +128,7 @@
 +			GL20.glUniform3fv(i, floatBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform4(int i, IntBuffer intBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform4ARB(i, intBuffer);
@@ -138,7 +138,7 @@
 +			GL20.glUniform4iv(i, intBuffer);
  		}
  	}
-
+ 
  	public static void gl20Uniform4(int i, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniform4ARB(i, floatBuffer);
@@ -148,7 +148,7 @@
 +			GL20.glUniform4fv(i, floatBuffer);
  		}
  	}
-
+ 
  	public static void gl20UniformMatrix2(int i, boolean bl, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniformMatrix2ARB(i, bl, floatBuffer);
@@ -158,7 +158,7 @@
 +			GL20.glUniformMatrix2fv(i, bl, floatBuffer);
  		}
  	}
-
+ 
  	public static void gl20UniformMatrix3(int i, boolean bl, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniformMatrix3ARB(i, bl, floatBuffer);
@@ -168,7 +168,7 @@
 +			GL20.glUniformMatrix3fv(i, bl, floatBuffer);
  		}
  	}
-
+ 
  	public static void gl20UniformMatrix4(int i, boolean bl, FloatBuffer floatBuffer) {
  		if (arbShaderObjects) {
 -			ARBShaderObjects.glUniformMatrix4ARB(i, bl, floatBuffer);
@@ -178,6 +178,6 @@
 +			GL20.glUniformMatrix4fv(i, bl, floatBuffer);
  		}
  	}
-
+ 
  	public static int gl20GetAttribLocation(int i, CharSequence charSequence) {
  		return arbShaderObjects ? ARBVertexShader.glGetAttribLocationARB(i, charSequence) : GL20.glGetAttribLocation(i, charSequence);

@@ -1,24 +1,22 @@
 --- GameRenderer.java
 +++ GameRenderer.java
-@@ -1,12 +1,12 @@
+@@ -1,7 +1,9 @@
  package net.minecraft.client.render;
  
++import com.element.render.RenderSystem;
++import com.element.render.MatrixStack;
  import com.google.common.base.Predicate;
  import com.google.common.base.Predicates;
  import com.google.gson.JsonSyntaxException;
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GLX;
-+import com.mojang.blaze3d.platform.GlStateManager;
- import java.io.IOException;
- import java.nio.FloatBuffer;
- import java.util.List;
- import java.util.Random;
- import java.util.concurrent.Callable;
-@@ -59,12 +59,12 @@
+ import com.mojang.blaze3d.platform.GLX;
+ import com.mojang.blaze3d.platform.GlStateManager;
+@@ -57,14 +59,15 @@
+ import net.minecraft.world.World;
+ import net.minecraft.world.biome.Biome;
  import net.minecraft.world.level.LevelInfo;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
++import org.joml.Matrix4f;
  import org.lwjgl.input.Mouse;
  import org.lwjgl.opengl.Display;
 +import org.lwjgl.opengl.GL;
@@ -29,20 +27,790 @@
  public class GameRenderer implements ResourceReloadListener {
  	private static final Logger LOGGER = LogManager.getLogger();
  	private static final Identifier RAIN_TEXTURE = new Identifier("textures/environment/rain.png");
-@@ -925,11 +925,11 @@
- 							return GameRenderer.this.client.currentScreen.getClass().getCanonicalName();
+@@ -444,71 +447,71 @@
+ 
+ 			return g;
+ 		}
+ 	}
+ 
+-	private void bobViewWhenHurt(float f) {
++	private void bobViewWhenHurt(Matrix4f view, float f) {
+ 		if (this.client.getCameraEntity() instanceof LivingEntity) {
+ 			LivingEntity livingEntity = (LivingEntity)this.client.getCameraEntity();
+ 			float g = (float)livingEntity.hurtTime - f;
+ 			if (livingEntity.getHealth() <= 0.0F) {
+ 				float h = (float)livingEntity.deathTime + f;
+-				GlStateManager.rotate(40.0F - 8000.0F / (h + 200.0F), 0.0F, 0.0F, 1.0F);
++				view.rotate(40.0F - 8000.0F / (h + 200.0F), 0.0F, 0.0F, 1.0F);
+ 			}
+ 
+ 			if (g < 0.0F) {
+ 				return;
+ 			}
+ 
+ 			g /= (float)livingEntity.maxHurtTime;
+ 			g = MathHelper.sin(g * g * g * g * (float) Math.PI);
+ 			float h = livingEntity.knockbackVelocity;
+-			GlStateManager.rotate(-h, 0.0F, 1.0F, 0.0F);
+-			GlStateManager.rotate(-g * 14.0F, 0.0F, 0.0F, 1.0F);
+-			GlStateManager.rotate(h, 0.0F, 1.0F, 0.0F);
++			view.rotate(-h, 0.0F, 1.0F, 0.0F);
++			view.rotate(-g * 14.0F, 0.0F, 0.0F, 1.0F);
++			view.rotate(h, 0.0F, 1.0F, 0.0F);
+ 		}
+ 	}
+ 
+-	private void bobView(float f) {
++	private void bobView(Matrix4f view, float f) {
+ 		if (this.client.getCameraEntity() instanceof PlayerEntity) {
+ 			PlayerEntity playerEntity = (PlayerEntity)this.client.getCameraEntity();
+ 			float g = playerEntity.horizontalSpeed - playerEntity.prevHorizontalSpeed;
+ 			float h = -(playerEntity.horizontalSpeed + g * f);
+ 			float i = playerEntity.prevStrideDistance + (playerEntity.strideDistance - playerEntity.prevStrideDistance) * f;
+ 			float j = playerEntity.field_6752 + (playerEntity.field_6753 - playerEntity.field_6752) * f;
+-			GlStateManager.translate(MathHelper.sin(h * (float) Math.PI) * i * 0.5F, -Math.abs(MathHelper.cos(h * (float) Math.PI) * i), 0.0F);
+-			GlStateManager.rotate(MathHelper.sin(h * (float) Math.PI) * i * 3.0F, 0.0F, 0.0F, 1.0F);
+-			GlStateManager.rotate(Math.abs(MathHelper.cos(h * (float) Math.PI - 0.2F) * i) * 5.0F, 1.0F, 0.0F, 0.0F);
+-			GlStateManager.rotate(j, 1.0F, 0.0F, 0.0F);
++			view.translate(MathHelper.sin(h * (float) Math.PI) * i * 0.5F, -Math.abs(MathHelper.cos(h * (float) Math.PI) * i), 0.0F);
++			view.rotate(MathHelper.sin(h * (float) Math.PI) * i * 3.0F, 0.0F, 0.0F, 1.0F);
++			view.rotate(Math.abs(MathHelper.cos(h * (float) Math.PI - 0.2F) * i) * 5.0F, 1.0F, 0.0F, 0.0F);
++			view.rotate(j, 1.0F, 0.0F, 0.0F);
+ 		}
+ 	}
+ 
+-	private void transformCamera(float f) {
++	private void transformCamera(Matrix4f view, float f) {
+ 		Entity entity = this.client.getCameraEntity();
+ 		float g = entity.getEyeHeight();
+ 		double d = entity.prevX + (entity.x - entity.prevX) * (double)f;
+ 		double e = entity.prevY + (entity.y - entity.prevY) * (double)f + (double)g;
+ 		double h = entity.prevZ + (entity.z - entity.prevZ) * (double)f;
+ 		if (entity instanceof LivingEntity && ((LivingEntity)entity).isSleeping()) {
+ 			g = (float)((double)g + 1.0);
+-			GlStateManager.translate(0.0F, 0.3F, 0.0F);
++			view.translate(0.0F, 0.3F, 0.0F);
+ 			if (!this.client.options.field_955) {
+ 				BlockPos blockPos = new BlockPos(entity);
+ 				BlockState blockState = this.client.world.getBlockState(blockPos);
+ 				Block block = blockState.getBlock();
+ 				if (block == Blocks.BED) {
+ 					int i = ((Direction)blockState.get(BedBlock.FACING)).getHorizontal();
+-					GlStateManager.rotate((float)(i * 90), 0.0F, 1.0F, 0.0F);
++					view.rotate((float)(i * 90), 0.0F, 1.0F, 0.0F);
+ 				}
+ 
+-				GlStateManager.rotate(entity.prevYaw + (entity.yaw - entity.prevYaw) * f + 180.0F, 0.0F, -1.0F, 0.0F);
+-				GlStateManager.rotate(entity.prevPitch + (entity.pitch - entity.prevPitch) * f, -1.0F, 0.0F, 0.0F);
++				view.rotate(entity.prevYaw + (entity.yaw - entity.prevYaw) * f + 180.0F, 0.0F, -1.0F, 0.0F);
++				view.rotate(entity.prevPitch + (entity.pitch - entity.prevPitch) * f, -1.0F, 0.0F, 0.0F);
+ 			}
+ 		} else if (this.client.options.perspective > 0) {
+ 			double j = (double)(this.lastThirdPersonDistance + (this.thirdPersonDistance - this.lastThirdPersonDistance) * f);
+ 			if (this.client.options.field_955) {
+-				GlStateManager.translate(0.0F, 0.0F, (float)(-j));
++				view.translate(0.0F, 0.0F, (float)(-j));
+ 			} else {
+ 				float k = entity.yaw;
+ 				float l = entity.pitch;
+ 				if (this.client.options.perspective == 2) {
+ 					l += 180.0F;
+@@ -535,121 +538,126 @@
  						}
- 					});
- 					crashReportSection.add("Mouse location", new Callable<String>() {
- 						public String call() throws Exception {
+ 					}
+ 				}
+ 
+ 				if (this.client.options.perspective == 2) {
+-					GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
++					view.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+ 				}
+ 
+-				GlStateManager.rotate(entity.pitch - l, 1.0F, 0.0F, 0.0F);
+-				GlStateManager.rotate(entity.yaw - k, 0.0F, 1.0F, 0.0F);
+-				GlStateManager.translate(0.0F, 0.0F, (float)(-j));
+-				GlStateManager.rotate(k - entity.yaw, 0.0F, 1.0F, 0.0F);
+-				GlStateManager.rotate(l - entity.pitch, 1.0F, 0.0F, 0.0F);
++				view.rotate(entity.pitch - l, 1.0F, 0.0F, 0.0F);
++				view.rotate(entity.yaw - k, 0.0F, 1.0F, 0.0F);
++				view.translate(0.0F, 0.0F, (float)(-j));
++				view.rotate(k - entity.yaw, 0.0F, 1.0F, 0.0F);
++				view.rotate(l - entity.pitch, 1.0F, 0.0F, 0.0F);
+ 			}
+ 		} else {
+-			GlStateManager.translate(0.0F, 0.0F, -0.1F);
++			view.translate(0.0F, 0.0F, -0.1F);
+ 		}
+ 
+ 		if (!this.client.options.field_955) {
+-			GlStateManager.rotate(entity.prevPitch + (entity.pitch - entity.prevPitch) * f, 1.0F, 0.0F, 0.0F);
++			view.rotate(entity.prevPitch + (entity.pitch - entity.prevPitch) * f, 1.0F, 0.0F, 0.0F);
+ 			if (entity instanceof AnimalEntity) {
+ 				AnimalEntity animalEntity = (AnimalEntity)entity;
+-				GlStateManager.rotate(animalEntity.prevHeadYaw + (animalEntity.headYaw - animalEntity.prevHeadYaw) * f + 180.0F, 0.0F, 1.0F, 0.0F);
++				view.rotate(animalEntity.prevHeadYaw + (animalEntity.headYaw - animalEntity.prevHeadYaw) * f + 180.0F, 0.0F, 1.0F, 0.0F);
+ 			} else {
+-				GlStateManager.rotate(entity.prevYaw + (entity.yaw - entity.prevYaw) * f + 180.0F, 0.0F, 1.0F, 0.0F);
++				view.rotate(entity.prevYaw + (entity.yaw - entity.prevYaw) * f + 180.0F, 0.0F, 1.0F, 0.0F);
+ 			}
+ 		}
+ 
+-		GlStateManager.translate(0.0F, -g, 0.0F);
++		view.translate(0.0F, -g, 0.0F);
+ 		d = entity.prevX + (entity.x - entity.prevX) * (double)f;
+ 		e = entity.prevY + (entity.y - entity.prevY) * (double)f + (double)g;
+ 		h = entity.prevZ + (entity.z - entity.prevZ) * (double)f;
+ 		this.thickFog = this.client.worldRenderer.hasThickFog(d, e, h, f);
+ 	}
+ 
+-	private void setupCamera(float f, int i) {
+-		this.viewDistance = (float)(this.client.options.viewDistance * 16);
+-		GlStateManager.matrixMode(5889);
+-		GlStateManager.loadIdentity();
+-		float g = 0.07F;
+-		if (this.client.options.anaglyph3d) {
+-			GlStateManager.translate((float)(-(i * 2 - 1)) * g, 0.0F, 0.0F);
+-		}
++	private void setupCamera(MatrixStack matrices, float tickDelta, int eyeIndex) {
++		this.viewDistance = (float) (this.client.options.viewDistance * 16);
++		float aspect = (float) this.client.width / (float) this.client.height;
+ 
+-		if (this.zoom != 1.0) {
+-			GlStateManager.translate((float)this.zoomX, (float)(-this.zoomY), 0.0F);
+-			GlStateManager.scale(this.zoom, this.zoom, 1.0);
++		RenderSystem.INSTANCE.reset();
++
++		float zoom = (float) this.zoom;
++		float zoomX = (float) this.zoomX;
++		float zoomY = (float) this.zoomY;
++		float anaglyphOffset = this.client.options.anaglyph3d ? ((eyeIndex * 2 - 1) * 0.07f) : 0.0f;
++
++		Matrix4f projection = new Matrix4f().identity();
++
++		if (zoom != 1.0f) {
++			projection.translate(zoomX, -zoomY, 0.0f);
++			projection.scale(zoom, zoom, 1.0f);
+ 		}
+ 
+-		Project.gluPerspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+-		GlStateManager.matrixMode(5888);
+-		GlStateManager.loadIdentity();
++		projection.translate(-anaglyphOffset, 0.0f, 0.0f);
++		projection.perspective(
++				(float) Math.toRadians(getFov(tickDelta, true)),
++				aspect,
++				0.05f,
++				this.viewDistance * (float) Math.sqrt(2.0)
++		);
++
++		RenderSystem.INSTANCE.setProjection(projection);
++
++		Matrix4f view = new Matrix4f().identity();
++
+ 		if (this.client.options.anaglyph3d) {
+-			GlStateManager.translate((float)(i * 2 - 1) * 0.1F, 0.0F, 0.0F);
++			view.translate((eyeIndex * 2 - 1) * 0.1f, 0.0f, 0.0f);
+ 		}
+ 
+-		this.bobViewWhenHurt(f);
++		bobViewWhenHurt(view, tickDelta);
+ 		if (this.client.options.bobView) {
+-			this.bobView(f);
++			bobView(view, tickDelta);
+ 		}
+ 
+-		float h = this.client.player.lastTimeInPortal + (this.client.player.timeInPortal - this.client.player.lastTimeInPortal) * f;
+-		if (h > 0.0F) {
+-			int j = 20;
+-			if (this.client.player.hasStatusEffect(StatusEffect.NAUSEA)) {
+-				j = 7;
+-			}
+-
+-			float k = 5.0F / (h * h + 5.0F) - h * 0.04F;
++		float portal = this.client.player.lastTimeInPortal + (this.client.player.timeInPortal - this.client.player.lastTimeInPortal) * tickDelta;
++		if (portal > 0.0f) {
++			int spinSpeed = this.client.player.hasStatusEffect(StatusEffect.NAUSEA) ? 7 : 20;
++			float k = 5.0f / (portal * portal + 5.0f) - portal * 0.04f;
+ 			k *= k;
+-			GlStateManager.rotate(((float)this.ticks + f) * (float)j, 0.0F, 1.0F, 1.0F);
+-			GlStateManager.scale(1.0F / k, 1.0F, 1.0F);
+-			GlStateManager.rotate(-((float)this.ticks + f) * (float)j, 0.0F, 1.0F, 1.0F);
++			float angle = ((float) this.ticks + tickDelta) * spinSpeed;
++
++			view.rotate((float) Math.toRadians(angle), 0.0f, 1.0f, 1.0f);
++			view.scale(1.0f / k, 1.0f, 1.0f);
++			view.rotate((float) Math.toRadians(-angle), 0.0f, 1.0f, 1.0f);
+ 		}
+ 
+-		this.transformCamera(f);
++		transformCamera(view, tickDelta);
++
+ 		if (this.renderingPanorama) {
+ 			switch (this.panoramaDirection) {
+-				case 0:
+-					GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+-					break;
+-				case 1:
+-					GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+-					break;
+-				case 2:
+-					GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
+-					break;
+-				case 3:
+-					GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+-					break;
+-				case 4:
+-					GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
++				case 0 -> view.rotate((float) Math.toRadians(90.0f), 0.0f, 1.0f, 0.0f);
++				case 1 -> view.rotate((float) Math.toRadians(180.0f), 0.0f, 1.0f, 0.0f);
++				case 2 -> view.rotate((float) Math.toRadians(-90.0f), 0.0f, 1.0f, 0.0f);
++				case 3 -> view.rotate((float) Math.toRadians(90.0f), 1.0f, 0.0f, 0.0f);
++				case 4 -> view.rotate((float) Math.toRadians(-90.0f), 1.0f, 0.0f, 0.0f);
+ 			}
+ 		}
++
++		RenderSystem.INSTANCE.setView(view);
+ 	}
+ 
+-	private void renderHand(float f, int i) {
++	private void renderHand(MatrixStack matrices, float f, int i) {
+ 		if (!this.renderingPanorama) {
+-			GlStateManager.matrixMode(5889);
+-			GlStateManager.loadIdentity();
++			RenderSystem.INSTANCE.reset();
+ 			float g = 0.07F;
+ 			if (this.client.options.anaglyph3d) {
+ 				GlStateManager.translate((float)(-(i * 2 - 1)) * g, 0.0F, 0.0F);
+ 			}
+ 
+-			Project.gluPerspective(this.getFov(f, false), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * 2.0F);
+-			GlStateManager.matrixMode(5888);
+-			GlStateManager.loadIdentity();
++			RenderSystem.INSTANCE.perspective(this.getFov(f, false), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * 2.0F);
++
++			matrices.model().identity();
++
+ 			if (this.client.options.anaglyph3d) {
+-				GlStateManager.translate((float)(i * 2 - 1) * 0.1F, 0.0F, 0.0F);
++				matrices.translate((float)(i * 2 - 1) * 0.1F, 0.0F, 0.0F);
+ 			}
+ 
+-			GlStateManager.pushMatrix();
+-			this.bobViewWhenHurt(f);
++			matrices.push();
++			this.bobViewWhenHurt(matrices.model(), f);
+ 			if (this.client.options.bobView) {
+-				this.bobView(f);
++				this.bobView(matrices.model(), f);
+ 			}
+ 
+ 			boolean bl = this.client.getCameraEntity() instanceof LivingEntity && ((LivingEntity)this.client.getCameraEntity()).isSleeping();
+ 			if (this.client.options.perspective == 0 && !bl && !this.client.options.hudHidden && !this.client.interactionManager.isSpectator()) {
+ 				this.enableLightmap();
+@@ -658,15 +666,15 @@
+ 			}
+ 
+ 			GlStateManager.popMatrix();
+ 			if (this.client.options.perspective == 0 && !bl) {
+ 				this.firstPersonRenderer.renderOverlays(f);
+-				this.bobViewWhenHurt(f);
++				this.bobViewWhenHurt(matrices.model(), f);
+ 			}
+ 
+ 			if (this.client.options.bobView) {
+-				this.bobView(f);
++				this.bobView(matrices.model(), f);
+ 			}
+ 		}
+ 	}
+ 
+ 	public void disableLightmap() {
+@@ -674,25 +682,26 @@
+ 		GlStateManager.disableTexture();
+ 		GlStateManager.activeTexture(GLX.textureUnit);
+ 	}
+ 
+ 	public void enableLightmap() {
+-		GlStateManager.activeTexture(GLX.lightmapTextureUnit);
+-		GlStateManager.matrixMode(5890);
+-		GlStateManager.loadIdentity();
+-		float f = 0.00390625F;
+-		GlStateManager.scale(f, f, f);
+-		GlStateManager.translate(8.0F, 8.0F, 8.0F);
+-		GlStateManager.matrixMode(5888);
+-		this.client.getTextureManager().bindTexture(this.lightmapTextureId);
+-		GL11.glTexParameteri(3553, 10241, 9729);
+-		GL11.glTexParameteri(3553, 10240, 9729);
+-		GL11.glTexParameteri(3553, 10242, 10496);
+-		GL11.glTexParameteri(3553, 10243, 10496);
+-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+-		GlStateManager.enableTexture();
+-		GlStateManager.activeTexture(GLX.textureUnit);
++		// todo(element): figure out what the fuck a texture matrix is
++//		GlStateManager.activeTexture(GLX.lightmapTextureUnit);
++//		GlStateManager.matrixMode(5890);
++//		GlStateManager.loadIdentity();
++//		float f = 0.00390625F;
++//		GlStateManager.scale(f, f, f);
++//		GlStateManager.translate(8.0F, 8.0F, 8.0F);
++//		GlStateManager.matrixMode(5888);
++//		this.client.getTextureManager().bindTexture(this.lightmapTextureId);
++//		GL11.glTexParameteri(3553, 10241, 9729);
++//		GL11.glTexParameteri(3553, 10240, 9729);
++//		GL11.glTexParameteri(3553, 10242, 10496);
++//		GL11.glTexParameteri(3553, 10243, 10496);
++//		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
++//		GlStateManager.enableTexture();
++//		GlStateManager.activeTexture(GLX.textureUnit);
+ 	}
+ 
+ 	private void tickLightmap() {
+ 		this.lastLightmapFlicker = (float)((double)this.lastLightmapFlicker + (Math.random() - Math.random()) * Math.random() * Math.random());
+ 		this.lastLightmapFlicker = (float)((double)this.lastLightmapFlicker * 0.9);
+@@ -820,20 +829,21 @@
+ 	private float getNightVisionStrength(LivingEntity livingEntity, float f) {
+ 		int i = livingEntity.getEffectInstance(StatusEffect.NIGHTVISION).getDuration();
+ 		return i > 200 ? 1.0F : 0.7F + MathHelper.sin(((float)i - f) * (float) Math.PI * 0.2F) * 0.3F;
+ 	}
+ 
+-	public void render(float f, long l) {
++	private void updateMouse(float tickDelta) {
+ 		boolean bl = Display.isActive();
+ 		if (!bl && this.client.options.pauseOnLostFocus && (!this.client.options.touchscreen || !Mouse.isButtonDown(1))) {
+ 			if (MinecraftClient.getTime() - this.lastWindowFocusedTime > 500L) {
+ 				this.client.openGameMenuScreen();
+ 			}
+ 		} else {
+ 			this.lastWindowFocusedTime = MinecraftClient.getTime();
+ 		}
+ 
++		// todo(element): move this somewhere else; this does not belong in render.
+ 		this.client.profiler.push("mouse");
+ 		if (bl && MinecraftClient.IS_MAC && this.client.focused && !Mouse.isInsideWindow()) {
+ 			Mouse.setGrabbed(false);
+ 			Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
+ 			Mouse.setGrabbed(true);
+@@ -851,113 +861,106 @@
+ 			}
+ 
+ 			if (this.client.options.smoothCameraEnabled) {
+ 				this.cursorDeltaX += i;
+ 				this.cursorDeltaY += j;
+-				float m = f - this.lastTickDelta;
+-				this.lastTickDelta = f;
++				float m = tickDelta - this.lastTickDelta;
++				this.lastTickDelta = tickDelta;
+ 				i = this.smoothedCursorDeltaX * m;
+ 				j = this.smoothedCursorDeltaY * m;
+ 				this.client.player.increaseTransforms(i, j * (float)k);
+ 			} else {
+ 				this.cursorDeltaX = 0.0F;
+ 				this.cursorDeltaY = 0.0F;
+ 				this.client.player.increaseTransforms(i, j * (float)k);
+ 			}
+ 		}
++	}
+ 
++	public void render(float tickDelta, long nanoTime) {
++		this.updateMouse(tickDelta);
++
++		// The matrices for this frame
++		MatrixStack matrices = new MatrixStack();
++
++
+ 		this.client.profiler.pop();
+ 		if (!this.client.skipGameRender) {
+ 			anaglyphEnabled = this.client.options.anaglyph3d;
+-			final Window window = new Window(this.client);
++			final Window window = new Window(this.client); // todo(element): reduce allocation
+ 			int n = window.getWidth();
+ 			int o = window.getHeight();
+ 			final int p = Mouse.getX() * n / this.client.width;
+ 			final int kx = o - Mouse.getY() * o / this.client.height - 1;
+ 			int q = this.client.options.maxFramerate;
+ 			if (this.client.world != null) {
+ 				this.client.profiler.push("level");
+ 				int r = Math.min(MinecraftClient.getCurrentFps(), q);
+ 				r = Math.max(r, 60);
+-				long s = System.nanoTime() - l;
++				long s = System.nanoTime() - nanoTime;
+ 				long t = Math.max((long)(1000000000 / r / 4) - s, 0L);
+-				this.renderWorld(f, System.nanoTime() + t);
+-				if (GLX.shadersSupported) {
+-					this.client.worldRenderer.drawEntityOutlineFramebuffer();
+-					if (this.shader != null && this.shadersEnabled) {
+-						GlStateManager.matrixMode(5890);
+-						GlStateManager.pushMatrix();
+-						GlStateManager.loadIdentity();
+-						this.shader.render(f);
+-						GlStateManager.popMatrix();
+-					}
++				this.renderWorld(matrices, tickDelta, System.nanoTime() + t);
+ 
+-					this.client.getFramebuffer().bind(true);
+-				}
++				// todo(element): post process shaders
++//				if (GLX.shadersSupported) {
++//					this.client.worldRenderer.drawEntityOutlineFramebuffer();
++//					if (this.shader != null && this.shadersEnabled) {
++//						GlStateManager.matrixMode(5890);
++//						GlStateManager.pushMatrix();
++//						GlStateManager.loadIdentity();
++//						this.shader.render(tickDelta);
++//						GlStateManager.popMatrix();
++//					}
++//
++//					this.client.getFramebuffer().bind(true);
++//				}
+ 
+ 				this.lastWorldRenderNanoTime = System.nanoTime();
+ 				this.client.profiler.swap("gui");
+ 				if (!this.client.options.hudHidden || this.client.currentScreen != null) {
+ 					GlStateManager.alphaFunc(516, 0.1F);
+-					this.client.inGameHud.render(f);
++					this.client.inGameHud.render(matrices, tickDelta);
+ 				}
+ 
+ 				this.client.profiler.pop();
+ 			} else {
+ 				GlStateManager.viewport(0, 0, this.client.width, this.client.height);
+-				GlStateManager.matrixMode(5889);
+-				GlStateManager.loadIdentity();
+-				GlStateManager.matrixMode(5888);
+-				GlStateManager.loadIdentity();
+-				this.setupHudMatrixMode();
++
++				RenderSystem.INSTANCE.projection().identity();
++				matrices.pose().getModel().identity();
++
++				this.setupHudMatrixMode(matrices);
+ 				this.lastWorldRenderNanoTime = System.nanoTime();
+ 			}
+ 
+ 			if (this.client.currentScreen != null) {
+ 				GlStateManager.clear(256);
+ 
+ 				try {
+-					this.client.currentScreen.render(p, kx, f);
++					this.client.currentScreen.render(matrices, kx, tickDelta, p);
+ 				} catch (Throwable var16) {
+ 					CrashReport crashReport = CrashReport.create(var16, "Rendering screen");
+ 					CrashReportSection crashReportSection = crashReport.addElement("Screen render details");
+-					crashReportSection.add("Screen name", new Callable<String>() {
+-						public String call() throws Exception {
+-							return GameRenderer.this.client.currentScreen.getClass().getCanonicalName();
+-						}
+-					});
+-					crashReportSection.add("Mouse location", new Callable<String>() {
+-						public String call() throws Exception {
 -							return String.format("Scaled: (%d, %d). Absolute: (%d, %d)", p, k, Mouse.getX(), Mouse.getY());
-+							return String.format("Scaled: (%d, %d). Absolute: (%d, %d)", p, kx, Mouse.getX(), Mouse.getY());
- 						}
- 					});
+-						}
+-					});
++					crashReportSection.add("Screen name", () -> GameRenderer.this.client.currentScreen.getClass().getCanonicalName());
++					crashReportSection.add("Mouse location", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d)", p, kx, Mouse.getX(), Mouse.getY()));
  					crashReportSection.add(
  						"Screen size",
- 						new Callable<String>() {
-@@ -1582,11 +1582,11 @@
+-						new Callable<String>() {
+-							public String call() throws Exception {
+-								return String.format(
+-									"Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d",
+-									window.getWidth(),
+-									window.getHeight(),
+-									GameRenderer.this.client.width,
+-									GameRenderer.this.client.height,
+-									window.getScaleFactor()
+-								);
+-							}
+-						}
+-					);
++                            () -> String.format(
++                                    "Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d",
++                                    window.getWidth(),
++                                    window.getHeight(),
++                                    GameRenderer.this.client.width,
++                                    GameRenderer.this.client.height,
++                                    window.getScaleFactor()
++                            )
++                    );
+ 					throw new CrashException(crashReport);
+ 				}
+ 			}
+ 		}
+ 	}
+ 
+-	public void renderStreamIndicator(float f) {
+-		this.setupHudMatrixMode();
+-		this.client.inGameHud.renderStreamIndicator(new Window(this.client));
+-	}
+-
+ 	private boolean shouldRenderBlockOutline() {
+ 		if (!this.blockOutlineEnabled) {
+ 			return false;
+ 		} else {
+ 			Entity entity = this.client.getCameraEntity();
+@@ -977,34 +980,33 @@
+ 
+ 			return bl;
+ 		}
+ 	}
+ 
+-	private void renderDebugCrosshair(float f) {
++	private void renderDebugCrosshair(MatrixStack matrices, float f) {
+ 		if (this.client.options.debugEnabled && !this.client.options.hudHidden && !this.client.player.getReducedDebugInfo() && !this.client.options.reducedDebugInfo) {
+ 			Entity entity = this.client.getCameraEntity();
+ 			GlStateManager.enableBlend();
+ 			GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+ 			GL11.glLineWidth(1.0F);
+ 			GlStateManager.disableTexture();
+ 			GlStateManager.depthMask(false);
+-			GlStateManager.pushMatrix();
+-			GlStateManager.matrixMode(5888);
+-			GlStateManager.loadIdentity();
+-			this.transformCamera(f);
+-			GlStateManager.translate(0.0F, entity.getEyeHeight(), 0.0F);
++			matrices.push();
++			matrices.identity();
++			this.transformCamera(matrices.model(), f);
++			matrices.translate(0.0F, entity.getEyeHeight(), 0.0F);
+ 			WorldRenderer.drawBox(new Box(0.0, 0.0, 0.0, 0.005, 1.0E-4, 1.0E-4), 255, 0, 0, 255);
+ 			WorldRenderer.drawBox(new Box(0.0, 0.0, 0.0, 1.0E-4, 1.0E-4, 0.005), 0, 0, 255, 255);
+ 			WorldRenderer.drawBox(new Box(0.0, 0.0, 0.0, 1.0E-4, 0.0033, 1.0E-4), 0, 255, 0, 255);
+-			GlStateManager.popMatrix();
++			matrices.pop();
+ 			GlStateManager.depthMask(true);
+ 			GlStateManager.enableTexture();
+ 			GlStateManager.disableBlend();
+ 		}
+ 	}
+ 
+-	public void renderWorld(float f, long l) {
++	public void renderWorld(MatrixStack matrices, float f, long l) {
+ 		this.updateLightmap(f);
+ 		if (this.client.getCameraEntity() == null) {
+ 			this.client.setCameraEntity(this.client.player);
+ 		}
+ 
+@@ -1014,34 +1016,34 @@
+ 		GlStateManager.alphaFunc(516, 0.5F);
+ 		this.client.profiler.push("center");
+ 		if (this.client.options.anaglyph3d) {
+ 			anaglyphFilter = 0;
+ 			GlStateManager.colorMask(false, true, true, false);
+-			this.renderWorld(0, f, l);
++			this.renderWorld(matrices, 0, f, l);
+ 			anaglyphFilter = 1;
+ 			GlStateManager.colorMask(true, false, false, false);
+-			this.renderWorld(1, f, l);
++			this.renderWorld(matrices, 1, f, l);
+ 			GlStateManager.colorMask(true, true, true, false);
+ 		} else {
+-			this.renderWorld(2, f, l);
++			this.renderWorld(matrices, 2, f, l);
+ 		}
+ 
+ 		this.client.profiler.pop();
+ 	}
+ 
+-	private void renderWorld(int i, float f, long l) {
++	private void renderWorld(MatrixStack matrices, int i, float f, long l) {
+ 		WorldRenderer worldRenderer = this.client.worldRenderer;
+ 		ParticleManager particleManager = this.client.particleManager;
+ 		boolean bl = this.shouldRenderBlockOutline();
+ 		GlStateManager.enableCull();
+ 		this.client.profiler.swap("clear");
+ 		GlStateManager.viewport(0, 0, this.client.width, this.client.height);
+ 		this.updateFog(f);
+ 		GlStateManager.clear(16640);
+ 		this.client.profiler.swap("camera");
+-		this.setupCamera(f, i);
+-		Camera.update(this.client.player, this.client.options.perspective == 2);
++		this.setupCamera(matrices, f, i);
++		Camera.update(matrices, this.client.player, this.client.options.perspective == 2);
+ 		this.client.profiler.swap("frustum");
+ 		Frustum.getInstance();
+ 		this.client.profiler.swap("culling");
+ 		CameraView cameraView = new CullingCameraView();
+ 		Entity entity = this.client.getCameraEntity();
+@@ -1050,25 +1052,21 @@
+ 		double g = entity.prevTickZ + (entity.z - entity.prevTickZ) * (double)f;
+ 		cameraView.setPos(d, e, g);
+ 		if (this.client.options.viewDistance >= 4) {
+ 			this.renderFog(-1, f);
+ 			this.client.profiler.swap("sky");
+-			GlStateManager.matrixMode(5889);
+-			GlStateManager.loadIdentity();
+-			Project.gluPerspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * 2.0F);
+-			GlStateManager.matrixMode(5888);
+-			worldRenderer.renderSky(f, i);
+-			GlStateManager.matrixMode(5889);
+-			GlStateManager.loadIdentity();
+-			Project.gluPerspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+-			GlStateManager.matrixMode(5888);
++			RenderSystem.INSTANCE.reset();
++			RenderSystem.INSTANCE.perspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * 2.0F);
++			worldRenderer.renderSky(matrices, f, i);
++			RenderSystem.INSTANCE.reset();
++			RenderSystem.INSTANCE.perspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+ 		}
+ 
+ 		this.renderFog(0, f);
+ 		GlStateManager.shadeModel(7425);
+ 		if (entity.y + (double)entity.getEyeHeight() < 128.0) {
+-			this.renderClouds(worldRenderer, f, i);
++			this.renderClouds(matrices, worldRenderer, f, i);
+ 		}
+ 
+ 		this.client.profiler.swap("prepareterrain");
+ 		this.renderFog(0, f);
+ 		this.client.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+@@ -1079,44 +1077,40 @@
+ 			this.client.profiler.swap("updatechunks");
+ 			this.client.worldRenderer.updateChunks(l);
+ 		}
+ 
+ 		this.client.profiler.swap("terrain");
+-		GlStateManager.matrixMode(5888);
+-		GlStateManager.pushMatrix();
++		matrices.push();
+ 		GlStateManager.disableAlphaTest();
+-		worldRenderer.renderLayer(RenderLayer.SOLID, (double)f, i, entity);
++		worldRenderer.renderLayer(matrices, RenderLayer.SOLID, (double)f, i, entity);
+ 		GlStateManager.enableAlphaTest();
+-		worldRenderer.renderLayer(RenderLayer.CUTOUT_MIPPED, (double)f, i, entity);
++		worldRenderer.renderLayer(matrices, RenderLayer.CUTOUT_MIPPED, (double)f, i, entity);
+ 		this.client.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
+-		worldRenderer.renderLayer(RenderLayer.CUTOUT, (double)f, i, entity);
++		worldRenderer.renderLayer(matrices, RenderLayer.CUTOUT, (double)f, i, entity);
+ 		this.client.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pop();
+ 		GlStateManager.shadeModel(7424);
+ 		GlStateManager.alphaFunc(516, 0.1F);
+ 		if (!this.renderingPanorama) {
+-			GlStateManager.matrixMode(5888);
+-			GlStateManager.popMatrix();
+-			GlStateManager.pushMatrix();
++			matrices.pop();
++			matrices.push();
+ 			DiffuseLighting.enableNormally();
+ 			this.client.profiler.swap("entities");
+ 			worldRenderer.renderEntities(entity, cameraView, f);
+ 			DiffuseLighting.disable();
+ 			this.disableLightmap();
+-			GlStateManager.matrixMode(5888);
+-			GlStateManager.popMatrix();
+-			GlStateManager.pushMatrix();
++			matrices.pop();
++			matrices.push();
+ 			if (this.client.result != null && entity.isSubmergedIn(Material.WATER) && bl) {
+ 				PlayerEntity playerEntity = (PlayerEntity)entity;
+ 				GlStateManager.disableAlphaTest();
+ 				this.client.profiler.swap("outline");
+ 				worldRenderer.drawBlockOutline(playerEntity, this.client.result, 0, f);
+ 				GlStateManager.enableAlphaTest();
+ 			}
+ 		}
+ 
+-		GlStateManager.matrixMode(5888);
+-		GlStateManager.popMatrix();
++		matrices.pop();
+ 		if (bl && this.client.result != null && !entity.isSubmergedIn(Material.WATER)) {
+ 			PlayerEntity playerEntity = (PlayerEntity)entity;
+ 			GlStateManager.disableAlphaTest();
+ 			this.client.profiler.swap("outline");
+ 			worldRenderer.drawBlockOutline(playerEntity, this.client.result, 0, f);
+@@ -1155,45 +1149,40 @@
+ 		GlStateManager.enableBlend();
+ 		GlStateManager.depthMask(false);
+ 		this.client.getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+ 		GlStateManager.shadeModel(7425);
+ 		this.client.profiler.swap("translucent");
+-		worldRenderer.renderLayer(RenderLayer.TRANSLUCENT, (double)f, i, entity);
++		worldRenderer.renderLayer(matrices, RenderLayer.TRANSLUCENT, (double)f, i, entity);
+ 		GlStateManager.shadeModel(7424);
+ 		GlStateManager.depthMask(true);
+ 		GlStateManager.enableCull();
+ 		GlStateManager.disableBlend();
+ 		GlStateManager.disableFog();
+ 		if (entity.y + (double)entity.getEyeHeight() >= 128.0) {
+ 			this.client.profiler.swap("aboveClouds");
+-			this.renderClouds(worldRenderer, f, i);
++			this.renderClouds(matrices, worldRenderer, f, i);
+ 		}
+ 
+ 		this.client.profiler.swap("hand");
+ 		if (this.renderHand) {
+ 			GlStateManager.clear(256);
+-			this.renderHand(f, i);
+-			this.renderDebugCrosshair(f);
++			this.renderHand(matrices, f, i);
++			this.renderDebugCrosshair(matrices, f);
+ 		}
+ 	}
+ 
+-	private void renderClouds(WorldRenderer worldRenderer, float f, int i) {
++	private void renderClouds(MatrixStack matrices, WorldRenderer worldRenderer, float f, int i) {
+ 		if (this.client.options.getCloudMode() != 0) {
+ 			this.client.profiler.swap("clouds");
+-			GlStateManager.matrixMode(5889);
+-			GlStateManager.loadIdentity();
+-			Project.gluPerspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * 4.0F);
+-			GlStateManager.matrixMode(5888);
+-			GlStateManager.pushMatrix();
++			RenderSystem.INSTANCE.reset();
++			RenderSystem.INSTANCE.perspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * 4.0F);
++			matrices.push();
+ 			this.renderFog(0, f);
+-			worldRenderer.renderClouds(f, i);
+-			GlStateManager.disableFog();
+-			GlStateManager.popMatrix();
+-			GlStateManager.matrixMode(5889);
+-			GlStateManager.loadIdentity();
+-			Project.gluPerspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+-			GlStateManager.matrixMode(5888);
++			worldRenderer.renderClouds(matrices, f, i);
++			matrices.pop();
++			RenderSystem.INSTANCE.reset();
++			RenderSystem.INSTANCE.perspective(this.getFov(f, true), (float)this.client.width / (float)this.client.height, 0.05F, this.viewDistance * MathHelper.SQUARE_ROOT_OF_TWO);
+ 		}
+ 	}
+ 
+ 	private void tickRainSplashing() {
+ 		float f = this.client.world.getRainGradient(1.0F);
+@@ -1431,19 +1420,19 @@
+ 			GlStateManager.alphaFunc(516, 0.1F);
+ 			this.disableLightmap();
+ 		}
+ 	}
+ 
+-	public void setupHudMatrixMode() {
++	public void setupHudMatrixMode(MatrixStack matrices) {
+ 		Window window = new Window(this.client);
+ 		GlStateManager.clear(256);
+-		GlStateManager.matrixMode(5889);
+-		GlStateManager.loadIdentity();
+-		GlStateManager.ortho(0.0, window.getScaledWidth(), window.getScaledHeight(), 0.0, 1000.0, 3000.0);
+-		GlStateManager.matrixMode(5888);
+-		GlStateManager.loadIdentity();
+-		GlStateManager.translate(0.0F, 0.0F, -2000.0F);
++
++		RenderSystem.INSTANCE.projection().identity();
++		RenderSystem.INSTANCE.ortho(0.0, window.getScaledWidth(), window.getScaledHeight(), 0.0, 1000.0, 3000.0);
++
++		matrices.pose().getModel().identity();
++		matrices.translate(0.0F, 0.0F, -2000.0F);
+ 	}
+ 
+ 	private void updateFog(float f) {
+ 		World world = this.client.world;
+ 		Entity entity = this.client.getCameraEntity();
+@@ -1575,18 +1564,20 @@
+ 		}
+ 
+ 		GlStateManager.clearColor(this.fogRed, this.fogGreen, this.fogBlue, 0.0F);
+ 	}
+ 
++	// todo(element): remove with rewrite
++	@Deprecated
+ 	private void renderFog(int i, float f) {
+ 		Entity entity = this.client.getCameraEntity();
  		boolean bl = false;
  		if (entity instanceof PlayerEntity) {
  			bl = ((PlayerEntity)entity).abilities.creativeMode;
@@ -55,7 +823,7 @@
  		Block block = Camera.getSubmergedBlock(this.client.world, entity, f);
  		if (entity instanceof LivingEntity && ((LivingEntity)entity).hasStatusEffect(StatusEffect.BLINDNESS)) {
  			float g = 5.0F;
-@@ -1602,11 +1602,11 @@
+@@ -1602,11 +1593,11 @@
  			} else {
  				GlStateManager.fogStart(g * 0.25F);
  				GlStateManager.fogEnd(g);
@@ -68,7 +836,7 @@
  		} else if (this.thickFog) {
  			GlStateManager.fogMode(2048);
  			GlStateManager.fogDensity(0.1F);
-@@ -1629,11 +1629,11 @@
+@@ -1629,11 +1620,11 @@
  			} else {
  				GlStateManager.fogStart(gx * 0.75F);
  				GlStateManager.fogEnd(gx);

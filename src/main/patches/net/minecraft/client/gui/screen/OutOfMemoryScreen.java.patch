@@ -1,0 +1,34 @@
+--- OutOfMemoryScreen.java
++++ OutOfMemoryScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen;
+ 
++import com.element.render.MatrixStack;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.OptionButtonWidget;
+ import net.minecraft.client.resource.language.I18n;
+ 
+ public class OutOfMemoryScreen extends Screen {
+@@ -24,11 +25,11 @@
+ 	@Override
+ 	protected void keyPressed(char c, int i) {
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, "Out of memory!", this.width / 2, this.height / 4 - 60 + 20, 16777215);
+ 		this.drawWithShadow(this.textRenderer, "Minecraft has run out of memory.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
+ 		this.drawWithShadow(this.textRenderer, "This could be caused by a bug in the game or by the", this.width / 2 - 140, this.height / 4 - 60 + 60 + 18, 10526880);
+ 		this.drawWithShadow(this.textRenderer, "Java Virtual Machine not being allocated enough", this.width / 2 - 140, this.height / 4 - 60 + 60 + 27, 10526880);
+@@ -43,8 +44,8 @@
+ 			this.textRenderer, "the main menu and back to playing, but this may not have worked.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 72, 10526880
+ 		);
+ 		this.drawWithShadow(
+ 			this.textRenderer, "Please restart the game if you see this message again.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 81, 10526880
+ 		);
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ }

@@ -1,0 +1,27 @@
+--- EditWorldScreen.java
++++ EditWorldScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen.world;
+ 
++import com.element.render.MatrixStack;
+ import net.minecraft.client.gui.screen.Screen;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+ import net.minecraft.client.resource.language.I18n;
+ import net.minecraft.world.level.LevelProperties;
+@@ -69,13 +70,13 @@
+ 		super.mouseClicked(i, j, k);
+ 		this.searchField.mouseClicked(i, j, k);
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, I18n.translate("selectWorld.renameTitle"), this.width / 2, 20, 16777215);
+ 		this.drawWithShadow(this.textRenderer, I18n.translate("selectWorld.enterName"), this.width / 2 - 100, 47, 10526880);
+ 		this.searchField.render();
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ }

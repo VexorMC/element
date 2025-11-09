@@ -1,19 +1,15 @@
 --- TitleScreen.java
 +++ TitleScreen.java
-@@ -1,10 +1,10 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen;
  
++import com.element.render.MatrixStack;
  import com.google.common.collect.Lists;
--import com.mojang.blaze3d.platform.GLX;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GLX;
-+import com.mojang.blaze3d.platform.GlStateManager;
+ import com.mojang.blaze3d.platform.GLX;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import java.io.BufferedReader;
  import java.io.IOException;
- import java.io.InputStreamReader;
- import java.net.URI;
- import java.util.Calendar;
-@@ -33,12 +33,12 @@
+@@ -33,12 +34,12 @@
  import net.minecraft.world.level.LevelProperties;
  import net.minecraft.world.level.storage.LevelStorageAccess;
  import org.apache.commons.io.Charsets;
@@ -27,7 +23,7 @@
  public class TitleScreen extends Screen implements IdentifiableBooleanConsumer {
  	private static final AtomicInteger THREAD_ID = new AtomicInteger(0);
  	private static final Logger LOGGER = LogManager.getLogger();
-@@ -110,11 +110,11 @@
+@@ -110,11 +111,11 @@
  			}
  		}
  
@@ -40,3 +36,32 @@
  			this.oldGlLink = "https://help.mojang.com/customer/portal/articles/325948?ref=game";
  		}
  	}
+@@ -406,11 +407,11 @@
+ 		bufferBuilder.vertex(0.0, 0.0, (double)this.zOffset).texture((double)(0.5F + h), (double)(0.5F + k)).color(1.0F, 1.0F, 1.0F, 1.0F).next();
+ 		tessellator.draw();
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		GlStateManager.disableAlphaTest();
+ 		this.renderBackground(i, j, f);
+ 		GlStateManager.enableAlphaTest();
+ 		Tessellator tessellator = Tessellator.getInstance();
+ 		BufferBuilder bufferBuilder = tessellator.getBuffer();
+@@ -452,13 +453,13 @@
+ 			fill(this.oldGlLeft - 2, this.oldGlTop - 2, this.oldGlRight + 2, this.oldGlBottom - 1, 1428160512);
+ 			this.drawWithShadow(this.textRenderer, this.oldGl1, this.oldGlLeft, this.oldGlTop, -1);
+ 			this.drawWithShadow(this.textRenderer, this.oldGl2, (this.width - this.oldGl2Width) / 2, ((ButtonWidget)this.buttons.get(0)).y - 12, -1);
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 		if (this.areRealmsNotificationsEnabled()) {
+-			this.realmsNotificationScreen.render(i, j, f);
++			this.realmsNotificationScreen.render(matrices, j, f, i);
+ 		}
+ 	}
+ 
+ 	@Override
+ 	protected void mouseClicked(int i, int j, int k) {

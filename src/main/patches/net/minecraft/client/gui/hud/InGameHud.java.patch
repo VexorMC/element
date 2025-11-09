@@ -1,15 +1,97 @@
 --- InGameHud.java
 +++ InGameHud.java
-@@ -1,11 +1,11 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.hud;
  
++import com.element.render.MatrixStack;
  import com.google.common.base.Predicate;
  import com.google.common.collect.Iterables;
  import com.google.common.collect.Lists;
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import java.util.Collection;
- import java.util.List;
- import java.util.Random;
- import net.minecraft.block.Blocks;
- import net.minecraft.block.material.Material;
+@@ -90,38 +91,38 @@
+ 		this.titleFadeInTicks = 10;
+ 		this.titleRemainTicks = 70;
+ 		this.titleFadeOutTicks = 20;
+ 	}
+ 
+-	public void render(float f) {
++	public void render(MatrixStack matrices, float tickDelta) {
+ 		Window window = new Window(this.client);
+ 		int i = window.getWidth();
+ 		int j = window.getHeight();
+-		this.client.gameRenderer.setupHudMatrixMode();
++		this.client.gameRenderer.setupHudMatrixMode(matrices);
+ 		GlStateManager.enableBlend();
+ 		if (MinecraftClient.isFancyGraphicsEnabled()) {
+-			this.renderVignetteOverlay(this.client.player.getBrightnessAtEyes(f), window);
++			this.renderVignetteOverlay(this.client.player.getBrightnessAtEyes(tickDelta), window);
+ 		} else {
+ 			GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+ 		}
+ 
+ 		ItemStack itemStack = this.client.player.inventory.getArmor(3);
+ 		if (this.client.options.perspective == 0 && itemStack != null && itemStack.getItem() == Item.fromBlock(Blocks.PUMPKIN)) {
+ 			this.renderPumpkinBlur(window);
+ 		}
+ 
+ 		if (!this.client.player.hasStatusEffect(StatusEffect.NAUSEA)) {
+-			float g = this.client.player.lastTimeInPortal + (this.client.player.timeInPortal - this.client.player.lastTimeInPortal) * f;
++			float g = this.client.player.lastTimeInPortal + (this.client.player.timeInPortal - this.client.player.lastTimeInPortal) * tickDelta;
+ 			if (g > 0.0F) {
+ 				this.renderNausea(g, window);
+ 			}
+ 		}
+ 
+ 		if (this.client.interactionManager.isSpectator()) {
+-			this.spectatorHud.render(window, f);
++			this.spectatorHud.render(window, tickDelta);
+ 		} else {
+-			this.renderHotbar(window, f);
++			this.renderHotbar(window, tickDelta);
+ 		}
+ 
+ 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+ 		this.client.getTextureManager().bindTexture(GUI_ICONS_TEXTURE);
+ 		GlStateManager.enableBlend();
+@@ -179,11 +180,11 @@
+ 			this.debugHud.render(window);
+ 		}
+ 
+ 		if (this.overlayRemaining > 0) {
+ 			this.client.profiler.push("overlayMessage");
+-			float h = (float)this.overlayRemaining - f;
++			float h = (float)this.overlayRemaining - tickDelta;
+ 			int l = (int)(h * 255.0F / 20.0F);
+ 			if (l > 255) {
+ 				l = 255;
+ 			}
+ 
+@@ -205,11 +206,11 @@
+ 			this.client.profiler.pop();
+ 		}
+ 
+ 		if (this.titleTotalTicks > 0) {
+ 			this.client.profiler.push("titleAndSubtitle");
+-			float hx = (float)this.titleTotalTicks - f;
++			float hx = (float)this.titleTotalTicks - tickDelta;
+ 			int lx = 255;
+ 			if (this.titleTotalTicks > this.titleFadeOutTicks + this.titleRemainTicks) {
+ 				float n = (float)(this.titleFadeInTicks + this.titleRemainTicks + this.titleFadeOutTicks) - hx;
+ 				lx = (int)(n * 255.0F / (float)this.titleFadeInTicks);
+ 			}
+@@ -417,14 +418,10 @@
+ 		} else {
+ 			return true;
+ 		}
+ 	}
+ 
+-	public void renderStreamIndicator(Window window) {
+-		this.streamIndicatorHud.render(window.getWidth() - 10, 10);
+-	}
+-
+ 	private void renderScoreboardObjective(ScoreboardObjective scoreboardObjective, Window window) {
+ 		Scoreboard scoreboard = scoreboardObjective.getScoreboard();
+ 		Collection<ScoreboardPlayerScore> collection = scoreboard.getAllPlayerScores(scoreboardObjective);
+ 		List<ScoreboardPlayerScore> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<ScoreboardPlayerScore>() {
+ 			public boolean apply(ScoreboardPlayerScore scoreboardPlayerScore) {

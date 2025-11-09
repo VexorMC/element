@@ -1,12 +1,25 @@
 --- HorseScreen.java
 +++ HorseScreen.java
-@@ -1,8 +1,8 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen.ingame;
  
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
++import com.element.render.MatrixStack;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import net.minecraft.client.MinecraftClient;
  import net.minecraft.entity.passive.HorseBaseEntity;
  import net.minecraft.inventory.Inventory;
  import net.minecraft.screen.HorseScreenHandler;
- import net.minecraft.util.Identifier;
+@@ -46,11 +47,11 @@
+ 
+ 		SurvivalInventoryScreen.renderEntity(k + 51, l + 60, 17, (float)(k + 51) - this.mouseX, (float)(l + 75 - 50) - this.mouseY, this.entity);
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.mouseX = (float)i;
+ 		this.mouseY = (float)j;
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ }

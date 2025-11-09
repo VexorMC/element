@@ -1,0 +1,39 @@
+--- CreateWorldScreen.java
++++ CreateWorldScreen.java
+@@ -1,8 +1,10 @@
+ package net.minecraft.client.gui.screen.world;
+ 
+ import java.util.Random;
++
++import com.element.render.MatrixStack;
+ import net.minecraft.client.gui.screen.CustomizeFlatLevelScreen;
+ import net.minecraft.client.gui.screen.CustomizeWorldScreen;
+ import net.minecraft.client.gui.screen.Screen;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+@@ -365,11 +367,11 @@
+ 			this.levelNameField.mouseClicked(i, j, k);
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, I18n.translate("selectWorld.create"), this.width / 2, 20, -1);
+ 		if (this.moreOptionsOpen) {
+ 			this.drawWithShadow(this.textRenderer, I18n.translate("selectWorld.enterSeed"), this.width / 2 - 100, 47, -6250336);
+ 			this.drawWithShadow(this.textRenderer, I18n.translate("selectWorld.seedInfo"), this.width / 2 - 100, 85, -6250336);
+@@ -398,11 +400,11 @@
+ 			this.levelNameField.render();
+ 			this.drawWithShadow(this.textRenderer, this.firstGameModeDescriptionLine, this.width / 2 - 100, 137, -6250336);
+ 			this.drawWithShadow(this.textRenderer, this.secondGameModeDescriptionLine, this.width / 2 - 100, 149, -6250336);
+ 		}
+ 
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	public void copyWorld(LevelProperties levelProperties) {
+ 		this.levelName = I18n.translate("selectWorld.newWorld.copyOf", levelProperties.getLevelName());
+ 		this.seed = levelProperties.getSeed() + "";

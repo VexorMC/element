@@ -1,16 +1,28 @@
 --- AchievementsScreen.java
 +++ AchievementsScreen.java
-@@ -1,8 +1,8 @@
+@@ -1,7 +1,8 @@
  package net.minecraft.client.gui.screen;
  
--import com.mojang.blaze3d.platform.GlStateManager;
-+import com.mojang.blaze3d.platform.GlStateManager;
++import com.element.render.MatrixStack;
+ import com.mojang.blaze3d.platform.GlStateManager;
  import java.util.Random;
  import net.minecraft.advancement.Achievement;
  import net.minecraft.advancement.AchievementsAndCriterions;
  import net.minecraft.block.Block;
- import net.minecraft.block.Blocks;
-@@ -111,11 +111,11 @@
+@@ -77,11 +78,11 @@
+ 			super.keyPressed(c, i);
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		if (this.downloadingStats) {
+ 			this.renderBackground();
+ 			this.drawCenteredString(this.textRenderer, I18n.translate("multiplayer.downloadingStats"), this.width / 2, this.height / 2, 16777215);
+ 			this.drawCenteredString(
+ 				this.textRenderer,
+@@ -111,11 +112,11 @@
  				}
  			} else {
  				this.isDragging = 0;
@@ -23,3 +35,42 @@
  				this.fov += 0.25F;
  			} else if (k > 0) {
  				this.fov -= 0.25F;
+@@ -149,11 +150,11 @@
+ 			if (this.centeredY >= (double)MAX_PAN_Y) {
+ 				this.centeredY = (double)(MAX_PAN_Y - 1);
+ 			}
+ 
+ 			this.renderBackground();
+-			this.renderIcons(i, j, f);
++			this.renderIcons(matrices, i, j, f);
+ 			GlStateManager.disableLighting();
+ 			GlStateManager.disableDepthTest();
+ 			this.renderTitle();
+ 			GlStateManager.enableLighting();
+ 			GlStateManager.enableDepthTest();
+@@ -188,11 +189,11 @@
+ 		int i = (this.width - this.originX) / 2;
+ 		int j = (this.height - this.originY) / 2;
+ 		this.textRenderer.draw(I18n.translate("gui.achievements"), i + 15, j + 5, 4210752);
+ 	}
+ 
+-	protected void renderIcons(int i, int j, float f) {
++	protected void renderIcons(MatrixStack matrices, int i, int j, float f) {
+ 		int k = MathHelper.floor(this.attemptedCenterX + (this.targetCenterX - this.attemptedCenterX) * (double)f);
+ 		int l = MathHelper.floor(this.attemptedCenterY + (this.targetCenterY - this.attemptedCenterY) * (double)f);
+ 		if (k < MIN_PAN_X) {
+ 			k = MIN_PAN_X;
+ 		}
+@@ -376,11 +377,11 @@
+ 		this.drawTexture(m, n, 0, 0, this.originX, this.originY);
+ 		this.zOffset = 0.0F;
+ 		GlStateManager.depthFunc(515);
+ 		GlStateManager.disableDepthTest();
+ 		GlStateManager.enableTexture();
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 		if (achievement2 != null) {
+ 			String string = achievement2.getText().asUnformattedString();
+ 			String string2 = achievement2.getDescription();
+ 			int ae = i + 12;
+ 			int ai = j - 4;

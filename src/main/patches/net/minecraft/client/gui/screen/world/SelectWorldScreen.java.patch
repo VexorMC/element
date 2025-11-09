@@ -1,0 +1,32 @@
+--- SelectWorldScreen.java
++++ SelectWorldScreen.java
+@@ -3,10 +3,12 @@
+ import java.text.DateFormat;
+ import java.text.SimpleDateFormat;
+ import java.util.Collections;
+ import java.util.Date;
+ import java.util.List;
++
++import com.element.render.MatrixStack;
+ import net.minecraft.client.ClientException;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.screen.ConfirmScreen;
+ import net.minecraft.client.gui.screen.FatalErrorScreen;
+ import net.minecraft.client.gui.screen.Screen;
+@@ -178,14 +180,14 @@
+ 			this.client.setScreen(this);
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.worldList.render(i, j, f);
+ 		this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 20, 16777215);
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ 
+ 	public static ConfirmScreen createDeleteWarningScreen(IdentifiableBooleanConsumer identifiableBooleanConsumer, String string, int i) {
+ 		String string2 = I18n.translate("selectWorld.deleteQuestion");
+ 		String string3 = "'" + string + "' " + I18n.translate("selectWorld.deleteWarning");

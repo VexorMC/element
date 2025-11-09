@@ -1,0 +1,25 @@
+--- ChatOptionsScreen.java
++++ ChatOptionsScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen.options;
+ 
++import com.element.render.MatrixStack;
+ import net.minecraft.client.gui.screen.Screen;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.OptionButtonWidget;
+ import net.minecraft.client.gui.widget.OptionSliderWidget;
+ import net.minecraft.client.option.GameOptions;
+@@ -66,11 +67,11 @@
+ 			}
+ 		}
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, this.title, this.width / 2, 20, 16777215);
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ }

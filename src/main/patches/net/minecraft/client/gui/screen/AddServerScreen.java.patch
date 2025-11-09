@@ -1,0 +1,29 @@
+--- AddServerScreen.java
++++ AddServerScreen.java
+@@ -1,7 +1,8 @@
+ package net.minecraft.client.gui.screen;
+ 
++import com.element.render.MatrixStack;
+ import com.google.common.base.Predicate;
+ import java.net.IDN;
+ import net.minecraft.client.gui.widget.ButtonWidget;
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+ import net.minecraft.client.network.ServerInfo;
+@@ -118,15 +119,15 @@
+ 		this.addressField.mouseClicked(i, j, k);
+ 		this.serverNameField.mouseClicked(i, j, k);
+ 	}
+ 
+ 	@Override
+-	public void render(int i, int j, float f) {
++	public void render(MatrixStack matrices, int j, float f, int i) {
+ 		this.renderBackground();
+ 		this.drawCenteredString(this.textRenderer, I18n.translate("addServer.title"), this.width / 2, 17, 16777215);
+ 		this.drawWithShadow(this.textRenderer, I18n.translate("addServer.enterName"), this.width / 2 - 100, 53, 10526880);
+ 		this.drawWithShadow(this.textRenderer, I18n.translate("addServer.enterIp"), this.width / 2 - 100, 94, 10526880);
+ 		this.serverNameField.render();
+ 		this.addressField.render();
+-		super.render(i, j, f);
++		super.render(matrices, j, f, i);
+ 	}
+ }
