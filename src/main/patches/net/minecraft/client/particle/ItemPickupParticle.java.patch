@@ -1,0 +1,14 @@
+--- ItemPickupParticle.java
++++ ItemPickupParticle.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.particle;
+ 
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GLX;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.render.entity.EntityRenderDispatcher;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.world.World;

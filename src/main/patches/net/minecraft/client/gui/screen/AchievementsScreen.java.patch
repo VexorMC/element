@@ -1,0 +1,25 @@
+--- AchievementsScreen.java
++++ AchievementsScreen.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import java.util.Random;
+ import net.minecraft.advancement.Achievement;
+ import net.minecraft.advancement.AchievementsAndCriterions;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.Blocks;
+@@ -111,11 +111,11 @@
+ 				}
+ 			} else {
+ 				this.isDragging = 0;
+ 			}
+ 
+-			int k = Mouse.getDWheel();
++			int k = Mouse.getEventDWheel();
+ 			float g = this.fov;
+ 			if (k < 0) {
+ 				this.fov += 0.25F;
+ 			} else if (k > 0) {
+ 				this.fov -= 0.25F;

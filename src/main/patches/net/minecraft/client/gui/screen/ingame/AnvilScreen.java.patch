@@ -1,0 +1,12 @@
+--- AnvilScreen.java
++++ AnvilScreen.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import io.netty.buffer.Unpooled;
+ import java.util.List;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.widget.TextFieldWidget;
+ import net.minecraft.client.resource.language.I18n;

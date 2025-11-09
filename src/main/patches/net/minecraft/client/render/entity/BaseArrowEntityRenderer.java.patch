@@ -1,0 +1,12 @@
+--- BaseArrowEntityRenderer.java
++++ BaseArrowEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.render.Tessellator;
+ import net.minecraft.client.render.VertexFormats;
+ import net.minecraft.entity.projectile.AbstractArrowEntity;
+ import net.minecraft.util.Identifier;

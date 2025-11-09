@@ -1,0 +1,12 @@
+--- GlProgramManager.java
++++ GlProgramManager.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gl;
+ 
+-import com.mojang.blaze3d.platform.GLX;
++import com.mojang.blaze3d.platform.GLX;
+ import java.io.IOException;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+ public class GlProgramManager {

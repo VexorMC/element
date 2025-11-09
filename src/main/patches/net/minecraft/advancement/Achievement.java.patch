@@ -1,0 +1,29 @@
+--- Achievement.java
++++ Achievement.java
+@@ -32,10 +32,11 @@
+ 		super(string, new TranslatableText("achievement." + string2));
+ 		this.logo = itemStack;
+ 		this.translationKey = "achievement." + string2 + ".desc";
+ 		this.column = i;
+ 		this.row = j;
++
+ 		if (i < AchievementsAndCriterions.minColumn) {
+ 			AchievementsAndCriterions.minColumn = i;
+ 		}
+ 
+ 		if (j < AchievementsAndCriterions.minRow) {
+@@ -87,13 +88,12 @@
+ 
+ 	public String getDescription() {
+ 		return this.statFormatter != null ? this.statFormatter.format(CommonI18n.translate(this.translationKey)) : CommonI18n.translate(this.translationKey);
+ 	}
+ 
+-	public Achievement setStatFormatter(StatFormatter statFormatter) {
++	public void setStatFormatter(StatFormatter statFormatter) {
+ 		this.statFormatter = statFormatter;
+-		return this;
+ 	}
+ 
+ 	public boolean isChallenge() {
+ 		return this.challenge;
+ 	}

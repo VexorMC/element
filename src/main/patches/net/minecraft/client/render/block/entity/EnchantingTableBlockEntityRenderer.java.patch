@@ -1,0 +1,12 @@
+--- EnchantingTableBlockEntityRenderer.java
++++ EnchantingTableBlockEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.block.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.block.entity.EnchantingTableBlockEntity;
+ import net.minecraft.client.render.entity.model.BookModel;
+ import net.minecraft.util.Identifier;
+ import net.minecraft.util.math.MathHelper;
+ 

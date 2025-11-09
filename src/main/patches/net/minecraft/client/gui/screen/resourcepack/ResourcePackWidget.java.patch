@@ -1,0 +1,12 @@
+--- ResourcePackWidget.java
++++ ResourcePackWidget.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen.resourcepack;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import java.util.List;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.DrawableHelper;
+ import net.minecraft.client.gui.screen.ConfirmScreen;
+ import net.minecraft.client.gui.screen.ResourcePackScreen;

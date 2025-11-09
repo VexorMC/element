@@ -1,0 +1,14 @@
+--- LoadingScreenRenderer.java
++++ LoadingScreenRenderer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.render;
+ 
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GLX;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gl.Framebuffer;
+ import net.minecraft.client.gui.DrawableHelper;
+ import net.minecraft.client.util.AnError;
+ import net.minecraft.client.util.Window;

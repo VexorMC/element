@@ -1,0 +1,14 @@
+--- HeldItemRenderer.java
++++ HeldItemRenderer.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.render.item;
+ 
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GLX;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockState;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.network.AbstractClientPlayerEntity;

@@ -1,0 +1,12 @@
+--- OptionSliderWidget.java
++++ OptionSliderWidget.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.widget;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.option.GameOptions;
+ import net.minecraft.util.math.MathHelper;
+ 
+ public class OptionSliderWidget extends ButtonWidget {

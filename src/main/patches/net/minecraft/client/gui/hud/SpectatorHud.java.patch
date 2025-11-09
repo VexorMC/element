@@ -1,0 +1,12 @@
+--- SpectatorHud.java
++++ SpectatorHud.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.hud;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.gui.DrawableHelper;
+ import net.minecraft.client.gui.hud.spectator.SpectatorMenu;
+ import net.minecraft.client.gui.hud.spectator.SpectatorMenuCloseCallback;
+ import net.minecraft.client.gui.hud.spectator.SpectatorMenuCommand;

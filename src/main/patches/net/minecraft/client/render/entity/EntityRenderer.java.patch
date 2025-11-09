@@ -1,0 +1,12 @@
+--- EntityRenderer.java
++++ EntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.block.Block;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.font.TextRenderer;
+ import net.minecraft.client.render.BufferBuilder;
+ import net.minecraft.client.render.CameraView;

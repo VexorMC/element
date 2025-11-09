@@ -1,0 +1,12 @@
+--- WitherEntityRenderer.java
++++ WitherEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.render.entity.feature.WitherArmorFeatureRenderer;
+ import net.minecraft.client.render.entity.model.WitherEntityModel;
+ import net.minecraft.entity.boss.BossBar;
+ import net.minecraft.entity.boss.WitherEntity;
+ import net.minecraft.util.Identifier;

@@ -1,0 +1,12 @@
+--- HorseScreen.java
++++ HorseScreen.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.entity.passive.HorseBaseEntity;
+ import net.minecraft.inventory.Inventory;
+ import net.minecraft.screen.HorseScreenHandler;
+ import net.minecraft.util.Identifier;

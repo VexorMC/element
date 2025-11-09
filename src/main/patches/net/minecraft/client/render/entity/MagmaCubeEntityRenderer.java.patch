@@ -1,0 +1,12 @@
+--- MagmaCubeEntityRenderer.java
++++ MagmaCubeEntityRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.entity;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.client.render.entity.model.MagmaCubeEntityModel;
+ import net.minecraft.entity.mob.MagmaCubeEntity;
+ import net.minecraft.util.Identifier;
+ 
+ public class MagmaCubeEntityRenderer extends MobEntityRenderer<MagmaCubeEntity> {

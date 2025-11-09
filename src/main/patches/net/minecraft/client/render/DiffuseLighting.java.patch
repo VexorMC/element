@@ -1,0 +1,42 @@
+--- DiffuseLighting.java
++++ DiffuseLighting.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import java.nio.FloatBuffer;
+ import net.minecraft.client.util.GlAllocationUtils;
+ import net.minecraft.util.math.Vec3d;
+ import org.lwjgl.opengl.GL11;
+ 
+@@ -25,20 +25,20 @@
+ 		GlStateManager.enableColorMaterial();
+ 		GlStateManager.colorMaterial(1032, 5634);
+ 		float f = 0.4F;
+ 		float g = 0.6F;
+ 		float h = 0.0F;
+-		GL11.glLight(16384, 4611, method_844(field_5040.x, field_5040.y, field_5040.z, 0.0));
+-		GL11.glLight(16384, 4609, method_845(g, g, g, 1.0F));
+-		GL11.glLight(16384, 4608, method_845(0.0F, 0.0F, 0.0F, 1.0F));
+-		GL11.glLight(16384, 4610, method_845(h, h, h, 1.0F));
+-		GL11.glLight(16385, 4611, method_844(field_5041.x, field_5041.y, field_5041.z, 0.0));
+-		GL11.glLight(16385, 4609, method_845(g, g, g, 1.0F));
+-		GL11.glLight(16385, 4608, method_845(0.0F, 0.0F, 0.0F, 1.0F));
+-		GL11.glLight(16385, 4610, method_845(h, h, h, 1.0F));
++		GL11.glLightfv(16384, 4611, method_844(field_5040.x, field_5040.y, field_5040.z, 0.0));
++		GL11.glLightfv(16384, 4609, method_845(g, g, g, 1.0F));
++		GL11.glLightfv(16384, 4608, method_845(0.0F, 0.0F, 0.0F, 1.0F));
++		GL11.glLightfv(16384, 4610, method_845(h, h, h, 1.0F));
++		GL11.glLightfv(16385, 4611, method_844(field_5041.x, field_5041.y, field_5041.z, 0.0));
++		GL11.glLightfv(16385, 4609, method_845(g, g, g, 1.0F));
++		GL11.glLightfv(16385, 4608, method_845(0.0F, 0.0F, 0.0F, 1.0F));
++		GL11.glLightfv(16385, 4610, method_845(h, h, h, 1.0F));
+ 		GlStateManager.shadeModel(7424);
+-		GL11.glLightModel(2899, method_845(f, f, f, 1.0F));
++		GL11.glLightModelfv(2899, method_845(f, f, f, 1.0F));
+ 	}
+ 
+ 	private static FloatBuffer method_844(double d, double e, double f, double g) {
+ 		return method_845((float)d, (float)e, (float)f, (float)g);
+ 	}

@@ -1,0 +1,12 @@
+--- AchievementNotification.java
++++ AchievementNotification.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.advancement.Achievement;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.render.DiffuseLighting;
+ import net.minecraft.client.render.item.ItemRenderer;
+ import net.minecraft.client.resource.language.I18n;

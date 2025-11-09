@@ -1,0 +1,12 @@
+--- BrewingStandScreen.java
++++ BrewingStandScreen.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.gui.screen.ingame;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import net.minecraft.entity.player.PlayerInventory;
+ import net.minecraft.inventory.Inventory;
+ import net.minecraft.screen.BrewingScreenHandler;
+ import net.minecraft.util.Identifier;
+ 

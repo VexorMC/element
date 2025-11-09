@@ -1,0 +1,41 @@
+--- LivingEntityRenderer.java
++++ LivingEntityRenderer.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.client.render.entity;
+ 
+ import com.google.common.collect.Lists;
+-import com.mojang.blaze3d.platform.GLX;
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GLX;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import java.nio.FloatBuffer;
+ import java.util.List;
+ import net.minecraft.client.MinecraftClient;
+ import net.minecraft.client.font.TextRenderer;
+ import net.minecraft.client.render.BufferBuilder;
+@@ -37,11 +37,11 @@
+ 		super(entityRenderDispatcher);
+ 		this.model = entityModel;
+ 		this.shadowSize = f;
+ 	}
+ 
+-	protected <V extends LivingEntity, U extends FeatureRenderer<V>> boolean addFeature(U featureRenderer) {
++	protected <V extends LivingEntity, U extends FeatureRenderer<V>> boolean addFeature(FeatureRenderer featureRenderer) {
+ 		return this.features.add(featureRenderer);
+ 	}
+ 
+ 	protected <V extends LivingEntity, U extends FeatureRenderer<V>> boolean removeFeature(U featureRenderer) {
+ 		return this.features.remove(featureRenderer);
+@@ -269,11 +269,11 @@
+ 				this.buffer.put(l);
+ 				this.buffer.put(1.0F - h);
+ 			}
+ 
+ 			this.buffer.flip();
+-			GL11.glTexEnv(8960, 8705, this.buffer);
++			GL11.glTexEnvfv(8960, 8705, this.buffer);
+ 			GlStateManager.activeTexture(GLX.texture);
+ 			GlStateManager.enableTexture();
+ 			GlStateManager.bindTexture(TEX.getGlId());
+ 			GL11.glTexEnvi(8960, 8704, GLX.combine);
+ 			GL11.glTexEnvi(8960, GLX.combineRgb, 8448);

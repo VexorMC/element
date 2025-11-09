@@ -1,0 +1,50 @@
+--- GlShader.java
++++ GlShader.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.client.gl;
+ 
+ import com.google.common.collect.Maps;
+-import com.mojang.blaze3d.platform.GLX;
++import com.mojang.blaze3d.platform.GLX;
+ import java.io.BufferedInputStream;
+ import java.io.IOException;
+ import java.nio.ByteBuffer;
+ import java.util.Map;
+ import net.minecraft.resource.ResourceManager;
+@@ -44,16 +44,13 @@
+ 	public static GlShader createShader(ResourceManager resourceManager, GlShader.Type type, String string) throws IOException {
+ 		GlShader glShader = (GlShader)type.getLoadedShaders().get(string);
+ 		if (glShader == null) {
+ 			Identifier identifier = new Identifier("shaders/program/" + string + type.getFileExtension());
+ 			BufferedInputStream bufferedInputStream = new BufferedInputStream(resourceManager.getResource(identifier).getInputStream());
+-			byte[] bs = readInputStream(bufferedInputStream);
+-			ByteBuffer byteBuffer = BufferUtils.createByteBuffer(bs.length);
+-			byteBuffer.put(bs);
+-			byteBuffer.position(0);
++			String bs = readInputStream(bufferedInputStream);
+ 			int i = GLX.gl20CreateShader(type.getGlType());
+-			GLX.gl20ShaderSource(i, byteBuffer);
++			GLX.gl20ShaderSource(i, bs);
+ 			GLX.gl20CompileShader(i);
+ 			if (GLX.gl20GetShaderi(i, GLX.compileStatus) == 0) {
+ 				String string2 = StringUtils.trim(GLX.gl20GetShaderInfoLog(i, 32768));
+ 				ShaderParseException shaderParseException = new ShaderParseException("Couldn't compile " + type.getName() + " program: " + string2);
+ 				shaderParseException.addFaultyFile(identifier.getPath());
+@@ -65,14 +62,14 @@
+ 		}
+ 
+ 		return glShader;
+ 	}
+ 
+-	protected static byte[] readInputStream(BufferedInputStream bufferedInputStream) throws IOException {
+-		byte[] var1;
++	protected static String readInputStream(BufferedInputStream bufferedInputStream) throws IOException {
++		String var1;
+ 		try {
+-			var1 = IOUtils.toByteArray(bufferedInputStream);
++			var1 = IOUtils.toString(bufferedInputStream);
+ 		} finally {
+ 			bufferedInputStream.close();
+ 		}
+ 
+ 		return var1;

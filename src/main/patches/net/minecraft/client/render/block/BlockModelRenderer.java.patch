@@ -1,0 +1,12 @@
+--- BlockModelRenderer.java
++++ BlockModelRenderer.java
+@@ -1,8 +1,8 @@
+ package net.minecraft.client.render.block;
+ 
+-import com.mojang.blaze3d.platform.GlStateManager;
++import com.mojang.blaze3d.platform.GlStateManager;
+ import java.util.BitSet;
+ import java.util.List;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockState;
+ import net.minecraft.client.MinecraftClient;
